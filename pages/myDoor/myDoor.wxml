@@ -1,0 +1,147 @@
+<!--pages/myDoor/myDoor.wxml-->
+<view class='door' style='display:none;'>
+  <view class='doorBox'>
+    <view class='doorIn'>
+      <view class='doorLeft'>
+        <text>店铺名称：</text>
+      </view>
+      <view class='doorRight'>
+        <text>点都德</text>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn'>
+      <view class='doorLeft'>
+        <text>店铺类型：</text>
+      </view>
+      <view class='doorRight'>
+        <text>餐饮</text>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn'>
+      <view class='doorLeft'>
+        <text>手机号码：</text>
+      </view>
+      <view class='doorRight'>
+        <text>13033233233</text>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn'>
+      <view class='doorLeft'>
+        <text>店铺地址：</text>
+      </view>
+      <view class='doorRight drLeft'>
+        <text>广东省广州市天河区车陂街道车陂大街302</text>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn clearfloat'>
+      <view class='doorLeft'>
+        <text>店铺地址：</text>
+      </view>
+      <view class='doorRight imgRight'>
+        <image src='../../img/list.png' mode='widthFix'></image>
+      </view>
+    </view>
+  </view>
+</view>
+<view class='twoBtn' style='display:none;'>
+  <view>返回</view>
+  <view>编辑</view>
+</view>
+
+<view class='door elsedoor'>
+  <view class='doorBox'>
+    <view class='doorIn'>
+      <view class='doorLeft'>
+        <text>店铺名称：</text>
+      </view>
+      <view class='doorRight'>
+        <input type='text' placeholder='请输入您的店铺名称'></input>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn'>
+      <view class='doorLeft'>
+        <text>店铺类型：</text>
+      </view>
+      <view class='doorRight pickerBox'>
+        <view class='select'>
+          <picker bindchange="changeOne" value="{{toIndex}}" range="{{typeOne}}">
+            <view class="picker">
+              {{typeOne[toIndex]}}
+            </view>
+          </picker>
+        </view>
+        <view class='select'>
+          <picker bindchange="changeTwo" value="{{ttIndex}}" range="{{typeTwo}}">
+            <view class="picker">
+              {{typeTwo[ttIndex]}}
+            </view>
+          </picker>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn'>
+      <view class='doorLeft'>
+        <text>手机号码：</text>
+      </view>
+      <view class='doorRight'>
+        <input type='text' placeholder='请输入您的电话'></input>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn clearfloat'>
+      <view class='doorRight getCode'>
+        <button>获取验证码</button>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn'>
+      <view class='doorLeft'>
+        <text>店铺地址：</text>
+      </view>
+      <view class='doorRight drLeft addr'>
+        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" >
+          <view class="picker">
+            {{region[0]}}，{{region[1]}}，{{region[2]}}
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn clearfloat'>
+      <textarea placeholder='请输入您的详细地址' placeholder-class='addressClass'></textarea>
+    </view>
+  </view>
+  <view class='doorBox'>
+    <view class='doorIn clearfloat'>
+      <view class='upImg'>
+        <view class='upBox'>
+          <view class='upAdd'>
+            <image src='../../img/add.png' mode='widthFix'></image>
+          </view>
+          <view>添加您的商品图片</view>
+          <view>（尺寸：250*210px）</view>
+        </view>
+        
+      </view>
+    </view>
+  </view>
+</view>
+<view class='twoBtn subBtn'>
+  <view>取消</view>
+  <view>正确</view>
+</view>

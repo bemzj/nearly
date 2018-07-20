@@ -1,0 +1,51 @@
+/* pages/nav/nav.wxss */
+page{
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  padding-bottom: 120rpx;
+}
+.nav{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  display: -webkit-flex;
+  background-color: #ffffff;
+  border-top: 1px solid #ededed;
+}
+.navBox
+{
+  width: 25%;
+  height: 110rpx;
+  position: relative;
+}
+.navBox::after{
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  content: "";
+  height: 32rpx;
+  margin-top: -16rpx;
+  border-right: 1px solid #dddddd;
+}
+.navBox:nth-last-child(1)::after{
+  border-right: 0px;
+}
+.navBox navigator{
+  
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  -webkit-justify-content: center;
+  -webkit-flex-direction: column;
+  font-size: 26rpx;
+}
+.navBox navigator text{
+  position: relative;
+}

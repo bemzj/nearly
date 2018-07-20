@@ -1,0 +1,76 @@
+page{
+  background-color: white;
+  padding-top: 124rpx;
+  padding-bottom: 120rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.searchBox{
+  padding: 20rpx 25rpx;
+  box-sizing:border-box;
+  -webkit-box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+  background-color: white
+}
+.searchInput{
+  border: 1px solid #999999;
+  border-radius: 18rpx;
+  display: flex;
+  display: -webkit-flex;
+}
+.searchInput input{
+  height: 80rpx;
+  width: 81.6%;
+  padding: 0 80rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  font-size: 24rpx;
+  color: #333333;
+}
+.searchBtn{
+  width: 14.3%;
+  position: relative;
+  height: 80rpx;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAClElEQVRIia3W38vPZxzH8cf95UCxWzTlYGUHI+RHhpEfDVEiUaSxmYS11f4AR84dI2uoiRvRKAd+/7zb7Fa0xY60LU5IxLCImtvB9fnwud/fz+d7//q+6qrP9X6/r/ez68fnfV0ta1av1o2mYwlm4xMMRwse4y9cxSl0dJeoqIENfAuwBYsq/K34GAuxFZewDWd6Aq5V2LfjQgNomebjNH7sC3gA2vF9gzEvslalzdKyD+oNuB1zS+LO4htMwkdZm4hNOFkSP0Pa+0oV93gXZgX/P/guA0c9wZ/YK52HnRhb8E/BPqwvA+czno5vg+8aJlRAoy5msZeD/WvlK/gOvCPY70m/z8seQHP9Lx2wO8H+QxV4Ij4L9lVZor5oeeiPL8mvhlhB2vFbH6FwU/qtilpTBp4TbHv6Ac21O/TjoVXD6GDrz2xzXQ/9UVKN6AIeVui/wP0mgB/hv0K/FR9EcFGdTYDmeYq5WmJATSoEuQZjZBPAH+o6w2d4HsF/h0EzmgD+NPTvCr9nDb+GoI1NAMccdXd1DUeCbQGm9gM6FsuC7XAZ+A/8Huw/9wN8IvRvK7mp8lMd799R0otigN7plK51oVP95dMFfBU/Bd883FJxuwTNlFZucbCfkyZQCYYNuBH846TafRxfSvs3NGtj8AWOStVuckn+KVlMneJjbzZ+wbRgX5E13lekIWUJg0bgkLRlbUVHrFyvpEfB3gbJhnQDPV9iOyCtWCU41yYsVf+PN1KHdBcvwsru4I3e1Sez9rn0oJ8lnfb8UvlXqkgdWdzFwthjWIf9JXBoawTOdSVrpGLfmn0/x5sG4w5k/rYS++uegIvqxNNexB+UtjPO/EjVHjdTdQeL6sPVbB3EWjzAQ3z1Fu2de8dTcu5cAAAAAElFTkSuQmCC") no-repeat center center;
+  background-size:30rpx;  
+}
+.searchBtn::after{
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  height: 36rpx;
+  margin-top: -18rpx;
+  border-left: 1px solid #999999;
+}
+inputPlace{
+  color: #dddddd;
+}
+.exchange{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100rpx;
+}
+.exchange button{
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #ff8933;
+  border-radius: 0;
+  border-color: #ff8933;
+  color: white;
+  font-size: 28rpx;
+  line-height: 100rpx;
+}
+.noShopList{
+  width: 100%;
+  font-size: 30rpx;
+  text-align: center;
+  padding: 150rpx 0;
+}

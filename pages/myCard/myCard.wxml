@@ -1,0 +1,68 @@
+<view class='main' wx:if="{{hasVip==false}}">
+  <view class='mainTop bodyBox {{autoHeight?"mianBox":""}}' bindtap='{{address.length>1?"setHeight":""}}'>
+    <view class="picker" wx:for='{{address}}' wx:key="{{index}}" wx:if='{{address.length!=0}}'>
+      <view wx:if='{{address.length==1}}'>
+        <text class='canUse'>可用区域</text><text>{{item}}</text>
+      </view>
+      <view wx:if='{{address.length>1}}'>
+        <text class='canUse'>可用区域{{index+1}}</text><text class='{{index==0?"more":""}}'>{{item}}</text>
+      </view>
+    </view>
+  </view>
+  <view class='mpImg'>
+   <image src='../../img/vip.png' mode='widthFix'></image>
+  </view>
+  <view class='vipTitle bodyBox'>
+    <text>会员卡介绍</text>
+  </view>
+  <view class='vipMoney boxes'>
+    <text>只需<text class='redMoney'>59.4</text>元（6个月）</text>
+  </view>
+  <view class='vipTitle bodyBox'>
+    <text>特权介绍</text>
+  </view>
+  <view class='vipMoney boxes'>
+    <rich-text>
+      <p>1特权介绍1特权介绍1特权介绍</p>
+      <p>1特权介绍1特权介绍1特权介绍</p>
+      <p>1特权介绍1特权介绍1特权介绍</p>
+    </rich-text>
+  </view>
+</view>
+<button class='rightPay' wx:if="{{hasVip==false}}" >立即申请</button>
+<view class='hasMain' wx:if="{{hasVip==true}}">
+  <view class='mpBox'>
+    <view class='mpImg'>
+      <image src='../../img/vip.png' mode='widthFix'></image>
+      <view class='pmHead'>
+        <image src='../../img/head.png' mode='widthFix'></image>
+      </view>
+    </view>
+    <view class='vipTitle vipTitle1 bodyBox'>
+      <text>您的会员卡：<text class='vtTitle'>近享多VIP卡</text></text>
+    </view>
+    <view class='vipBoxes' wx:if="{{address.length>0}}">
+      <view class='vipTitle bodyBox' wx:for='{{address}}' wx:key="index" wx:if="{{address.length>1}}">
+        <text>使用地区{{index+1}}：<text class='vipText'>{{item}}</text></text>
+      </view>
+      <view class='vipTitle bodyBox' wx:for='{{address}}' wx:key="index" wx:if="{{address.length==1}}">
+        <text>使用地区：<text class='vipText'>{{item}}</text></text>
+      </view>
+    </view>
+  </view>
+  <view class='mpBottom'>
+    <view class='vipTitle vipTitle1 bodyBox'>
+      <text>享有特权：</text>
+    </view>
+    <view class='vipMoneyOut'>
+      <view class='vipMoney boxes'>
+        <rich-text>
+          <p>1特权介绍1特权介绍1特权介绍</p>
+          <p>1特权介绍1特权介绍1特权介绍</p>
+          <p>1特权介绍1特权介绍1特权介绍</p>
+        </rich-text>
+      </view>
+    </view>
+    
+  </view>
+</view>

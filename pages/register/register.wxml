@@ -1,0 +1,36 @@
+<!--pages/register/register.wxml-->
+<view class='container'>
+  <view class='main'>
+    <view class='mainIn bodyBox'>
+      <view class='mainTitle'>{{title}}</view>
+      <form  bindsubmit="register">
+        <view class='inputBox'>
+          <view class='input'>
+            <input type='number' placeholder='手机号码' name='phone' value='{{phone}}' placeholder-class='inputClass'  bindinput='getPhone' ></input>
+          </view>
+          <view class='input inputBtn'>
+            <input type='number' placeholder='验证码' name='code' value='{{code}}' placeholder-class='inputClass' ></input>
+            <button  bindtap="{{disabled==true? 'getCode':''}}" >{{timeCount}}</button>
+          </view>
+          <view class='input'>
+            <input type='text' placeholder='姓名' name='name' value='{{name}}' placeholder-class='inputClass' ></input>
+          </view>
+          <view class='input inputBoxBtn'>
+            <button formType="submit">注册</button>
+          </view>
+          <view class='logo'>
+            <image src=''></image>
+          </view>
+        </view>
+      </form>  
+    </view>
+  </view>
+</view>
+ <tips wx:if='{{tipStatus1}}'>
+  <text slot="tp1">{{popText1}}</text>
+  <view slot="confrim" bindtap='closeTip'>返回首页</view>
+</tips>
+<tips wx:if='{{tipStatus2}}'>
+  <text slot="tp1">{{popText1}}</text>
+  <view slot="confrim"  bindtap='comfirmPop'>确定</view>
+</tips> 

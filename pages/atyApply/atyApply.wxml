@@ -1,0 +1,18 @@
+<form  bindsubmit='submit'>
+  <view class='main'>
+    <view class='mainOut'>
+      <view class='title'>
+        <input type='text' placeholder='*您的门店活动主题' placeholder-class='titleClass' name='title'></input>
+      </view>
+      <view class='textarea'>
+        <textarea placeholder-class='titleClass' placeholder='*活动主题审核内容' name='content'></textarea>
+      </view>
+    </view>
+  </view>
+  <view class='mainBottom'>
+    <navigator url='../activity/activity'>取消</navigator>
+    <button formType="submit">提交</button>
+  </view>
+</form>
+
+

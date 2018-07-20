@@ -1,0 +1,73 @@
+<!--普通用户个人中心-->
+<view class='personal' wx:if='{{loginType==0}}'>
+  <view class='perHead'>
+    <image src='../../img/person1.jpg' mode='widthFix'></image>
+    <view class='phIn'>
+      <view class='headBox'>
+        <view class='headBoxIn'>
+          <image src='../../img/logo.png' mode='widthFix' ></image>
+        </view>
+        <view class='sex'>
+          <image src='../../img/woman.png' mode='widthFix'></image>
+        </view>
+      </view>
+      <view class='name'>
+        <text>嘎嘎</text>
+      </view>
+    </view>
+  </view>
+  <view class='moreFun'>
+    <view class='func'>
+      <navigator url='../exchangeIntro/exchangeIntro'>个人信息</navigator>
+    </view>
+    <view class='func'>
+      <navigator url='../myCollect/myCollect'>我的收藏</navigator>
+    </view>
+    <view class='func noBorder'>
+      <navigator  url='../myCard/myCard'>我的优惠卡</navigator>
+    </view>
+    <view class='func marginTop'>
+      <navigator url='../address/address'>我的地址</navigator>
+    </view> 
+  </view>
+</view>
+<!--普通用户个人中心-->
+<view class='personal' wx:if='{{loginType==1}}'>
+  <view class='perHead'>
+    <image src='../../img/person1.jpg' mode='widthFix'></image>
+    <view class='phIn'>
+      <view class='headBox'>
+        <view class='headBoxIn'>
+          <image src='../../img/logo.png' mode='widthFix' ></image>
+        </view>
+        <view class='sex'>
+          <image src='../../img/woman.png' mode='widthFix'></image>
+        </view>
+      </view>
+      <view class='name'>
+        <text>嘎嘎</text>
+      </view>
+    </view>
+  </view>
+  <view class='moreFun'>
+    <view class='func'>
+      <navigator url='../exchangeIntro/exchangeIntro'>我的门店</navigator>
+    </view>
+    <view class='func'>
+      <view>被浏览次数</view>
+      <text>1200</text>
+    </view>
+    <view class='func noBorder'>
+      <navigator  url='../myCard/myCard'>我的消息</navigator>
+    </view>
+    <view class='func marginTop'>
+      <navigator url='../activity/activity'>门店活动申请</navigator>
+    </view>
+  </view>
+</view>
+<nav>
+  <text slot="index">首页</text>
+  <text slot="type">分类</text>
+  <text slot="myNews">我的消息</text>
+  <text slot="person" class='navActive'>个人中心</text>
+</nav>

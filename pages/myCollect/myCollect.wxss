@@ -1,0 +1,42 @@
+
+@import "../../wxss/list.wxss";
+page{
+  background-color: white;
+}
+.main{
+  
+  padding-bottom: 90rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.noCollect{
+  border-top: 20rpx solid #f2f2f2;
+  padding: 200rpx 0 0rpx;
+  font-size: 30rpx;
+  color: #888888;
+  text-align: center;
+}
+.lookType{
+  width: 200rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  margin: 0 auto;
+  display: block;
+  font-size: 28rpx;
+  text-align: center;
+  color: white;
+  background-color: #ff8933;
+  border-radius: 8rpx;
+  margin-top: 80rpx;
+}
+.warnTips{
+  position: fixed;
+  left: 0%;
+  bottom: 0;
+  width: 100%;
+  line-height: 90rpx;
+  text-align: center;
+  color: white;
+  font-size: 22rpx;
+  background-color: #ff8933;
+}

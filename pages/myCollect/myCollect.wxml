@@ -1,0 +1,53 @@
+<view class='main'>
+  <view class='noCollect' wx:if="{{shopList.length==0}}">
+    <text>您暂时还没有收藏哦~</text>
+    <navigator url='../type/type' class='lookType' >查看分类</navigator>
+  </view>
+  <view class='collect' wx:if="{{shopList.length>0}}">
+    <view class='listBoxOut {{index==shopIndex?"listTransition":""}}' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index"  bindtouchmove="handletouchmove" bindtouchstart="handletouchstart" bindtouchend="handletouchend">
+      <view class='listBox ' >
+        <view class='shopDelete'>
+          <view class='shopZw'></view>
+          <view class='sDelete' data-index='{{index}}' bindtap='deleteShop'></view>
+        </view>
+        <view class='listImg'>
+          <image src='{{item.src}}' mode='widthFix'></image>
+        </view>
+        <view class='listText'>
+          <view class='ltIn'>
+            <view class='phone' bindtap='callPhone' data-phone='15999911956'>
+              <image src='../../img/phone.png' mode='widthFix'></image>
+            </view>
+            <view class='shop'>
+              <view class='shopText'>
+                <text class='shopType'>{{item.type}}</text><text class='shopName'>{{item.name}}</text>
+              </view>
+              <view class='shopNumber'>
+                <text>被浏览次数{{item.number}}</text>
+                <view class='fire'>
+                  <text wx:for="{{item.fire}}" wx:key="unique" wx:for-item="its" class='{{its<item.fire?"block":""}}'></text>
+                </view>
+              </view>
+              <view class='shopAddress'>
+                <text>广州市天河区新港东路中洲中心北塔负1楼</text>
+              </view>
+              <view class='shopMoney'>
+                <view class='shopIn'>
+                  99元<text>110元</text>世界杯99元超值套餐
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>  
+  </view>
+</view>
+<view class='warnTips' wx:if="{{shopList.length>0}}">
+  <text>温馨提醒：右滑即可删除</text>
+</view>
+<tips wx:if='{{tipStatus}}'>
+  <text slot="tp1">{{popText}}</text>
+  <view slot="cancel" style='width:48%;'  bindtap='closePop'>取消</view>
+  <view slot="confrim" style='width:48%;' bindtap='comfirmPop'>确定</view>
+</tips>

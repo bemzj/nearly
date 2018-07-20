@@ -1,0 +1,57 @@
+<view class='main'>
+  <view class='echangeBox headBox'>
+    <text>头像</text>
+    <view class='exchangeHead'>
+      <image src='{{person.head}}' mode='widthFix'></image>
+    </view>
+  </view>
+  <view class='echangeBox' bindtap='nameShow'>
+    <text>姓名</text>
+    <text>{{person.name}}</text>
+  </view>
+  <view class='echangeBox' bindtap='phoneShow'>
+    <text>手机号码</text>
+    <text>{{person.phone}}</text>
+  </view>
+  <view class='echangeBox'  bindtap='sexShow'>
+    <text>性别</text>
+    <text>{{person.sex}}</text>
+  </view>
+</view>
+<view class='popWin' wx:if="{{popStatus}}">
+  <!--修改姓名-->
+  <view class='popWinIn'  wx:if="{{nameStatus}}">
+    <view class='popInput'>
+      <input type='text' value='{{person.name}}' bindinput='nameInput' ></input>
+    </view>
+    <view class='popBtn'>
+      <button bindtap='closePop'>取消</button>
+      <button bindtap='comfrimName'>确定</button>
+    </view>
+  </view>
+  <!--修改手机号码-->
+  <view class='popWinIn'  wx:if="{{phoneStatus}}">
+    <view class='popInput'>
+      <input type='text'  value='{{person.phone}}' bindinput='phoneInput' ></input>
+    </view>
+    <view class='popBtn'>
+      <button bindtap='closePop'>取消</button>
+      <button bindtap='comfrimPhone'>确定</button>
+    </view>
+  </view>
+  <!--修改性别-->
+  <view class='popWinIn'  wx:if="{{sexStatus}}">
+    <view class='sexBox {{exchangeSex==item?"hasSex":""}}' wx:for='{{sexBox}}' wx:key = "index" bindtap='selectSex' data-sex='{{item}}'>
+      <text>{{item}}</text>
+      <view><view><view></view></view></view>
+    </view>
+    <view class='popBtn'>
+      <button bindtap='closePop'>取消</button>
+      <button bindtap='comfrimSex'>确定</button>
+    </view>
+  </view>
+</view>
+<tips wx:if='{{tipStatus2}}'>
+  <text slot="tp1">{{popText1}}</text>
+  <view slot="confrim"  bindtap='comfirmPop'>确定</view>
+</tips> 

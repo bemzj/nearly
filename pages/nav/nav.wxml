@@ -1,0 +1,15 @@
+<!--pages/nav/nav.wxml-->
+<view class='nav'>
+    <view class='navBox'>
+      <navigator url='../index/index'><slot name='index'></slot></navigator>
+    </view>
+    <view class='navBox'>
+      <navigator url='../type/type'><slot name='type'></slot></navigator>
+    </view>
+    <view class='navBox'>
+      <navigator url='../myNews/myNews'><slot name='myNews'></slot></navigator>
+    </view>
+    <view class='navBox'>
+      <navigator url='../personal/personal'><slot name='person'></slot></navigator>
+    </view>
+</view>

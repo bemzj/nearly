@@ -1,0 +1,79 @@
+<!--index.wxml-->
+<view class="container">
+  <view class='searchBox'>
+    <view class='searchLeft'>
+      <view class='dw'>
+        <text>万胜围万胜围</text>
+      </view>
+    </view>
+    <view class='searchRight'>
+      <navigator url='../search/search'>
+        <text>请输入商家名称或者相关关键词</text>
+        <view class='searchImg'>
+          <image src='../../img/search.png' mode='widthFix'></image>
+        </view>
+      </navigator>
+    </view>
+  </view>
+  <view class='swiper'>
+    <swiper style='height:{{swiperHeight}}' indicator-dots="{{swiper.indicatorDots}}" autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" circular="{{swiper.circular}}" bindchange='swiperChange'>
+      <swiper-item wx:for="{{banners}}" wx:key="key">
+         <image src="{{item}}" mode='widthFix'></image>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view class='typeList'>
+    <view class='typeBtn' wx:for="{{typeList}}" wx:key="index">
+      <text>{{item.name}}</text>
+    </view> 
+  </view>
+  <view class='shopLists'>
+    <view class='shopTitles'>
+      <text>推荐商家</text>
+    </view>
+    <view class='snBox'>
+      <view class='listBoxOut' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index"  bindtouchmove="handletouchmove" bindtouchstart="handletouchstart" bindtouchend="handletouchend">
+        <view class='listBox'>
+          <view class='listImg'>
+            <image src='{{item.src}}' mode='widthFix'></image>
+          </view>
+          <view class='listText'>
+            <view class='ltIn'>
+              <view class='phone' bindtap='callPhone' data-phone='15999911956'>
+                <image src='../../img/phone.png' mode='widthFix'></image>
+              </view>
+              <view class='shop'>
+                <view class='shopText'>
+                  <text class='shopType'>{{item.type}}</text><text class='shopName'>{{item.name}}</text>
+                </view>
+                <view class='shopNumber'>
+                  <text>被浏览次数{{item.number}}</text>
+                  <view class='fire'>
+                    <text wx:for="{{item.fire}}" wx:key="unique" wx:for-item="its" class='{{its<item.fire?"block":""}}'></text>
+                  </view>
+                </view>
+                <view class='shopAddress'>
+                  <text>广州市天河区新港东路中洲中心北塔负1楼</text>
+                </view>
+                <view class='shopMoney'>
+                  <view class='shopIn'>
+                    99元<text>110元</text>世界杯99元超值套餐
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='lookBtn boxes'>
+    <button>查看更多商家</button>
+  </view>
+</view>
+<nav>
+  <text slot="index"  class='navActive'>首页</text>
+  <text slot="type">分类</text>
+  <text slot="myNews">我的消息</text>
+  <text slot="person">个人中心</text>
+</nav>

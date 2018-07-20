@@ -1,0 +1,36 @@
+/**app.wxss**/
+page{
+  background-color: #f2f2f2;
+}
+.bodyBox{
+  width: 86.67%;
+  margin: 0 auto;
+}
+.boxes{
+  width: 93.33%;
+  margin: 0 auto;
+}
+.container {
+  height: 100%;
+  width: 100%;
+} 
+.clearfloat::after {
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+}
+text.navActive::after{
+  position: absolute;
+  left: 50%;
+  content: "";
+  width: 24rpx;
+  margin-left: -12rpx;
+  bottom: -10rpx;
+  height: 4rpx;
+  background-color: #ff8933;
+}
+.block{
+  display: block!important;
+}

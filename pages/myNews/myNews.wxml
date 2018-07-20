@@ -1,0 +1,41 @@
+<!--pages/myNews/myNews.wxml-->
+<view class='noNews' wx:if="{{newBox.length==0}}">
+  <view class='noText'>
+    <text>您暂时还没有消息哦~</text>
+  </view>
+  <view class='noBtn'>
+    <button bindtap='return'>返回</button>
+  </view>
+</view>
+<view class='news' wx:if="{{newBox.length>0}}">
+  <view class='newsBox {{item.look==0?"nolook":""}}' wx:for="{{newBox}}" wx:key="index">
+    <view class='newsIn'>
+      <view class='newsTitle'>
+        <text>{{item.apply==1?"申请成功":"申请失败"}}</text>
+      </view>
+      <view class='newsText'>
+        <text>{{item.reason}}</text>
+      </view>
+      <view class='newsBtn'>
+        <button bindtap='lookMore' data-index='{{index}}'>{{item.look==1?"已查阅":"点击查阅"}}</button>
+      </view>
+    </view>
+  </view>
+</view>
+<view class='popWin' wx:if="{{newStatus}}">
+  <view class='popWinIn'>
+    <view class='popTitle'>
+      <text>消息详情</text>
+    </view>
+    <view class='popStatus'>
+      <text>申请状态：{{newDetails.apply==1?"申请成功":"申请失败"}}</text>
+    </view>
+    <view class='popContent'>
+      <text>内容说明：{{newDetails.reason}}</text>
+    </view>
+    <view class='conBtn'>
+      <button bindtap='closePop'>确定</button>
+    </view>
+  </view>
+</view>
+

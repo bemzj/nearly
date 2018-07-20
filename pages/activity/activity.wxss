@@ -1,0 +1,91 @@
+/* pages/activity/activity.wxss */
+page{
+  padding-bottom: 150rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.container{
+  width: 100%;
+  margin-top: 20rpx;
+}
+.shopChild{
+  padding: 32rpx 25rpx 32rpx 50rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.hasShop{
+  background-color: white;
+}
+.noShop{
+  font-size: 30rpx;
+  color: #999999;
+  text-align: center;
+  padding: 180rpx 0;
+  background-color: white;
+}
+.shopChild{
+  border: 1px solid #f2f2f2;
+}
+.shopTitle{
+  font-size: 30rpx;
+  line-height: 60rpx;
+  position: relative;
+}
+.shopTitle view{
+  width: 100%;
+  padding-right: 200rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.shopStatus{
+  position:absolute;
+  right: 0;
+  top: 0;
+  width: 170rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  display: block;
+  font-size: 26rpx;
+  background-color: #999999;
+  text-align: center;
+  color: #ffffff;
+  border-radius: 5rpx;
+}
+.shopText{
+  color: #999999;
+  font-size: 28rpx;
+  line-height: 40rpx;
+  padding-top: 10rpx;
+}
+.addActivity{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 130rpx;
+}
+.addActivity navigator{
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 0;
+  border-color: #ff8933;
+  line-height: 130rpx;
+  font-size: 28rpx;
+  color: white;
+  background-color: #ff8933;
+}
+.addActivity navigator text{
+  display: inline-block;
+  line-height: 48rpx;
+  padding-left: 68rpx;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAYAAAA6GuKaAAABh0lEQVRYhe2ZPUoDQRiGn40RYsAibGGlZxALL6BdsLIRj2ChpZ2FN4iHUOz9SeUZPIN2iliIUYjJZzEzugwJ+8PM7AbmgeXd7M/k4YNh5mMTEekDV8AqzecDOEhERDIXR3XZFKBrTtqZi8fAZXiXwhwCFwCm0t/ASq1KxfgCOi39YwL0apQpQg/liZFOMudNpYXybLzoTHxJ94E7nc5p5z9SiXNgC1gDbl0P7qvSIyud4kt6bKVT4kQMRZQORZQORZQOhS9psdIpC7ki5m2Y9lBt2FLJcTd1bgMPJd+dAAPgZt4Dpt0aARvAm3X/CVgv+acueEb5ZElRPt28Sh8BJ1SrdA94Bx5LvmsqPR9RfIpIKiI4OoZ63KHDMVPtKb4m4rKVTvElnVjplLi4hCJKhyJKhyJKhyKuiBm6VjrFl/QZcK/TOXn76Sbxt59e6Iko6O8ZDWaKbpQX8uuWabc6wClwjWqtvOyDKyLAD7CP8iQRkSnNkpyF8O84bgE7wGt9PoUwwi/A7i+AatyDAnv0xwAAAABJRU5ErkJggg==') no-repeat left center;
+  background-size: 45rpx;
+}
+.shopStatus1{
+  background-color: #f2f2f2;
+}
+.shopStatus2{
+  background-color: #ff8933;
+}

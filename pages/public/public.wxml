@@ -1,0 +1,12 @@
+<!-- 弹窗模板 -->
+<view class="tipsBox wrapper">
+  <view class='tips'>
+      <text>温馨提示</text>
+       <slot name='tp1'></slot> 
+      <view class='btnBox clearfloat'>
+          <slot name="cancel"></slot>
+         <slot name="confrim"></slot>
+         
+      </view>
+  </view>
+</view>

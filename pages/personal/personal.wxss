@@ -1,0 +1,96 @@
+/* pages/personal/personal.wxss */
+page{
+  min-height: 100%;
+  background-color: #f2f2f2;
+}
+.personal{
+  width: 100%;
+}
+.perHead{
+  width: 100%;
+  position: relative;
+  font-size: 0px;
+}
+.perHead image{
+  width: 100%;
+}
+.phIn{
+  position: absolute;
+  bottom: 55rpx;
+  width: 100%;
+}
+.name{
+  text-align: center;
+  font-size: 36rpx;
+  color: #333333;
+  line-height: 70rpx;
+}
+.headBox{
+  width: 166rpx;
+  height: 166rpx;
+  margin: 0 auto;
+  position: relative;
+}
+.headBoxIn{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+ 
+  background-color: white;
+}
+.sex{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 38rpx;
+  height: 38rpx;
+}
+.sex image{
+  width: 100%;
+  height: 100%;
+}
+.moreFun{
+  width: 100%;
+}
+.func{
+  width: 100%;
+  padding: 0 60rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  background-color: white;
+  border-bottom: 1px solid #f2f2f2;
+  position: relative;
+}
+.func navigator{
+  display: block;
+  width: 100%;
+  height: 110rpx;
+  line-height: 110rpx;
+  font-size: 28rpx;
+  color: #333333;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAATCAYAAABGKffQAAAA2ElEQVQokYXSPUoDQRQA4G+THMcj2CwGxF5BEAQFLyEIYiELFmItGBEEwVRpAgnaeQAF/403ESx2FsKy+3aageF7P/NmsqIo+pjgEM+C1cMfRphiJcKDtI+RYY4hXiMM9+hjlgLeIwx3KWCONXxGGG6XAob4ijDc1Cr8RJhyQhkekWMRYbhKFR6Q9zowXOIJ112Z4QCryLvwPo6UPf9GbezhWDmNBe3T2MVJgt/VYRPewanagzThbZwl+FHPsoy3cJ7gW1Nv1QU3cYF1Ld+zwgPliDbw0gbhHzLbKVXsbHqbAAAAAElFTkSuQmCC') no-repeat right center;
+  background-size:11rpx; 
+}
+.func view{
+  display: block;
+  width: 100%;
+  height: 110rpx;
+  line-height: 110rpx;
+  font-size: 28rpx;
+  color: #333333;
+}
+.func text{
+  position: absolute;
+  top: 0;
+  right: 60rpx;
+  line-height: 110rpx;
+  font-size: 28rpx;
+  color: #999999;
+}
+.func.noBorder{
+  border: 0px;
+}
+.func.marginTop{
+  margin-top: 20rpx;
+}

@@ -1,0 +1,23 @@
+<view class='container'>
+  <view class='noShop' wx:if="{{activity.length==0}}">
+    <text>暂无门店活动申请哦~</text>
+  </view>
+  <view class='hasShop' wx:else>
+    <view class='shopChild' wx:for="{{activity}}" wx:key="index">
+      <view class='shopTitle'>    
+        <view>{{item.title==""?"暂无主题":item.title}}</view>
+        <text class='shopStatus {{item.status==1?"shopStatus1":""}}' wx:if="{{item.status==1}}">未通过</text>
+        <text class='shopStatus {{item.status==2?"shopStatus2":""}}' wx:elif="{{item.status==2}}">已通过</text>
+        <text class='shopStatus' wx:else>审核中</text>
+      </view>
+      <view class='shopText'>
+        <text>活动主题审核内容活动主题审核内容活动主题审核内容活动主题审核内容</text>
+      </view>
+    </view>
+  </view>
+</view>
+<view class='addActivity'>
+  <navigator url='../atyApply/atyApply'>
+    <text>新增门店活动申请</text>
+  </navigator>
+</view>

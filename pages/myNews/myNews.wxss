@@ -1,0 +1,148 @@
+/* pages/myNews/myNews.wxss */
+.noNews{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  background-color: white;
+  border-top: 20rpx solid #f2f2f2;
+}
+.news{
+  margin-top: 20rpx;
+}
+.newsBox{
+  background-color: white;
+  padding: 0rpx 25rpx;
+  
+}
+.noNews .noText{
+  padding: 178rpx 0 56rpx;
+  text-align: center;
+}
+.noNews .noText text{
+  line-height: 85rpx;
+  font-size: 30rpx;
+  color: #888888;
+}
+.newsTitle{
+  font-size: 30rpx;
+  color: #888888;
+  line-height: 40rpx;
+  padding: 30rpx 0;
+}
+.newsText{
+  font-size: 28rpx;
+  padding: 7rpx;
+  width: 100%;
+  line-height: 40rpx;
+  color: #888888;
+  overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
+}
+.newsBtn{
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  padding-left: 74%;
+  width: 100%;
+  margin-top: 18rpx;
+}
+.newsIn{
+  padding: 25rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-bottom: 1px solid #f2f2f2;
+}
+.newsBox:nth-last-child(1) .newsIn{
+  border: 0rpx;
+}
+.newsBtn button{
+  width: 100%;
+  display: block;
+  font-size: 28rpx;
+  background-color: #999999;
+  color: white;
+  padding: 0;
+  border-radius: 5rpx;
+  border-color: #999999;
+}
+.nolook button{
+  border-color: #ff8933;
+  background-color: #ff8933;
+}
+.popWin{
+  position: fixed;
+  left: 0px;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  -webkit-justify-content: center;
+  -webkit-flex-direction: column;
+}
+.popWinIn{
+  width: 80%;
+  background-color: white;
+  border-radius: 10rpx;
+}
+.popTitle{
+  padding: 25rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  font-size: 30rpx;
+  text-align: center;
+  border-bottom: 1px solid #f2f2f2;
+}
+.popStatus{
+  padding: 40rpx 50rpx 0rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  font-size: 28rpx;
+  color: #999999;
+}
+.popContent{
+  min-height: 300rpx;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding: 25rpx 50rpx 25rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  font-size: 28rpx;
+  line-height: 50rpx;
+  color: #999999;
+}
+.conBtn{
+  padding-bottom: 40rpx;
+}
+.conBtn button{
+  border-radius: 10rpx;
+  width: 220rpx;
+  height: 80rpx;
+  font-size: 30rpx;
+  margin: 0 auto;
+  line-height: 80rpx;
+  color: white;
+  background-color: #ff8933;
+}
+.noBtn{
+  width: 100%;
+}
+.noBtn button{
+  color: white;
+  background-color: #ff8933;
+  width: 180rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 28rpx;
+}

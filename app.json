@@ -1,0 +1,26 @@
+{
+  "pages":[
+    "pages/myDoor/myDoor",
+    "pages/myNews/myNews",
+    "pages/activity/activity",
+    "pages/atyApply/atyApply",
+    "pages/personal/personal",
+    "pages/type/type",
+    "pages/search/search",
+    "pages/index/index",   
+    "pages/myCollect/myCollect",   
+    "pages/myCard/myCard",   
+    "pages/address/address",   
+    "pages/exchangeIntro/exchangeIntro",   
+    "pages/nav/nav",
+    "pages/register/register",   
+    "pages/logs/logs"
+    
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "近享多商城",
+    "navigationBarTextStyle":"black"
+  }
+}
