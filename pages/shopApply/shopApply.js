@@ -1,11 +1,11 @@
-// pages/personal/personal.js
+// pages/shopApply/shopApply.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    loginType:0
+  
   },
 
   /**

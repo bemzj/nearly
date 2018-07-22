@@ -2,8 +2,8 @@
 <view class="container">
   <view class='searchBox'>
     <view class='searchLeft'>
-      <view class='dw'>
-        <text>万胜围万胜围</text>
+      <view class='dw' bindtap='getLocation'>
+        <text>{{street!=""?street:"获取位置"}}</text>
       </view>
     </view>
     <view class='searchRight'>

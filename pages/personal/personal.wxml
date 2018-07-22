@@ -23,11 +23,14 @@
     <view class='func'>
       <navigator url='../myCollect/myCollect'>我的收藏</navigator>
     </view>
-    <view class='func noBorder'>
+    <view class='func'>
       <navigator  url='../myCard/myCard'>我的优惠卡</navigator>
     </view>
+    <view class='func noBorder'>
+      <navigator  url='../address/address'>我的地址</navigator>
+    </view>
     <view class='func marginTop'>
-      <navigator url='../address/address'>我的地址</navigator>
+      <navigator url='../address/address'>申请成为商家</navigator>
     </view> 
   </view>
 </view>
@@ -51,17 +54,17 @@
   </view>
   <view class='moreFun'>
     <view class='func'>
-      <navigator url='../exchangeIntro/exchangeIntro'>我的门店</navigator>
+      <navigator url='../myDoor/myDoor'>我的门店</navigator>
     </view>
     <view class='func'>
       <view>被浏览次数</view>
       <text>1200</text>
     </view>
     <view class='func noBorder'>
-      <navigator  url='../myCard/myCard'>我的消息</navigator>
+      <navigator  url='../myNews/myNews'>我的消息</navigator>
     </view>
     <view class='func marginTop'>
-      <navigator url='../activity/activity'>门店活动申请</navigator>
+      <navigator url='../atyApply/atyApply'>门店活动申请</navigator>
     </view>
   </view>
 </view>

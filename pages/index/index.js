@@ -1,9 +1,11 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 Page({
   data: {
+    street:"",
     banners:[
       '../../img/indexBanner.png',
       '../../img/indexBanner.png',
@@ -95,6 +97,47 @@ Page({
       })
     }
   },
+  getLocation:function(){
+    var _this = this;
+    wx.getSetting({
+      success: (res) => {
+        if (res.authSetting["scope.userLocation"]==false)
+        {
+          wx.openSetting({
+            success: (res) => {
+              wx.getLocation({
+                type: 'wgs84',
+                success: function (res) {
+                  var latitude = res.latitude
+                  var longitude = res.longitude
+                  var speed = res.speed
+                  var accuracy = res.accuracy
+                  qqmapsdk.reverseGeocoder({
+                    location: {
+                      latitude: latitude,
+                      longitude: longitude
+                    },
+                    success: function (res) {
+                      _this.setData({
+                        street: res.result.address_component.street
+                      })
+                      console.log(res.result.address_component.street);
+                    },
+                    fail: function (res) { }
+                  });
+                },
+                fail: function (res) {
+                  _this.setData({
+                    street: ""
+                  })
+                }
+              });
+            }
+          })
+        }
+      }
+    })
+  },
   getUserInfo: function(e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
@@ -102,5 +145,40 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  onShow:function(){
+    var _this = this;
+    // 实例化API核心类
+    qqmapsdk = new QQMapWX({
+      key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
+    });
+    wx.getLocation({
+      type: 'wgs84',
+      success: function (res) {
+        console.log(res);
+        var latitude = res.latitude
+        var longitude = res.longitude
+        var speed = res.speed
+        var accuracy = res.accuracy
+        qqmapsdk.reverseGeocoder({
+          location: {
+            latitude: latitude,
+            longitude: longitude
+          },
+          success: function (res) {
+            _this.setData({
+              street: res.result.address_component.street
+            })
+            console.log(res.result.address_component.street);
+          },
+          fail: function (res) { }
+        });
+      },
+      fail:function(res){
+        _this.setData({
+          street: ""
+        })
+      }
+    });
   }
 })

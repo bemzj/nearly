@@ -1,20 +1,21 @@
 {
   "pages":[
+    "pages/type/type",
+    "pages/shopApply/shopApply",
+    "pages/personal/personal",
+    
+    "pages/index/index",
     "pages/myDoor/myDoor",
     "pages/myNews/myNews",
     "pages/activity/activity",
     "pages/atyApply/atyApply",
-    "pages/personal/personal",
-    "pages/type/type",
     "pages/search/search",
-    "pages/index/index",   
     "pages/myCollect/myCollect",   
     "pages/myCard/myCard",   
     "pages/address/address",   
     "pages/exchangeIntro/exchangeIntro",   
     "pages/nav/nav",
-    "pages/register/register",   
-    "pages/logs/logs"
+    "pages/register/register"
     
   ],
   "window":{

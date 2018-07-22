@@ -38,4 +38,9 @@
     </view>
   </view>
 </view>
-
+<nav>
+  <text slot="index">首页</text>
+  <text slot="type">分类</text>
+  <text slot="myNews" class='navActive'>我的消息</text>
+  <text slot="person">个人中心</text>
+</nav>
