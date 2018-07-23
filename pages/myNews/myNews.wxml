@@ -44,3 +44,4 @@
   <text slot="myNews" class='navActive'>我的消息</text>
   <text slot="person">个人中心</text>
 </nav>
+<view class='noTouch noTouch3'></view>

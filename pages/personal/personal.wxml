@@ -5,14 +5,14 @@
     <view class='phIn'>
       <view class='headBox'>
         <view class='headBoxIn'>
-          <image src='../../img/logo.png' mode='widthFix' ></image>
+          <image src='{{useIntro.avatarUrl}}' mode='widthFix' ></image>
         </view>
         <view class='sex'>
-          <image src='../../img/woman.png' mode='widthFix'></image>
+          <image src='{{useIntro.gender==2?"../../img/woman.png":""}}{{useIntro.gender==1?"../../img/man.png":""}}' mode='widthFix'></image>
         </view>
       </view>
       <view class='name'>
-        <text>嘎嘎</text>
+        <text>{{useIntro.nickName}}</text>
       </view>
     </view>
   </view>
@@ -30,7 +30,7 @@
       <navigator  url='../address/address'>我的地址</navigator>
     </view>
     <view class='func marginTop'>
-      <navigator url='../address/address'>申请成为商家</navigator>
+      <navigator url='../shopApply/shopApply'>申请成为商家</navigator>
     </view> 
   </view>
 </view>
@@ -74,3 +74,4 @@
   <text slot="myNews">我的消息</text>
   <text slot="person" class='navActive'>个人中心</text>
 </nav>
+<view class='noTouch noTouch4'></view>

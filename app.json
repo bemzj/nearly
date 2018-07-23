@@ -1,10 +1,11 @@
 {
   "pages":[
-    "pages/type/type",
-    "pages/shopApply/shopApply",
-    "pages/personal/personal",
-    
     "pages/index/index",
+    "pages/shopApply/shopApply",
+    
+    "pages/type/type",
+    
+    "pages/personal/personal",
     "pages/myDoor/myDoor",
     "pages/myNews/myNews",
     "pages/activity/activity",
@@ -16,7 +17,6 @@
     "pages/exchangeIntro/exchangeIntro",   
     "pages/nav/nav",
     "pages/register/register"
-    
   ],
   "window":{
     "backgroundTextStyle":"light",

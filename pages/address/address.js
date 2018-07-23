@@ -209,6 +209,19 @@ Page({
     qqmapsdk = new QQMapWX({
       key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
     });
+
+
+    // 调用接口
+    qqmapsdk.geocoder({
+      address: '广东省广州市天河区车陂街道车陂大街301号',
+      success: function (res) {
+        console.log(res);
+      },
+      fail: function (res) {
+        console.log(res);
+      }
+    });
+
     wx.getLocation({
       type: 'wgs84',
       success: function (res) {

@@ -54,6 +54,19 @@
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+.btnBox>button{
+    line-height: 84rpx;
+    background-color: #ff8933;
+    color: white;
+    border-radius: 8rpx;
+    font-size: 30rpx;
+    text-align: center;
+    width: 100%;
+    float: left;
+    border: 1px solid #ff8933;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
 .btnBox>view:nth-child(2) {
     float: right;
     color: white;

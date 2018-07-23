@@ -62,6 +62,8 @@ Page({
       duration: 300,
       circular: 'true',
     },
+    tipStatus2: false,//弹窗
+    popText1: '',
   },
   //打电话
   callPhone: function (e) {
@@ -69,32 +71,61 @@ Page({
       phoneNumber: e.currentTarget.dataset.phone
     })
   },
-  onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
+  getMap:function(){
+    wx.openLocation({
+        latitude: 23.11985,
+        longitude: 113.395889,
+        scale:15,
+        success:function(res){
+
         }
+      }
+    )
+  },
+  onLoad: function () {
+    var _this  = this;
+    wx.getStorage({
+      key: 'userInfo',
+      success: function (res) {
+        _this.setData({
+          tipStatus2: false
+        })
+      },
+      fail:function(e){
+        _this.setData({
+          tipStatus2: true,
+          popText1: '授权登录'
+        });
+      }
+    })    
+  },
+  getUser:function(e){
+    console.log(e.detail.errMsg);
+    if (e.detail.errMsg == 'getUserInfo:ok') {
+      // 把用户信息存入缓存
+      wx.setStorage({
+        key: "userInfo",
+        data: e.detail.userInfo
+      });
+      this.setData({
+        userInfo: e.detail.userInfo,
+        tipStatus2: false
       })
+      // setTimeout(function () {
+      //   //把用户的昵称头像传到后台保存
+      //   wx.request({
+      //     url: config.route + api.SmallUserInfo,
+      //     data: {
+      //       nickname: app.globalData.userInfo.nickName,
+      //       avatarurl: app.globalData.userInfo.avatarUrl,
+      //       id: app.globalData.id,
+      //       token: config.token,
+      //     },
+      //     success: function (res) {
+      //       // console.log('login:' + res.data.id);
+      //     }
+      //   })
+      // }, 500)
     }
   },
   getLocation:function(){
@@ -155,7 +186,6 @@ Page({
     wx.getLocation({
       type: 'wgs84',
       success: function (res) {
-        console.log(res);
         var latitude = res.latitude
         var longitude = res.longitude
         var speed = res.speed
@@ -169,7 +199,6 @@ Page({
             _this.setData({
               street: res.result.address_component.street
             })
-            console.log(res.result.address_component.street);
           },
           fail: function (res) { }
         });

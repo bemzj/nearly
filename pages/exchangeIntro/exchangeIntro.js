@@ -20,7 +20,8 @@ Page({
     popText1:'',
     exchangeName:'',
     exchangePhone:'',
-    exchangeSex:''
+    exchangeSex:'',
+    useIntro:{}
   },
   //取消
   closePop:function(){
@@ -180,7 +181,32 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    wx.getStorage({
+      key: 'userInfo',
+      success: function (res) {
+        var sex; 
+        if (res.data.gender==1)
+        {
+          sex = "男";
+        } else if (res.data.gender == 2){
+          sex = "女"
+        }else{
+          sex = ""
+        }
+        var person;
+        person = {
+          head: res.data.avatarUrl,
+          name: res.data.nickName,
+          phone:'',
+          sex:sex
+        }
+        _this.setData({
+          person: person
+        });
+        console.log(_this.data.useIntro);
+      }
+    });
   },
 
   /**

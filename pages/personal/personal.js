@@ -5,14 +5,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    loginType:0
+    loginType:0,
+    useIntro:{}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+
   },
 
   /**
@@ -26,7 +27,16 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    wx.getStorage({
+      key: 'userInfo',
+      success: function (res) {
+        _this.setData({
+          useIntro: res.data
+        });
+        console.log(_this.data.useIntro);
+      }
+    });
   },
 
   /**

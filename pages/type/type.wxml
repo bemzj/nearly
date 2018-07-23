@@ -1,7 +1,7 @@
 <!--pages/search/search.wxml-->
 <view class="container">
   
-    <view class='searchBoxOut'>
+    <view class='searchBoxOut {{down?"searchBoxHeight":""}}'>
       <view class='searchBox'>
         <form>
           <view class='searchInput'>
@@ -13,42 +13,25 @@
           </view>
         </form>
       </view>
-      <view class='type'>
-        <view>
-          <text>全部美食</text>
+      <view class='type {{down?"typeNoneShadow":""}}'>
+        <view bindtap='allType' class='{{allDown?"allChoice":""}}'>
+          <text>全部</text>
         </view>
-        <view>
-          <text>全部美食</text>
+        <view  bindtap='allklio' class='{{kiloDown?"allChoice":""}}'>
+          <text>{{kliometer[kiloIndex]}}公里内</text>
         </view>
       </view>
-      <view class='allList'>
-          <view class='leftList'>
+      <view class='allList' bindtap='closeType' >
+          <view class='leftList {{allDown?"leftDown":""}}'>
             <view class='firstList'>
-              <view><text>全部分类</text></view>
-              <view class='fristActive'><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
+              <view  catchtap="firstClick" data-index='{{index}}' wx:for="{{firstType}}" wx:key="index" class='{{firstIndex==index?"fristActive":""}}'><text>{{item}}</text></view>
             </view>
             <view class='secondList'>
-              <view><text>全部分类</text></view>
-              <view class='secondActive'><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
-              <view><text>全部分类</text></view>
+              <view catchtap="secondClick" data-index='{{index}}' wx:for="{{secondeType}}" wx:key="index" class='{{secondIndex==index?"secondActive":""}}'><text>{{item}}{{index==0&&firstIndex!=0?firstType[firstIndex]:""}}</text></view>
             </view>
           </view>
-          <view class='rightList'>
-            <view class='rightActive'><text>1公里内</text></view>
-            <view><text>3公里内</text></view>
+          <view class='rightList {{kiloDown?"leftDown":""}}'>
+            <view wx:for="{{kliometer}}" catchtap='selectKilo' data-index='{{index}}' wx:key="index"  class='{{index==kiloIndex?"rightActive":""}}'><text>{{item}}公里内</text></view>
           </view>
       </view>
     </view>
@@ -57,7 +40,7 @@
   </view>
   <view class='shopLists' wx:if='{{shopList.length>0}}'>
     <view class='snBox'>
-      <view class='listBoxOut' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index"  bindtouchmove="handletouchmove" bindtouchstart="handletouchstart" bindtouchend="handletouchend">
+      <view class='listBoxOut' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index">
         <view class='listBox'>
           <view class='listImg'>
             <image src='{{item.src}}' mode='widthFix'></image>
@@ -99,3 +82,4 @@
   <text slot="myNews">我的消息</text>
   <text slot="person">个人中心</text>
 </nav>
+<view class='noTouch noTouch2'></view>

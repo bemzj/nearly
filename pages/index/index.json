@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "nav": "../nav/nav"
+    "nav": "../nav/nav",
+    "tips": "../public/public"
   }
 }

@@ -101,6 +101,20 @@ page{
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
+.twoBtn button{
+  display: block;
+  width: 50%;
+  border-radius: 0;
+  border-color: white;
+  outline: 0;
+  font-size: 28rpx;
+  line-height: 100rpx;
+  text-align: center;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  background-color: #ff8933;
+  color: white;
+}
 .twoBtn view:nth-child(2){
   background-color: #ff8933;
   color: white;
@@ -117,6 +131,7 @@ page{
   background-color: #999999;
   border-color: #999999;
   float: right;
+  padding: 0;
 }
 .doorIn textarea{
   width: 100%;
