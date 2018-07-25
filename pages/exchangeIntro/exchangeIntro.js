@@ -1,3 +1,11 @@
+
+//获取应用实例
+const app = getApp()
+const {
+  api,
+  config
+} = require('../../utils/config.js');
+const network = require("../../utils/network.js");
 // pages/exchangeIntro/exchangeIntro.js
 Page({
 
@@ -45,15 +53,16 @@ Page({
   //获取数据
   nameInput:function(e){
     var _this = this;
+    
     _this.setData({
       exchangeName: e.detail.value
     });
+    console.log(_this.data.exchangeName);
   },
   //确定姓名
   comfrimName:function(){ 
     var _this = this;
-    var myPerson = _this.data.person;
-    myPerson.name = _this.data.exchangeName;
+    
     if (_this.data.exchangeName.length==0)
     {
       wx.showToast({
@@ -61,16 +70,52 @@ Page({
         icon: 'none',
         mask: true
       });
+    } else if (_this.data.exchangeName == _this.data.person.name) {
+        wx.showToast({
+          title: '姓名没有变化',
+          icon: 'none',
+          mask: true
+        });
     }else{
-      _this.setData({
-        person: myPerson,
-        tipStatus2: true,
-        popText1: '修改姓名成功！',
-        popStatus: false,
-        phoneStatus: false,
-        nameStatus: false,
-        sexStatus: false
-      });
+      var myPerson = _this.data.person;
+      myPerson.name = _this.data.exchangeName;
+      console.log(_this.data.exchangeName);
+      var url = config.route;
+      var data = {
+        uid: app.globalData.code,
+        nickname: _this.data.exchangeName
+      }
+      network.GET(url + api.exchangeName, {
+        params: data,
+        success: function (res) {
+          // 拿到解密后的数据，进行代码逻辑
+          if (res.data.status == 1) {
+            _this.setData({
+              person: myPerson,
+              tipStatus2: true,
+              popText1: res.data.msg,
+              popStatus: false,
+              phoneStatus: false,
+              nameStatus: false,
+              sexStatus: false
+            });
+          } else {
+            _this.setData({
+              tipStatus2: true,
+              popText1: "修改失败",
+              popStatus: false,
+              phoneStatus: false,
+              nameStatus: false,
+              sexStatus: false
+            });
+          }
+
+        },
+        fail: function () {
+          //失败后的逻辑  
+        },
+      })
+      
     }
     
   },
@@ -87,13 +132,14 @@ Page({
     _this.setData({
       popStatus: true,
       phoneStatus: true,
-      exchangePhone: _this.data.person.name
+      exchangePhone: _this.data.person.phone
     });
   },
   //确定手机
   comfrimPhone:function(){
    var _this = this;
    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+   console.log(_this.data.exchangePhone);
    if(_this.data.exchangePhone.length==0)
    {
      wx.showToast({
@@ -108,18 +154,52 @@ Page({
        icon: 'none',
        mask: true
      });
+   } else if (_this.data.exchangePhone == _this.data.person.phone){
+     wx.showToast({
+       title: '手机号码没有变化！',
+       icon: 'none',
+       mask: true
+     });
    }else{
      var myPerson = _this.data.person;
      myPerson.phone = _this.data.exchangePhone;
-     _this.setData({
-       person: myPerson,
-       tipStatus2:true,
-       popText1:'修改手机成功！',
-       popStatus: false,
-       phoneStatus: false,
-       nameStatus: false,
-       sexStatus: false
-     });
+     var url = config.route;
+     var data = {
+       uid: app.globalData.code,
+       phone: _this.data.exchangePhone
+     }
+     network.GET(url + api.exchangePhone, {
+       params: data,
+       success: function (res) {
+         //拿到解密后的数据，进行代码逻辑
+         if (res.data.status == 1)
+         {
+           _this.setData({
+             person: myPerson,
+             tipStatus2: true,
+             popText1: res.data.msg,
+             popStatus: false,
+             phoneStatus: false,
+             nameStatus: false,
+             sexStatus: false
+           });
+         }else{
+           _this.setData({
+             tipStatus2: true,
+             popText1: "修改失败",
+             popStatus: false,
+             phoneStatus: false,
+             nameStatus: false,
+             sexStatus: false
+           });
+         }
+
+       },
+       fail: function () {
+         //失败后的逻辑  
+       },
+     })
+     
    }
    
    
@@ -186,19 +266,19 @@ Page({
       key: 'userInfo',
       success: function (res) {
         var sex; 
-        if (res.data.gender==1)
+        if (res.data.sex==1)
         {
           sex = "男";
-        } else if (res.data.gender == 2){
+        } else if (res.data.sex == 2){
           sex = "女"
         }else{
           sex = ""
         }
         var person;
         person = {
-          head: res.data.avatarUrl,
-          name: res.data.nickName,
-          phone:'',
+          head: res.data.avatarurl,
+          name: res.data.nickname,
+          phone: res.data.phone,
           sex:sex
         }
         _this.setData({

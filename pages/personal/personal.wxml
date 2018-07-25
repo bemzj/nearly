@@ -5,14 +5,14 @@
     <view class='phIn'>
       <view class='headBox'>
         <view class='headBoxIn'>
-          <image src='{{useIntro.avatarUrl}}' mode='widthFix' ></image>
+          <image src='{{useIntro.avatarurl}}' mode='widthFix' ></image>
         </view>
         <view class='sex'>
-          <image src='{{useIntro.gender==2?"../../img/woman.png":""}}{{useIntro.gender==1?"../../img/man.png":""}}' mode='widthFix'></image>
+          <image src='{{useIntro.sex==2?"../../img/woman.png":""}}{{useIntro.sex==1?"../../img/man.png":""}}' mode='widthFix'></image>
         </view>
       </view>
       <view class='name'>
-        <text>{{useIntro.nickName}}</text>
+        <text>{{useIntro.nickname}}</text>
       </view>
     </view>
   </view>
@@ -41,18 +41,21 @@
     <view class='phIn'>
       <view class='headBox'>
         <view class='headBoxIn'>
-          <image src='../../img/logo.png' mode='widthFix' ></image>
+          <image src='{{useIntro.avatarurl}}' mode='widthFix' ></image>
         </view>
         <view class='sex'>
-          <image src='../../img/woman.png' mode='widthFix'></image>
+          <image src='{{useIntro.sex==2?"../../img/woman.png":""}}{{useIntro.sex==1?"../../img/man.png":""}}'></image>
         </view>
       </view>
       <view class='name'>
-        <text>嘎嘎</text>
+        <text>{{useIntro.nickname}}</text>
       </view>
     </view>
   </view>
   <view class='moreFun'>
+    <view class='func'>
+      <navigator url='../exchangeIntro/exchangeIntro'>个人信息</navigator>
+    </view>
     <view class='func'>
       <navigator url='../myDoor/myDoor'>我的门店</navigator>
     </view>

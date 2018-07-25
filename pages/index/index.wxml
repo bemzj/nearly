@@ -18,12 +18,15 @@
   <view class='swiper'>
     <swiper style='height:{{swiperHeight}}' indicator-dots="{{swiper.indicatorDots}}" autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" circular="{{swiper.circular}}" >
       <swiper-item wx:for="{{banners}}" wx:key="key">
-         <image src="{{item}}" mode='widthFix'></image>
+         <image src="{{web}}{{item.pic}}" mode='widthFix'></image>
       </swiper-item>
     </swiper>
   </view>
   <view class='typeList'>
-    <view class='typeBtn' wx:for="{{typeList}}" wx:key="index">
+    <view class='typeBtn' bindtap='typeNav' data-id='{{item.id}}' wx:if="{{index<typeList.length-1}}" style='background-image:url({{web}}{{item.pic}})' wx:for="{{typeList}}" wx:key="index">
+      <text>{{item.name}}</text>
+    </view> 
+    <view class='typeBtn' bindtap='typeNav' data-id='{{item.id}}' wx:if="{{typeList.length==index+1}}" style='background-image:url({{item.pic}})' wx:for="{{typeList}}" wx:key="index">
       <text>{{item.name}}</text>
     </view> 
   </view>

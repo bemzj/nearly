@@ -1,3 +1,4 @@
+
 // pages/personal/personal.js
 Page({
 
@@ -5,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    loginType:0,
+    loginType:1,
     useIntro:{}
   },
 
@@ -13,7 +14,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var _this = this;
+    wx.getStorage({
+      key: 'userInfo',
+      success: function (res) {
+        console.log(res.data);
+        _this.setData({
+          useIntro: res.data
+        });
+        console.log(_this.data.useIntro);
+      }
+    });
   },
 
   /**
@@ -27,15 +38,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var _this = this;
-    wx.getStorage({
-      key: 'userInfo',
-      success: function (res) {
-        _this.setData({
-          useIntro: res.data
-        });
-      }
-    });
+    
   },
 
   /**
