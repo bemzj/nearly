@@ -215,10 +215,8 @@ Page({
     qqmapsdk.geocoder({
       address: '广东省广州市天河区车陂街道车陂大街301号',
       success: function (res) {
-        console.log(res);
       },
       fail: function (res) {
-        console.log(res);
       }
     });
 
@@ -242,8 +240,7 @@ Page({
             addr[2] = res.result.ad_info.district;
             _this.setData({
               regionAddress: addr
-            })
-            console.log(addr);
+            });
           },
           fail: function (res) { 
 

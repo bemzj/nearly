@@ -204,7 +204,6 @@ Page({
         _this.setData({
           person: person
         });
-        console.log(_this.data.useIntro);
       }
     });
   },

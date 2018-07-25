@@ -34,7 +34,6 @@ Page({
         _this.setData({
           useIntro: res.data
         });
-        console.log(_this.data.useIntro);
       }
     });
   },

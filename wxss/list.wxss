@@ -1,8 +1,11 @@
+.collect{
+  width: 100%;
+  overflow-x: hidden;
+}
 .listBoxOut{
   width: 100%;
   padding: 20rpx 0;
   border-bottom: 1px solid #eeeeee;
-  
 }
 .listBox{
   width: 100%;
