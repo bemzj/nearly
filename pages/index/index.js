@@ -1,6 +1,11 @@
 //index.js
 //获取应用实例
 const app = getApp()
+const {
+  api,
+  config
+} = require('../../utils/config.js')
+const network = require("../../utils/network.js")
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
 Page({
@@ -111,6 +116,7 @@ Page({
         userInfo: e.detail.userInfo,
         tipStatus2: false
       })
+      // console.log(app.global.userInfo);
       // setTimeout(function () {
       //   //把用户的昵称头像传到后台保存
       //   wx.request({
@@ -126,6 +132,47 @@ Page({
       //     }
       //   })
       // }, 500)
+      // 获取用户信息
+      wx.getSetting({
+        success: function (res) {
+          wx.getUserInfo({
+            
+            success: function (res) {
+              // wx.request({
+              //   url: 'https://jing.hengdikeji.com/index/wechat/getUserInfo',
+              //   data: {
+              //     code: res.userInfo
+              //   }
+              // })
+              var _this = this;
+              var url = config.route + api.getUserInfo;
+              var data = {
+                userinfo: res.userInfo,
+              };
+              network.GET(url, {
+                params: data,
+                success: function (res) {
+                  // if (res.data.length > 0) {
+                  //   _this.setData({
+                  //     cardList: res.data
+                  //   });
+                  // } else {
+                  //   _this.setData({
+                  //     cardList: []
+                  //   });
+                  // }
+                  console.log(res);
+                  //拿到解密后的数据，进行代码逻辑
+                },
+                fail: function () {
+                  //失败后的逻辑  
+                },
+              })
+            }
+
+          })
+        }
+      })
     }
   },
   getLocation:function(){
