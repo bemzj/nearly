@@ -148,7 +148,9 @@ Page({
               var url = config.route + api.getUserInfo;
               var data = {
                 userinfo: res.userInfo,
+                id: app.globalData.code,
               };
+
               network.GET(url, {
                 params: data,
                 success: function (res) {
@@ -161,7 +163,8 @@ Page({
                   //     cardList: []
                   //   });
                   // }
-                  console.log(res);
+                  // console.log(res);
+                  
                   //拿到解密后的数据，进行代码逻辑
                 },
                 fail: function () {

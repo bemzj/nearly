@@ -1,6 +1,7 @@
 //app.js
 App({
   onLaunch: function () {
+    var _this = this;
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -17,6 +18,9 @@ App({
             url:'https://jing.hengdikeji.com/index/wechat/index',
             data:{
               code:res.code
+            },
+            success:function(data){
+              _this.globalData.code = data.data.id;
             }
           })
         }else{
@@ -26,6 +30,7 @@ App({
     })
   },
   globalData: {
+    code:null,
     userInfo: null
   }
 })
