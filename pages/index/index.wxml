@@ -35,32 +35,33 @@
       <text>推荐商家</text>
     </view>
     <view class='snBox'>
-      <view class='listBoxOut' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index">
-        <view class='listBox'>
+      <view class='listBoxOut' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index" wx:if="{{index<shopLimit}}">
+        <view class='listBox' >
           <view class='listImg'>
-            <image src='{{item.src}}' mode='widthFix'></image>
+            <view class='myHeart'></view>
+            <image src='../../img/list.png' mode='widthFix'></image>
           </view>
           <view class='listText'>
-            <view class='ltIn'>
-              <view class='phone' bindtap='callPhone' data-phone='15999911956'>
+            <view class='ltIn' bindtap='getMap' data-address='{{item.address}}'>
+              <view class='phone' catchtap='callPhone' data-phone='{{item.phone}}'>
                 <image src='../../img/phone.png' mode='widthFix'></image>
               </view>
               <view class='shop'>
                 <view class='shopText'>
-                  <text class='shopType'>{{item.type}}</text><text class='shopName'>{{item.name}}</text>
+                  <text class='shopType'>{{item.cname}}</text><text class='shopName'>{{item.name}}</text>
                 </view>
                 <view class='shopNumber'>
-                  <text>被浏览次数{{item.number}}</text>
+                  <text>被浏览次数{{item.browse}}</text>
                   <view class='fire'>
                     <text wx:for="{{item.fire}}" wx:key="unique" wx:for-item="its" class='{{its<item.fire?"block":""}}'></text>
                   </view>
                 </view>
                 <view class='shopAddress'>
-                  <text bindtap='getMap'>广州市天河区新港东路中洲中心北塔负1楼</text>
+                  <text>{{item.address}}</text>
                 </view>
                 <view class='shopMoney'>
                   <view class='shopIn'>
-                    99元<text>110元</text>世界杯99元超值套餐
+                    {{item.price}}<text>{{item.o_price}}</text>{{item.title}}
                   </view>
                 </view>
               </view>
@@ -70,11 +71,17 @@
       </view>
     </view>
   </view>
-  <view class='lookBtn boxes'>
-    <button>查看更多商家</button>
+  <view class='lookBtn boxes' wx:if="{{shopList.length>shopLimit}}">
+    <button bindtap='lookMore'>查看更多商家</button>
+  </view>
+  <view class='noShopMore' wx:else>
+    <text>没有更多了~</text>
   </view>
 </view>
 <nav>
+  <view class='tipNews' slot="tips" wx:if="{{newLength>0}}">
+    <text>{{newLength}}</text>
+  </view>
   <text slot="index"  class='navActive'>首页</text>
   <text slot="type">分类</text>
   <text slot="myNews">我的消息</text>

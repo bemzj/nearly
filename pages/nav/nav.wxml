@@ -7,6 +7,7 @@
       <navigator open-type="redirectTo" url='../type/type'><slot name='type'></slot></navigator>
     </view>
     <view class='navBox'>
+      <slot name='tips'></slot>
       <navigator open-type="redirectTo" url='../myNews/myNews'><slot name='myNews'></slot></navigator>
     </view>
     <view class='navBox'>

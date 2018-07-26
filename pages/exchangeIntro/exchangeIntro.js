@@ -88,9 +88,18 @@ Page({
       network.GET(url + api.exchangeName, {
         params: data,
         success: function (res) {
+          console.log(res);
           // 拿到解密后的数据，进行代码逻辑
           if (res.data.status == 1) {
+            var useIntro = _this.data.useIntro;
+            useIntro.nickname = _this.data.exchangeName;
+            console.log(useIntro);
+            wx.setStorage({
+              key: 'userInfo',
+              data: useIntro,
+            })
             _this.setData({
+              useIntro: useIntro,
               person: myPerson,
               tipStatus2: true,
               popText1: res.data.msg,
@@ -174,7 +183,14 @@ Page({
          //拿到解密后的数据，进行代码逻辑
          if (res.data.status == 1)
          {
+           var useIntro = _this.data.useIntro;
+           useIntro.phone = _this.data.exchangePhone;
+           wx.setStorage({
+             key: 'userInfo',
+             data: useIntro,
+           })
            _this.setData({
+             useIntro: useIntro,
              person: myPerson,
              tipStatus2: true,
              popText1: res.data.msg,
@@ -233,15 +249,62 @@ Page({
    var _this = this;
    var myPerson = _this.data.person;
    myPerson.sex = _this.data.exchangeSex;
-   _this.setData({
-     person: myPerson,
-     tipStatus2: true,
-     popText1: '修改性别成功！',
-     popStatus: false,
-     phoneStatus: false,
-     nameStatus: false,
-     sexStatus: false
-   });
+   var url = config.route;
+   var sexIndex = 0;
+   if (myPerson.sex=='女')
+   {
+     sexIndex = 2;
+   }else{
+     sexIndex = 1;
+   }
+   var data = {
+     uid: app.globalData.code,
+     sex: sexIndex
+   }
+   var useIntro = _this.data.useIntro;
+   if (useIntro.sex == sexIndex)
+   {
+     wx.showToast({
+       title: '性别没有变化',
+       icon: 'none',
+       mask: true
+     });
+   }else{
+     network.GET(url + api.exchangeSex, {
+       params: data,
+       success: function (res) {
+         if (res.data.status == 1) {
+
+           useIntro.sex = sexIndex;
+           wx.setStorage({
+             key: 'userInfo',
+             data: useIntro,
+           });
+           _this.setData({
+             person: myPerson,
+             useIntro: useIntro,
+             tipStatus2: true,
+             popText1: res.data.msg,
+             popStatus: false,
+             phoneStatus: false,
+             nameStatus: false,
+             sexStatus: false
+           });
+         } else {
+           _this.setData({
+             tipStatus2: true,
+             popText1: "修改失败",
+             popStatus: false,
+             phoneStatus: false,
+             nameStatus: false,
+             sexStatus: false
+           });
+         }
+       }
+     });
+   }
+   
+   
  },
   /**
    * 生命周期函数--监听页面加载
@@ -265,6 +328,7 @@ Page({
     wx.getStorage({
       key: 'userInfo',
       success: function (res) {
+        console.log(res.data);
         var sex; 
         if (res.data.sex==1)
         {
@@ -282,7 +346,8 @@ Page({
           sex:sex
         }
         _this.setData({
-          person: person
+          person: person,
+          useIntro: res.data
         });
       }
     });

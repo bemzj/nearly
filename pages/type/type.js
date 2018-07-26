@@ -1,10 +1,17 @@
 // pages/search/search.js
+const app = getApp()
+const {
+  api,
+  config
+} = require('../../utils/config.js')
+const network = require("../../utils/network.js")
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    newLength: 0,
     shopList: [
       {
         src: '../../img/list.png',
@@ -188,7 +195,35 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    //获取消息
+    var _this = this;
+    wx.getStorage({
+      key: 'userInfo',
+      success: function (res) {
+        _this.setData({
+          useIntro: res.data
+        });
+      }
+    });
+    var url = config.route;
+    var data = {
+      uid: app.globalData.code,
+    }
+    network.GET(url + api.getNews, {
+      params: data,
+      success: function (res) {
+        var len = 0;
+        var msg = res.data.message;
+        for (var i = 0; i < msg.length; i++) {
+          if (msg[i].isread == 1) {
+            len++;
+          }
+        }
+        _this.setData({
+          newLength: len
+        })
+      }
+    });
   },
 
   /**

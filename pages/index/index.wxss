@@ -184,3 +184,9 @@ page{
 .searchImg image{
   width: 100%;
 }
+.noShopMore{
+  font-size: 30rpx;
+  color: #999999;
+  text-align: center;
+  line-height: 100rpx;
+}

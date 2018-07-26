@@ -1,40 +1,27 @@
 // pages/myCollect/myCollect.js
+//获取应用实例
+const app = getApp()
+const {
+  api,
+  config
+} = require('../../utils/config.js')
+const network = require("../../utils/network.js");
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    shopList:[
-      {
-          src:'../../img/list.png',
-          type:'美食',
-          name:'点都德1',
-          number:3200,
-          fire:4,
-          address:'广州市天河区新港东路中洲中心北塔负1楼',
-          nowPay:99,
-          prePay:100,
-          payName:'世界杯99元超值套餐'
-      },
-      {
-        src: '../../img/list.png',
-        type: '美食',
-        name: '点都德2',
-        number: 3200,
-        fire: 4,
-        address: '广州市天河区新港东路中洲中心北塔负1楼',
-        nowPay: 99,
-        prePay: 100,
-        payName: '世界杯99元超值套餐'
-      }
-    ],
+    shopList:[],
     flag: 0,
     text: '',
     shopIndex:-1,
     deleteIndex:-1,
     tipStatus:false,
-    popText:''
+    popText:'',
+    shopId:-1
   },
   //打电话
   callPhone:function(e){
@@ -45,10 +32,10 @@ Page({
   //删除店铺
   deleteShop:function(e){
     var _this = this;
-    
     _this.setData({
       deleteIndex: e.currentTarget.dataset.index,
       shopIndex: -1,
+      shopId: e.currentTarget.dataset.shopid,
       tipStatus:true,
       popText:'确定删除该收藏？'
     });
@@ -58,25 +45,64 @@ Page({
     _this.setData({
       deleteIndex: -1,
       shopIndex: -1,
+      shopId:-1,
       tipStatus: false,
       popText: ''
     });
   },
   comfirmPop:function(e){
     var _this = this;
-    var list = _this.data.shopList;
-    list.splice(_this.data.deleteIndex, 1);
-    _this.setData({
-      shopList:list,
-      deleteIndex: -1,
-      tipStatus: false,
-      popText: ''
+    var shopId = _this.data.shopId;
+    var url = config.route;
+    var data = {
+      id: shopId,
+    }
+    console.log(data);
+    network.GET(url + api.delCollect, {
+      params: data,
+      success: function (res) {
+        console.log(res);
+        if (res.data.status==1)
+        {
+          var list = _this.data.shopList;
+          list.splice(_this.data.deleteIndex, 1);
+          _this.setData({
+            shopList: list,
+            deleteIndex: -1,
+            tipStatus: false,
+            popText: '',
+            shopId: -1
+          });
+          wx.showToast({
+            title: '删除成功！',
+            icon: 'none',
+            mask: true
+          });
+        }else{
+          wx.showToast({
+            title: '删除失败！',
+            icon: 'none',
+            mask: true
+          });
+          _this.setData({
+            deleteIndex: -1,
+            tipStatus: false,
+            popText: '',
+            shopId: -1
+          });
+        }
+        
+      },
+      fail: function () {
+        //失败后的逻辑  
+        wx.showToast({
+          title: '删除失败！',
+          icon: 'none',
+          mask: true
+        });
+      },
     });
-    wx.showToast({
-      title: '删除成功！',
-      icon: 'none',
-      mask: true
-    });
+    
   },
   /**
    * 生命周期函数--监听页面加载
@@ -146,7 +172,9 @@ Page({
     });
   },
   onLoad: function (options) {
-  
+    qqmapsdk = new QQMapWX({
+      key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
+    });
   },
 
   /**
@@ -160,7 +188,23 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    var url = config.route;
+    var data = {
+      uid: app.globalData.code,
+    }
+    network.GET(url + api.getCollect, {
+      params: data,
+      success: function (res) {
+        console.log(res.data.row);
+        _this.setData({
+          shopList:res.data.row
+        })
+      },
+      fail: function () {
+        //失败后的逻辑  
+      },
+    });
   },
 
   /**
@@ -196,5 +240,31 @@ Page({
    */
   onShareAppMessage: function () {
   
-  }
+  },
+  //导航
+  getMap: function (e) {
+    qqmapsdk.geocoder({
+      address: e.currentTarget.dataset.address,
+      success: function (res) {
+        console.log(res);
+        wx.openLocation({
+          latitude: res.result.location.lat,
+          longitude: res.result.location.lng,
+          scale: 15,
+          success: function (res) {
+
+          }
+        }
+        )
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '网络错误，请退出重试！',
+          icon: 'none',
+          mask: true
+        });
+      }
+    });
+
+  },
 })

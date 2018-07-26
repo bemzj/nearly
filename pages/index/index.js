@@ -10,57 +10,14 @@ var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
 Page({
   data: {
+    newLength: 0,
     web:"",
     street:"",
-    banners:[
-      '../../img/indexBanner.png',
-      '../../img/indexBanner.png',
-      '../../img/indexBanner.png'
-    ],
-    shopList: [
-      {
-        src: '../../img/list.png',
-        type: '美食',
-        name: '点都德1',
-        number: 3200,
-        fire: 4,
-        address: '广州市天河区新港东路中洲中心北塔负1楼',
-        nowPay: 99,
-        prePay: 100,
-        payName: '世界杯99元超值套餐'
-      },
-      {
-        src: '../../img/list.png',
-        type: '美食',
-        name: '点都德2',
-        number: 3200,
-        fire: 4,
-        address: '广州市天河区新港东路中洲中心北塔负1楼',
-        nowPay: 99,
-        prePay: 100,
-        payName: '世界杯99元超值套餐'
-      }
-    ],
-    typeList:[
-      {
-        name:'餐饮'
-      },
-      {
-        name: '甜点饮品'
-      },
-      {
-        name: '蔬菜水果'
-      },
-      {
-        name: 'KTV'
-      },
-      {
-        name: '电影'
-      },
-      {
-        name: '全部'
-      }
-    ],
+    banners:[],
+    shopLimit:5,
+    increment:5,
+    shopList: [],
+    typeList:[],
     swiperHeight: '350rpx',
     swiper: {
       autoplay: 'true',
@@ -77,16 +34,30 @@ Page({
       phoneNumber: e.currentTarget.dataset.phone
     })
   },
-  getMap:function(){
-    wx.openLocation({
-        latitude: 23.11985,
-        longitude: 113.395889,
-        scale:15,
-        success:function(res){
+  getMap:function(e){
+    qqmapsdk.geocoder({
+      address: e.currentTarget.dataset.address,
+      success: function (res) {
+        console.log(res);
+        wx.openLocation({
+            latitude: res.result.location.lat,
+            longitude: res.result.location.lng,
+            scale:15,
+            success:function(res){
 
-        }
+            }
+          }
+        )
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '网络错误，请退出重试！',
+          icon: 'none',
+          mask: true
+        });
       }
-    )
+    });
+    
   },
   getUser:function(e){
     var _this = this;
@@ -128,12 +99,6 @@ Page({
           wx.setStorage({
             key: "userInfo",
             data: res.data.data
-          });
-          wx.getStorage({
-            key: 'userInfo',
-            success: function (res) {
-              console.log(res);
-            }
           });
           _this.setData({
             tipStatus2: false
@@ -196,12 +161,10 @@ Page({
       web: config.route,
     });
     //授权登录
-    setTimeout(function () {
-      
+    setTimeout(function () {    
       wx.getStorage({
         key: 'userInfo',
-        success: function (res) {
-          
+        success: function (res) {        
           var url = config.route;
           var data = {
             uid: app.globalData.code,
@@ -220,6 +183,7 @@ Page({
           });
         },
         fail: function (e) {
+          console.log(1);
           _this.setData({
             tipStatus2: true,
             popText1: '授权登录'
@@ -268,8 +232,9 @@ Page({
     network.GET(url + api.getIndexShop, {
       params: {},
       success: function (res) {
-        console.log(res);
-        //拿到解密后的数据，进行代码逻辑
+        _this.setData({
+          shopList: res.data.shop
+        });
       },
       fail: function () {
         //失败后的逻辑  
@@ -308,6 +273,52 @@ Page({
         })
       }
     });
+    //获取消息数
+    if (app.globalData.code == null)
+    {
+      setTimeout(function () {
+        var url = config.route;
+        var data = {
+          uid: app.globalData.code,
+        }
+        network.GET(url + api.getNews, {
+          params: data,
+          success: function (res) {
+            var len = 0;
+            var msg = res.data.message;
+            for (var i = 0; i < msg.length; i++) {
+              if (msg[i].isread == 1) {
+                len++;
+              }
+            }
+            _this.setData({
+              newLength: len
+            })
+          }
+        });
+      }, 800);
+    }else{
+      var url = config.route;
+      var data = {
+        uid: app.globalData.code,
+      }
+      network.GET(url + api.getNews, {
+        params: data,
+        success: function (res) {
+          var len = 0;
+          var msg = res.data.message;
+          for (var i = 0; i < msg.length; i++) {
+            if (msg[i].isread == 1) {
+              len++;
+            }
+          }
+          _this.setData({
+            newLength: len
+          })
+        }
+      });
+    }
+    
     
     
   },
@@ -316,5 +327,55 @@ Page({
     wx.redirectTo({
       url: '../type/type?id=' + e.currentTarget.dataset.id
     })
+  },
+  //查看更多
+  lookMore:function(e){
+    var _this = this;
+    wx.showLoading({
+      title: '加载中',
+      mask:true
+    });
+    
+    setTimeout(function () {
+      wx.hideLoading(); 
+      _this.setData({
+        shopLimit: _this.data.shopLimit + _this.data.increment
+      });
+    }, 2000)
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    wx.getStorage({
+      key: 'userInfo',
+      success: function (res) {
+        console.log(res.data);
+        if(!res.data)
+        {
+          network.GET(url + api.getUserStatus, {
+            params: data,
+            success: function (res) {
+              if (res.data.data.avatarurl == "") {
+                wx.showToast({
+                  title: '请您授权登录，否则无法享受更多权力！',
+                  icon: 'none',
+                  mask: true
+                });
+              } else {
+                wx.setStorage({
+                  key: "userInfo",
+                  data: res.data.data
+                });
+              }
+              //拿到解密后的数据，进行代码逻辑
+            },
+            fail: function () {
+              //失败后的逻辑  
+            },
+          })
+        }
+      }
+    });
   }
 })

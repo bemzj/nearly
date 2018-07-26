@@ -1,23 +1,22 @@
 <!--pages/myNews/myNews.wxml-->
-<view class='noNews' wx:if="{{newBox.length==0}}">
-  <view class='noText'>
-    <text>您暂时还没有消息哦~</text>
-  </view>
-  <view class='noBtn'>
-    <button bindtap='return'>返回</button>
+<view class='noNews' wx:if="{{newBox.length==0}}" style='height:{{newHeight}}px'>
+  <view class='noNewsIn'>
+    <view class='noText'>
+      <text>您暂时还没有消息哦~</text>
+    </view>
   </view>
 </view>
 <view class='news' wx:if="{{newBox.length>0}}">
-  <view class='newsBox {{item.look==0?"nolook":""}}' wx:for="{{newBox}}" wx:key="index">
+  <view class='newsBox {{item.isread==1?"nolook":""}}' wx:for="{{newBox}}" wx:key="index">
     <view class='newsIn'>
       <view class='newsTitle'>
-        <text>{{item.apply==1?"申请成功":"申请失败"}}</text>
+        <text>{{item.type==0?"申请失败":""}}{{item.type==1?"申请成功":""}}{{item.type==2?"会员卡过期":""}}</text>
       </view>
       <view class='newsText'>
-        <text>{{item.reason}}</text>
+        <text>{{item.content}}</text>
       </view>
       <view class='newsBtn'>
-        <button bindtap='lookMore' data-index='{{index}}'>{{item.look==1?"已查阅":"点击查阅"}}</button>
+        <button bindtap='lookMore' data-index='{{index}}' data-read='{{item.isread}}' data-readId='{{item.id}}'>{{item.isread==0?"已查阅":"点击查阅"}}</button>
       </view>
     </view>
   </view>
@@ -28,10 +27,10 @@
       <text>消息详情</text>
     </view>
     <view class='popStatus'>
-      <text>申请状态：{{newDetails.apply==1?"申请成功":"申请失败"}}</text>
+      <text>申请状态：{{newDetails.type==0?"申请失败":""}}{{newDetails.type==1?"申请成功":""}}{{newDetails.type==2?"会员卡过期":""}}</text>
     </view>
     <view class='popContent'>
-      <text>内容说明：{{newDetails.reason}}</text>
+      <text>内容说明：{{newDetails.content}}</text>
     </view>
     <view class='conBtn'>
       <button bindtap='closePop'>确定</button>
@@ -39,9 +38,12 @@
   </view>
 </view>
 <nav>
+  <view class='tipNews' slot="tips" wx:if="{{newLength>0}}">
+    <text>{{newLength}}</text>
+  </view>
   <text slot="index">首页</text>
   <text slot="type">分类</text>
   <text slot="myNews" class='navActive'>我的消息</text>
   <text slot="person">个人中心</text>
 </nav>
-<view class='noTouch noTouch3'></view>
+<view class='noTouch noTouch3' id='getH'></view>

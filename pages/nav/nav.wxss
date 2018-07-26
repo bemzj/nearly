@@ -3,6 +3,7 @@ page{
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   padding-bottom: 120rpx;
+  z-index: 1000;
 }
 .nav{
   width: 100%;
@@ -13,6 +14,8 @@ page{
   display: -webkit-flex;
   background-color: #ffffff;
   border-top: 1px solid #ededed;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 .navBox
 {
@@ -46,6 +49,6 @@ page{
   -webkit-flex-direction: column;
   font-size: 26rpx;
 }
-.navBox navigator text{
+.navBox navigator>text{
   position: relative;
 }
