@@ -1,4 +1,11 @@
 // pages/register/register.js
+//获取应用实例
+const app = getApp()
+const {
+  api,
+  config
+} = require('../../utils/config.js')
+const network = require("../../utils/network.js")
 Page({
 
   /**
@@ -46,6 +53,17 @@ Page({
         disabled: false,
         timeCount: '60s后重新获取'
       });
+      var url = config.route;
+      var data = {
+        phone: _this.data.phone
+      }
+      network.GET(url + api.getCode, {
+        params: data,
+        success: function (res) {
+          console.log(res);
+        }
+      });
+
       var time = setInterval(function () {
         timeCount--;
         _this.setData({
@@ -56,7 +74,7 @@ Page({
           clearInterval(time);
           _this.setData({
             disabled: true,
-            timeCount: timeCount + '重新获取'
+            timeCount:  '重新获取'
           });
         }
       }, 1000);

@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container">
+<view class="container" >
   <view class='searchBox'>
     <view class='searchLeft'>
       <view class='dw' bindtap='getLocation'>

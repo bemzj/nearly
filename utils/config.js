@@ -17,7 +17,9 @@ const api = {
     getCollect:"index/collect/getCollect", //获取收藏
     delCollect:"index/collect/delCollect",//删除收藏
     hasApply: "index/apply/getApply",//是否成为申请
-    getBrowser: "index/personal/getPersonal"//获取浏览量
+    getBrowser: "index/personal/getPersonal",//获取浏览量
+    getCode: "index/register/getCode",//获取验证码
+    register:"index/register/postRegister"//注册验证码
     
 }
 module.exports = {

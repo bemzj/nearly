@@ -32,7 +32,7 @@
   <!--修改手机号码-->
   <view class='popWinIn'  wx:if="{{phoneStatus}}">
     <view class='popInput'>
-      <input type='text'  value='{{person.phone}}' bindinput='phoneInput' ></input>
+      <input type='number'  value='{{person.phone}}' bindinput='phoneInput' ></input>
     </view>
     <view class='popBtn'>
       <button bindtap='closePop'>取消</button>

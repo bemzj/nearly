@@ -155,6 +155,12 @@ Page({
     })
   },
   onLoad:function(){
+
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    });
+
     var _this = this;
     var url = config.route;
     _this.setData({
@@ -183,7 +189,7 @@ Page({
           });
         },
         fail: function (e) {
-          console.log(1);
+          wx.hideLoading(); 
           _this.setData({
             tipStatus2: true,
             popText1: '授权登录'
@@ -347,10 +353,14 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    var _this = this;
+    var url = config.route;
+    var data = {
+      uid: app.globalData.code,
+    }
     wx.getStorage({
       key: 'userInfo',
       success: function (res) {
-        console.log(res.data);
         if(!res.data)
         {
           network.GET(url + api.getUserStatus, {
@@ -368,13 +378,41 @@ Page({
                   data: res.data.data
                 });
               }
+              wx.hideLoading(); 
               //拿到解密后的数据，进行代码逻辑
             },
             fail: function () {
               //失败后的逻辑  
             },
           })
+        }else{
+          wx.hideLoading(); 
         }
+      },
+      fail:function(){
+        network.GET(url + api.getUserStatus, {
+          params: data,
+          success: function (res) {
+            if (res.data.data.avatarurl == "") {
+              wx.showToast({
+                title: '请您授权登录，否则无法享受更多权力！',
+                icon: 'none',
+                mask: true
+              });
+            } else {
+              wx.setStorage({
+                key: "userInfo",
+                data: res.data.data
+              });
+            }
+            wx.hideLoading();
+            //拿到解密后的数据，进行代码逻辑
+          },
+          fail: function () {
+            //失败后的逻辑  
+            wx.hideLoading();
+          },
+        })
       }
     });
   }
