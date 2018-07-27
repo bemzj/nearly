@@ -52,12 +52,10 @@ Page({
   },
   //获取数据
   nameInput:function(e){
-    var _this = this;
-    
+    var _this = this; 
     _this.setData({
       exchangeName: e.detail.value
     });
-    console.log(_this.data.exchangeName);
   },
   //确定姓名
   comfrimName:function(){ 
@@ -79,7 +77,6 @@ Page({
     }else{
       var myPerson = _this.data.person;
       myPerson.name = _this.data.exchangeName;
-      console.log(_this.data.exchangeName);
       var url = config.route;
       var data = {
         uid: app.globalData.code,
@@ -93,11 +90,7 @@ Page({
           if (res.data.status == 1) {
             var useIntro = _this.data.useIntro;
             useIntro.nickname = _this.data.exchangeName;
-            console.log(useIntro);
-            wx.setStorage({
-              key: 'userInfo',
-              data: useIntro,
-            })
+            app.globalData.userInfo = useIntro;
             _this.setData({
               useIntro: useIntro,
               person: myPerson,
@@ -185,10 +178,7 @@ Page({
          {
            var useIntro = _this.data.useIntro;
            useIntro.phone = _this.data.exchangePhone;
-           wx.setStorage({
-             key: 'userInfo',
-             data: useIntro,
-           })
+           app.globalData.userInfo = useIntro;
            _this.setData({
              useIntro: useIntro,
              person: myPerson,
@@ -276,10 +266,7 @@ Page({
          if (res.data.status == 1) {
 
            useIntro.sex = sexIndex;
-           wx.setStorage({
-             key: 'userInfo',
-             data: useIntro,
-           });
+           app.globalData.userInfo = useIntro;
            _this.setData({
              person: myPerson,
              useIntro: useIntro,
@@ -325,31 +312,25 @@ Page({
    */
   onShow: function () {
     var _this = this;
-    wx.getStorage({
-      key: 'userInfo',
-      success: function (res) {
-        console.log(res.data);
-        var sex; 
-        if (res.data.sex==1)
-        {
-          sex = "男";
-        } else if (res.data.sex == 2){
-          sex = "女"
-        }else{
-          sex = ""
-        }
-        var person;
-        person = {
-          head: res.data.avatarurl,
-          name: res.data.nickname,
-          phone: res.data.phone,
-          sex:sex
-        }
-        _this.setData({
-          person: person,
-          useIntro: res.data
-        });
-      }
+    var intro = app.globalData.userInfo;
+    var sex;
+    if (intro.sex == 1) {
+      sex = "男";
+    } else if (intro.sex == 2) {
+      sex = "女"
+    } else {
+      sex = ""
+    }
+    var person;
+    person = {
+      head: intro.avatarurl,
+      name: intro.nickname,
+      phone: intro.phone,
+      sex: sex
+    }
+    _this.setData({
+      person: person,
+      useIntro: intro
     });
   },
 

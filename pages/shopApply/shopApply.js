@@ -1,4 +1,10 @@
 // pages/shopApply/shopApply.js
+const app = getApp()
+const {
+  api,
+  config
+} = require('../../utils/config.js')
+const network = require("../../utils/network.js")
 Page({
 
   /**
@@ -105,6 +111,7 @@ Page({
       },1000);
     }
   },
+  //选择图片
   selectImg:function(){
     var _this = this;
     wx.chooseImage({
@@ -114,9 +121,39 @@ Page({
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         var tempFilePaths = res.tempFilePaths
-        console.log(tempFilePaths[0]);
+        console.log(res);
         var intro = _this.data.intro;
-        intro.url = tempFilePaths[0];
+        
+        var url = config.route;
+        //数据
+        var data = {
+          uid: app.globalData.code,
+        }
+        wx.uploadFile({
+          url: url + api.uploadPic, //仅为示例，非真实的接口地址
+          filePath: tempFilePaths[0],
+          name: 'pic',
+          formData: {},
+          success: function (res) {
+            var data = JSON.parse(res.data)
+            console.log(data);
+            if (data.status==1)
+            {
+              intro.url = data.msg;
+              _this.setData({
+                intro: intro
+              });
+            }else{
+              wx.showToast({
+                title: '上传图片失败',
+                icon: 'none',
+                mask: true
+              })
+            }
+           
+            //do something
+          }
+        })
       }
     })
   },

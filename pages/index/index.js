@@ -34,11 +34,11 @@ Page({
       phoneNumber: e.currentTarget.dataset.phone
     })
   },
+  //打开地图导航
   getMap:function(e){
     qqmapsdk.geocoder({
       address: e.currentTarget.dataset.address,
       success: function (res) {
-        console.log(res);
         wx.openLocation({
             latitude: res.result.location.lat,
             longitude: res.result.location.lng,
@@ -59,60 +59,77 @@ Page({
     });
     
   },
+  //授权登录
   getUser:function(e){
     var _this = this;
+    //服务器地址
     var url = config.route;
+    //数据
     var data = {
       uid: app.globalData.code,
     }
-    network.GET(url + api.getUserStatus, {
-      params: data,
-      success: function (res) {
-        if (res.data.data.avatarurl=="")
-        {
-          if (e.detail.errMsg == 'getUserInfo:ok') {
-            // 把用户信息存入缓存
-            wx.setStorage({
-              key: "userInfo",
-              data: e.detail.userInfo
-            });
-            _this.setData({
-              userInfo: e.detail.userInfo,
-              tipStatus2: false
-            });
-            var url = config.route + api.getUserInfo;
+    //用户授权获取
+    if (e.detail.errMsg == 'getUserInfo:ok') {
+      //设置用户信息数据
+      var data = {
+        userinfo: e.detail.userInfo,
+        uid: app.globalData.code,
+      };
+      //记录信息
+      network.GET(url + api.getUserInfo, {
+        params: data,
+        success: function (res) {
+          //拿到解密后的数据，进行代码逻辑
+          if(res.data.status==1)
+          {
             var data = {
-              userinfo: e.detail.userInfo,
               uid: app.globalData.code,
-            };
-            network.GET(url, {
+            }
+            //获取用户信息
+            network.GET(url + api.getUserStatus, {
               params: data,
               success: function (res) {
-                //拿到解密后的数据，进行代码逻辑
+                app.globalData.userInfo = res.data.data;
+                console.log(app.globalData.userInfo);
+                _this.setData({
+                  tipStatus2: false,
+                  popText1: ''
+                });
+                wx.showToast({
+                  title: '授权成功！',
+                  icon: 'none',
+                  duration: 2000
+                });
               },
-              fail: function () {
-                //失败后的逻辑  
-              },
-            })
+              fail:function(){
+                wx.showToast({
+                  title: '网络错误！',
+                  icon: 'none',
+                  duration: 2000
+                });
+              }
+            });
+            
+          }else{
+            wx.showToast({
+              title: '授权失败，请关闭授权再重新授权！',
+              icon: 'none',
+              duration: 2000
+            });
           }
-        }else{
-          wx.setStorage({
-            key: "userInfo",
-            data: res.data.data
+        },
+        fail: function () {
+          //失败后的逻辑  
+          wx.showToast({
+            title: '授权失败，请关闭授权再重新授权！',
+            icon: 'none',
+            duration: 2000
           });
-          _this.setData({
-            tipStatus2: false
-          });
-          
-        }
-        //拿到解密后的数据，进行代码逻辑
-      },
-      fail: function () {
-        //失败后的逻辑  
-      },
-    })
-    
+        },
+      })
+    }
   },
+  //获取定位
   getLocation:function(){
     var _this = this;
     wx.getSetting({
@@ -155,50 +172,70 @@ Page({
     })
   },
   onLoad:function(){
-
+    var _this = this;
+    //页面加载中
     wx.showLoading({
       title: '加载中',
       mask: true
     });
-
-    var _this = this;
+    //服务器地址
     var url = config.route;
     _this.setData({
       web: config.route,
     });
-    //授权登录
-    setTimeout(function () {    
-      wx.getStorage({
-        key: 'userInfo',
-        success: function (res) {        
-          var url = config.route;
-          var data = {
-            uid: app.globalData.code,
-          }
-          network.GET(url + api.getUserStatus, {
-            params: data,
-            success: function (res) {
-              wx.setStorage({
-                key: "userInfo",
-                data: res.data.data
+    // 登录
+    wx.login({
+      success: function (res) {
+        if (res.code) {
+          wx.request({
+            url: url+api.getUserCode,
+            data: {
+              code: res.code
+            },
+            //获取用户id成功
+            success: function (data) {
+              app.globalData.code = data.data.id;
+              //数据
+              var data = {
+                uid: app.globalData.code,
+              }
+              //获取用户信息
+              network.GET(url + api.getUserStatus, {
+                params: data,
+                success: function (res) {
+                  if (res.data.data.avatarurl == "") {
+                    wx.hideLoading();
+                    _this.setData({
+                      tipStatus2: true,
+                      popText1: '授权登录'
+                    });
+                  } else {
+                    app.globalData.userInfo = res.data.data;
+                    console.log(app.globalData.userInfo);
+                    wx.hideLoading();
+                  }
+                }
               });
-              _this.setData({
-                tipStatus2: false
+            },
+            //获取用户id失败
+            fail:function(data){
+              wx.showToast({
+                title: '获取用户信息失败，请退出重新登录',
+                icon: 'none',
+                duration: 2000
               })
             }
-          });
-        },
-        fail: function (e) {
-          wx.hideLoading(); 
-          _this.setData({
-            tipStatus2: true,
-            popText1: '授权登录'
-          });
+          })
+        } else {
+          wx.showToast({
+            title: '请退出重新登录',
+            icon: 'none',
+            duration: 2000
+          })
         }
-      })
-    }, 500);
+      }
+    });
     //获取banner图
-    
     network.GET(url + api.getIndexBanner, {
       params: {},
       success: function (res) {
@@ -234,6 +271,52 @@ Page({
         //失败后的逻辑  
       },
     });
+    
+  },
+  onShow:function(){  
+    var _this = this;
+    // 实例化API核心类
+    qqmapsdk = new QQMapWX({
+      key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
+    });
+    //获取当前位置（在授权的情况下）
+    wx.getLocation({
+      type: 'wgs84',
+      //用户
+      success: function (res) {
+        var latitude = res.latitude
+        var longitude = res.longitude
+        var speed = res.speed
+        var accuracy = res.accuracy
+        //根据获取经纬度解析位置
+        qqmapsdk.reverseGeocoder({
+          location: {
+            latitude: latitude,
+            longitude: longitude
+          },
+          //解析成功
+          success: function (res) {
+            _this.setData({
+              street: res.result.address_component.street
+            });
+          },
+          //解析失败
+          fail: function (res) {
+            _this.setData({
+              street: ""
+            });
+          }
+        });
+      },
+      //授权失败
+      fail:function(res){
+        _this.setData({
+          street: ""
+        })
+      }
+    });
+    //服务器地址
+    var url = config.route;
     //获取店家
     network.GET(url + api.getIndexShop, {
       params: {},
@@ -246,44 +329,11 @@ Page({
         //失败后的逻辑  
       },
     });
-  },
-  onShow:function(){
-    // 实例化API核心类
-    var _this = this;
-    qqmapsdk = new QQMapWX({
-      key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
-    });
-    wx.getLocation({
-      type: 'wgs84',
-      success: function (res) {
-        var latitude = res.latitude
-        var longitude = res.longitude
-        var speed = res.speed
-        var accuracy = res.accuracy
-        qqmapsdk.reverseGeocoder({
-          location: {
-            latitude: latitude,
-            longitude: longitude
-          },
-          success: function (res) {
-            _this.setData({
-              street: res.result.address_component.street
-            })
-          },
-          fail: function (res) { }
-        });
-      },
-      fail:function(res){
-        _this.setData({
-          street: ""
-        })
-      }
-    });
     //获取消息数
     if (app.globalData.code == null)
     {
       setTimeout(function () {
-        var url = config.route;
+        
         var data = {
           uid: app.globalData.code,
         }
@@ -304,7 +354,6 @@ Page({
         });
       }, 800);
     }else{
-      var url = config.route;
       var data = {
         uid: app.globalData.code,
       }
@@ -353,67 +402,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    var _this = this;
-    var url = config.route;
-    var data = {
-      uid: app.globalData.code,
-    }
-    wx.getStorage({
-      key: 'userInfo',
-      success: function (res) {
-        if(!res.data)
-        {
-          network.GET(url + api.getUserStatus, {
-            params: data,
-            success: function (res) {
-              if (res.data.data.avatarurl == "") {
-                wx.showToast({
-                  title: '请您授权登录，否则无法享受更多权力！',
-                  icon: 'none',
-                  mask: true
-                });
-              } else {
-                wx.setStorage({
-                  key: "userInfo",
-                  data: res.data.data
-                });
-              }
-              wx.hideLoading(); 
-              //拿到解密后的数据，进行代码逻辑
-            },
-            fail: function () {
-              //失败后的逻辑  
-            },
-          })
-        }else{
-          wx.hideLoading(); 
-        }
-      },
-      fail:function(){
-        network.GET(url + api.getUserStatus, {
-          params: data,
-          success: function (res) {
-            if (res.data.data.avatarurl == "") {
-              wx.showToast({
-                title: '请您授权登录，否则无法享受更多权力！',
-                icon: 'none',
-                mask: true
-              });
-            } else {
-              wx.setStorage({
-                key: "userInfo",
-                data: res.data.data
-              });
-            }
-            wx.hideLoading();
-            //拿到解密后的数据，进行代码逻辑
-          },
-          fail: function () {
-            //失败后的逻辑  
-            wx.hideLoading();
-          },
-        })
-      }
-    });
+    
   }
 })

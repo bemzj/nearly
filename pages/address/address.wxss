@@ -156,3 +156,6 @@ page{
   font-size: 28rpx;
   line-height: 78rpx;
 }
+.hidden{
+  display: none;
+}

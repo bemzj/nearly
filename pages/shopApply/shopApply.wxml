@@ -57,7 +57,7 @@
             <view>添加您的营业执照</view>
           </view>
           <view class='imgBox' wx:if='{{intro.url != ""}}'>
-            <image src='' mode='widthFix'></image>
+            <image src='{{intro.url}}' mode='aspectFit' ca></image>
           </view>
         </view>
       </view>

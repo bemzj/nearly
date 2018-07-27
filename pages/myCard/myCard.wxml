@@ -1,4 +1,4 @@
-<view class='main' wx:if="{{hasVip==false}}">
+<view class='main' wx:if="{{hasVip==0}}">
   <view class='mainTop bodyBox {{autoHeight?"mianBox":""}}' bindtap='{{address.length>1?"setHeight":""}}'>
     <view class="picker" wx:for='{{address}}' wx:key="{{index}}" wx:if='{{address.length!=0}}'>
       <view wx:if='{{address.length==1}}'>
@@ -29,8 +29,8 @@
     </rich-text>
   </view>
 </view>
-<button class='rightPay' wx:if="{{hasVip==false}}" >立即申请</button>
-<view class='hasMain' wx:if="{{hasVip==true}}">
+<button class='rightPay' wx:if="{{hasVip==0}}" >立即申请</button>
+<view class='hasMain' wx:if="{{hasVip==1}}">
   <view class='mpBox'>
     <view class='mpImg'>
       <image src='../../img/vip.png' mode='widthFix'></image>

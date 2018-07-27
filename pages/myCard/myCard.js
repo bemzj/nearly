@@ -1,4 +1,11 @@
 // pages/myCard/myCard.js
+//获取应用实例
+const app = getApp()
+const {
+  api,
+  config
+} = require('../../utils/config.js')
+const network = require("../../utils/network.js")
 Page({
 
   /**
@@ -13,13 +20,25 @@ Page({
       '广东省广州市天河区车陂街道2',
       '广东省广州市天河区车陂街道3'
     ],
-    hasVip:true
+    hasVip:-1,
+    userIntro:{}
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    //服务器地址
+    var url = config.route;
+    //数据
+    var data = {
+      uid: app.globalData.code,
+    }
+    network.GET(url + api.getCardIntro, {
+      params: data,
+      success: function (res) {
+        console.log(res);
+      }
+    });
   },
   setHeight:function(){
     var _this = this;
@@ -38,7 +57,21 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    //判断是否为会员
+    if (app.globalData.userInfo.status==0)
+    {
+      _this.setData({
+        userIntro: app.globalData.userInfo,
+        hasVip: 0
+      });
+    }else{
+      _this.setData({
+        userIntro: app.globalData.userInfo,
+        hasVip: 1
+      });
+    }
+    
   },
 
   /**

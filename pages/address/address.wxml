@@ -7,10 +7,10 @@
   <view class='hasAddress' wx:if='{{addresses.length>0}}'>
     <view class='boxes'>
       <view class='addressBox' wx:for="{{addresses}}" wx:key="index">
-        <text>地址{{index+1}}：</text>
-        <view class='addressText'>{{item.provice}}{{item.city}}{{item.area}}{{item.street}}{{item.details}}</view>
+        <text>地址{{addresses.length==1?"":index+1}}：</text>
+        <view class='addressText'>{{item.province}}{{item.city}}{{item.area}}{{item.street}}{{item.addinfo}}</view>
         <view class='addressRight clearfloat'>         
-          <view class='edit' bindtap='edit' data-index='{{index}}'></view>
+          <view class='edit' bindtap='edit' data-index='{{index}}'  data-addId='{{item.id}}'></view>
           <view class='delect' bindtap='delect' data-index='{{index}}' ></view>
         </view>
       </view>
@@ -29,23 +29,32 @@
 </tips> 
 <view class='popWin' wx:if="{{popStatus}}" >
   <!--修改姓名-->
-  <view class='popWinIn' >
-    <view class='popInput'>
-      <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-        <view class="picker">
-          {{region[0]}}，{{region[1]}}，{{region[2]}}
-        </view>
-      </picker>
+  
+    <view class='popWinIn' >
+      <form bindsubmit='comfrimAddress'>
+      <view class='popInput'>
+        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+          <view class="picker">
+            {{region[0]}}，{{region[1]}}，{{region[2]}}
+          </view>
+        </picker>
+      </view>
+      <input type='text' class='hidden' name='province' value='{{region[0]}}'></input>
+      <input type='text' class='hidden' name='city' value='{{region[1]}}'></input>
+      <input type='text' class='hidden' name='area' value='{{region[2]}}'></input>
+      <input type='text' class='hidden' name='lat' value='{{lat}}'></input>
+      <input type='text' class='hidden' name='long' value='{{long}}'></input>
+      <view class='popInput' wx:if='{{delOrEdie==3||delOrEdie==2}}'>
+        <input type='text' name="street"  bindinput='streetInput' placeholder='街道' value='{{street}}'></input>
+      </view>
+      <view class='popInput'>
+        <input type='text' name="addinfo"  bindinput='detailsInput' placeholder='详细地址' value='{{details}}'></input>
+      </view>
+      <view class='popBtn'>
+        <button bindtap='cancel'>取消</button>
+        <button form-type='submit'>确定</button>
+      </view>
+      </form>
     </view>
-    <view class='popInput' wx:if='{{delOrEdie==3}}'>
-      <input type='text'  bindinput='streetInput' placeholder='街道' value='{{street}}'></input>
-    </view>
-    <view class='popInput'>
-      <input type='text'  bindinput='detailsInput' placeholder='详细地址' value='{{details}}'></input>
-    </view>
-    <view class='popBtn'>
-      <button bindtap='cancel'>取消</button>
-      <button bindtap='comfrimAddress'>确定</button>
-    </view>
-  </view>
+  
 </view>

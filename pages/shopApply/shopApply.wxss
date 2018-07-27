@@ -20,10 +20,11 @@
   border-top: 20rpx solid #f2f2f2!important;
 }
 .imgBox{
-  width: 320rpx;
-}
-.imgBox image{
-  display: block;
+  width: 640rpx;
   margin: 0 auto;
-  max-width: 100%;
-}
+  height: 440rpx;
+  }
+  .imgBox image{
+    max-height: 100%;
+    max-width: 100%;
+  }

@@ -1,4 +1,10 @@
 // pages/address/address.js
+const app = getApp()
+const {
+  api,
+  config
+} = require('../../utils/config.js')
+const network = require("../../utils/network.js")
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
 Page({
@@ -12,33 +18,20 @@ Page({
     details:'',
     street:'',
     popStatus:false,
-    addresses:[
-      {
-        provice:'广东省',
-        city:'广州市',
-        area:'天河区',
-        street:'车陂街道',
-        details:'车陂大街301号'
-      },
-      {
-        provice: '广东省',
-        city: '广州市',
-        area: '天河区',
-        street: '车陂街道',
-        details: '车陂大街302号'
-      },
-      {
-        provice: '广东省',
-        city: '广州市',
-        area: '天河区',
-        street: '车陂街道',
-        details: '车陂大街303号'
-      }
-    ],
+    addresses:[],
     addrIndex:-1,
     tipStatus2:false,
     popText2:'',
-    delOrEdie:0
+    delOrEdie:0,
+    lat:0,  //经度
+    long:0, //纬度
+    addlat:0,
+    addlong:0,
+    addStreet:'' ,//添加的街道
+    addDetails:'',//添加的详细地址
+    editId:'',//修改的id
+    editData:{}, //编辑数据
+    edItIndex:-1//修改的数据
   },
   //删除地址
   delect:function(e){
@@ -58,7 +51,7 @@ Page({
       popText2: ''
     });
   },
-  //确定删除
+  //确定删除或者修改
   comfirmPop:function(){
     var _this = this;
     if (_this.data.delOrEdie==1)
@@ -72,18 +65,55 @@ Page({
       });
     } else if (_this.data.delOrEdie == 2)
     {
-      console.log(1);
-      var addr = _this.data.addresses;
-      addr[_this.data.addrIndex].provice = _this.data.region[0];
-      addr[_this.data.addrIndex].city = _this.data.region[1];
-      addr[_this.data.addrIndex].area = _this.data.region[2];
-      addr[_this.data.addrIndex].details = _this.data.details;
-      _this.setData({
-        addresses: addr,
-        tipStatus2: false,
-        popText2:'',
-        popStatus:false
-      });
+      var mydataAfter = _this.data.editData;
+      var mydataBefore = _this.data.addresses[_this.data.edItIndex];
+      var addStatus = false;
+      if (mydataAfter.addinfo != mydataBefore.addinfo){
+        addStatus = true;
+      } else if (mydataAfter.area != mydataBefore.area) {
+        addStatus = true;
+      } else if (mydataAfter.city != mydataBefore.city) {
+        addStatus = true;
+      } else if (mydataAfter.province != mydataBefore.province) {
+        addStatus = true;
+      } else if (mydataAfter.street != mydataBefore.street) {
+        addStatus = true;
+      }
+      if(addStatus)
+      {
+        //服务器地址
+        var url = config.route;
+        //数据
+        var data = {
+          uid: app.globalData.code,
+          id: _this.data.edItId,
+          data:mydataAfter
+        }
+        //获取分类
+        network.GET(url + api.postAddress, {
+          params: data,
+          success: function (res) {
+            console.log(res);
+            _this.setData({
+              tipStatus2: false,
+              popText2: ''
+            });
+            wx.showToast({
+              title: res.data.msg,
+              icon: 'none',
+              mask: true
+            })
+          }
+        });
+      }else{
+        wx.showToast({
+          title: '地址没有发生变化',
+          icon: 'none',
+          mask: true
+        })
+      }
+      console.log(_this.data.editData);
+      console.log(_this.data.edItIndex);
     }
     
   },
@@ -97,17 +127,20 @@ Page({
   },
   // 编辑
   edit:function(e){
+    console.log(e);
     var _this = this;   
     var regions = _this.data.addresses[e.target.dataset.index];
     var reg = [];
-    reg.push(regions.provice);
+    reg.push(regions.province);
     reg.push(regions.city);
     reg.push(regions.area);
     _this.setData({
       delOrEdie:2,
+      edItIndex:e.target.dataset.index,
       popStatus:true,
       region: reg,
-      details: regions.details,
+      street: regions.street,
+      details: regions.addinfo,
       addrIndex: e.target.dataset.index
     });
   },
@@ -122,17 +155,18 @@ Page({
     });
   },
   //确定修改
-  comfrimAddress:function(){
+  comfrimAddress:function(e){
     var _this = this;
+    console.log(e);
     if (_this.data.delOrEdie==2)
     {
-      _this.setData({
-        tipStatus2: true,
-        popText2: '确认修改该地址？'
-      });
-    } else if (_this.data.delOrEdie == 3)
-    {
-      if (_this.data.details.length==0)
+      if (e.detail.value.street == '') {
+        wx.showToast({
+          title: '街道不能为空',
+          icon: 'none',
+          mask: true
+        })
+      } else if (e.detail.value.addinfo == '')
       {
         wx.showToast({
           title: '详细地址不能为空',
@@ -140,24 +174,104 @@ Page({
           mask: true
         })
       }else{
-        console.log(_this.data.region);
-        var addr = {};
-        var addrBox = _this.data.addresses;
-        addr.provice = _this.data.region[0];
-        addr.city = _this.data.region[1];
-        addr.area = _this.data.region[2];
-        addr.details = _this.data.details;
-        addr.street = _this.data.street;
-        addrBox.push(addr);
-        _this.setData({
-          addresses: addrBox,
-          popStatus:false
+        var data = e.detail.value;
+        var addr = e.detail.value.province + e.detail.value.city + e.detail.value.area + e.detail.value.street + e.detail.value.addinfo;
+        qqmapsdk.geocoder({
+          address: addr,
+          success: function (res) {
+            data.lat = res.result.location.lat;
+            data.long = res.result.location.lng;
+            _this.setData({
+              tipStatus2: true,
+              popText2: '确认修改该地址？',
+              editData: data
+            });
+          },
+          fail: function (res) {
+            wx.showToast({
+              title: '网络错误，请退出重试！',
+              icon: 'none',
+              mask: true
+            });
+          }
         });
+      }
+      
+    } else if (_this.data.delOrEdie == 3)
+    {
+      if (e.detail.value.province == '') {
         wx.showToast({
-          title: '新增地址成功',
+          title: '省市区不能为空',
           icon: 'none',
           mask: true
         })
+      } else if (e.detail.value.city == '') {
+        wx.showToast({
+          title: '省市区不能为空',
+          icon: 'none',
+          mask: true
+        })
+      } else if (e.detail.value.street == '') {
+        wx.showToast({
+          title: '省市区不能为空',
+          icon: 'none',
+          mask: true
+        })
+      } else if (e.detail.value.area == '') {
+        wx.showToast({
+          title: '省市区不能为空',
+          icon: 'none',
+          mask: true
+        })
+      } else if (e.detail.value.addinfo == '') {
+        wx.showToast({
+          title: '详细地址不能为空',
+          icon: 'none',
+          mask: true
+        })
+      } else{
+        var data = e.detail.value;
+        var addr = e.detail.value.province + e.detail.value.city + e.detail.value.area + e.detail.value.street + e.detail.value.addinfo;
+        qqmapsdk.geocoder({
+          address: addr,
+          success: function (res) {
+            data.lat = res.result.location.lat;
+            data.long = res.result.location.lng;
+            
+            //服务器地址
+            var url = config.route;
+            //数据
+            var mydata = {
+              uid: app.globalData.code,
+              data: data
+            }
+            //获取分类
+            network.GET(url + api.postAddress, {
+              params: mydata,
+              success: function (res) {
+                console.log(res);
+                _this.setData({
+                  popStatus: false
+                });
+                wx.showToast({
+                  title: res.data.msg,
+                  icon: 'none',
+                  mask: true
+                })
+              }
+            });
+            
+          },
+          fail: function (res) {
+            wx.showToast({
+              title: '网络错误，请退出重试！',
+              icon: 'none',
+              mask: true
+            });
+          }
+        });
+        
+        
       }
     }
     
@@ -186,6 +300,65 @@ Page({
       street:'',
       delOrEdie:3
     });
+    //判断是否地址授权
+    wx.getSetting({
+      success(res) {
+        console.log(res.authSetting['scope.userLocation']);
+        if (!res.authSetting['scope.userLocation']) {
+          wx.openSetting({
+            success: (res) => {
+              if (!res.authSetting["scope.userLocation"])
+              {
+
+              }else{
+                //地址
+                wx.getLocation({
+                  type: 'wgs84',
+                  success: function (res) {
+                    var latitude = res.latitude
+                    var longitude = res.longitude
+                    var speed = res.speed
+                    var accuracy = res.accuracy
+                    qqmapsdk.reverseGeocoder({
+                      location: {
+                        latitude: latitude,
+                        longitude: longitude
+                      },
+                      success: function (res) {
+                        console.log(res);
+                        var addr = [];
+                        addr[0] = res.result.address_component.province;
+                        addr[1] = res.result.address_component.city;
+                        addr[2] = res.result.address_component.district;
+                        _this.setData({
+                          regionAddress: addr,
+                          region: addr,
+                          street: res.result.address_component.street,
+                          details: res.result.address_component.street_number,
+                          lat: res.result.ad_info.location.lat,
+                          long: res.result.ad_info.location.lng
+                        });
+                      },
+                      fail: function (res) {
+
+                      }
+                    });
+                  }
+                });
+              }
+            }
+          })
+        }else{
+          _this.setData({
+            region: _this.data.regionAddress,
+            details: _this.data.addDetails,
+            street: _this.data.addStreet,
+            lat: _this.data.addlat,
+            long: _this.data.addlong
+          });
+        }
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面加载
@@ -206,20 +379,27 @@ Page({
    */
   onShow: function () {
     var _this = this;
+    //服务器地址
+    var url = config.route;
+    //数据
+    var data = {
+      uid: app.globalData.code,
+    }
+    //获取分类
+    network.GET(url + api.getAddress, {
+      params: data,
+      success: function (res) {
+        console.log(res.data.address);
+        _this.setData({
+          addresses:res.data.address
+        })
+        
+      }
+    });
     qqmapsdk = new QQMapWX({
       key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
     });
-
-
-    // 调用接口
-    qqmapsdk.geocoder({
-      address: '广东省广州市天河区车陂街道车陂大街301号',
-      success: function (res) {
-      },
-      fail: function (res) {
-      }
-    });
-
+    //地址
     wx.getLocation({
       type: 'wgs84',
       success: function (res) {
@@ -233,13 +413,17 @@ Page({
             longitude: longitude
           },
           success: function (res) {
-            
+            console.log(res);
             var addr = [];
-            addr[0] = res.result.ad_info.province;
-            addr[1] = res.result.ad_info.city;
-            addr[2] = res.result.ad_info.district;
+            addr[0] = res.result.address_component.province;
+            addr[1] = res.result.address_component.city;
+            addr[2] = res.result.address_component.district;
             _this.setData({
-              regionAddress: addr
+              regionAddress: addr,
+              addStreet: res.result.address_component.street,
+              addDetails: res.result.address_component.street_number,
+              addlat: res.result.ad_info.location.lat,
+              addlong: res.result.ad_info.location.lng
             });
           },
           fail: function (res) { 

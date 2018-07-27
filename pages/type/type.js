@@ -69,9 +69,7 @@ Page({
         payName: '世界杯99元超值套餐'
       }
     ],
-    firstType:[
-      "全部分类", "美食", "超市", "休闲娱乐", "丽人", "KTV", "运动健身","亲子"
-    ],
+    firstType:[],
     secondeType: [
       "全部", "快餐小吃", "面包甜点", "中餐", "茶餐厅", "火锅", "西餐", "日韩料理"
     ],
@@ -82,7 +80,10 @@ Page({
     down:false,
     allDown:false,
     kiloDown:false,
-    downStatus:0
+    downStatus:0,
+    allType:[],
+    fid:-1,
+    sid:-1
   },
   closeType:function(){
     var _this = this;
@@ -94,6 +95,8 @@ Page({
       klioDown:false
     })
   },
+  //全部分类点击
+  allClick:function(e){},
   //打电话
   callPhone: function (e) {
     wx.makePhoneCall({
@@ -103,9 +106,16 @@ Page({
   //第一类点击
   firstClick:function(e){
     var _this = this;
-    _this.setData({
-      firstIndex: e.currentTarget.dataset.index
-    });
+    //点击其他第一类
+    if (e.currentTarget.dataset.index != _this.data.firstIndex)
+    {
+      _this.setData({
+        firstIndex: e.currentTarget.dataset.index,
+        secondIndex:0,
+        secondeType: _this.data.allType[e.currentTarget.dataset.index].son
+      });
+    }
+    
   },
   //第二类点击
   secondClick:function(e){
@@ -182,6 +192,53 @@ Page({
    */
   onLoad: function (options) {
     console.log(options);
+    var _this = this;
+    //服务器地址
+    var url = config.route;
+    //数据
+    var data = {
+      uid: app.globalData.code,
+    }
+    //获取分类
+    network.GET(url + api.getTypes, {
+      params: data,
+      success: function (res) {
+        var alltype = res.data.cates;
+        //增加二级分类的类型
+        for (var i = 0; i < alltype.length;i++)
+        {
+          var all = {
+            id: -1,
+            name: "全部",
+            pic: "",
+            pid: -1,
+            sort: -1,
+            status: 1
+          };
+          alltype[i].son.splice(0, 0, all);
+        }
+        _this.setData({
+          allType: alltype,
+          firstType: res.data.cates,
+        });
+        console.log(alltype);
+        if (JSON.stringify(options) == "{}" | options.id==-1) {          
+          _this.setData({
+            firstIndex:0,
+            secondIndex:0,
+            secondeType: _this.data.allType[0].son
+          }); 
+        } else {
+          _this.setData({
+            firstIndex: options.id,
+            secondIndex: 0,
+            secondeType: _this.data.allType[options.id].son
+          }); 
+        }
+      }
+    });
+    
+    
   },
 
   /**
@@ -194,21 +251,15 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    //获取消息
+  onShow: function () { 
     var _this = this;
-    wx.getStorage({
-      key: 'userInfo',
-      success: function (res) {
-        _this.setData({
-          useIntro: res.data
-        });
-      }
-    });
+    //服务器地址
     var url = config.route;
+    //数据
     var data = {
       uid: app.globalData.code,
     }
+    //获取消息
     network.GET(url + api.getNews, {
       params: data,
       success: function (res) {
@@ -224,6 +275,7 @@ Page({
         })
       }
     });
+    
   },
 
   /**

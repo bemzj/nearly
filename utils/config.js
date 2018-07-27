@@ -4,6 +4,7 @@ const config = {
     token: 'safdsf2342%^@#@#@#ss`1`ljkjlkl&&888**',
 }
 const api = {
+    getUserCode:'index/wechat/index',//获取用户uid
     getUserInfo: 'index/wechat/getUserinfo', // 获取用户信息
     getIndexBanner:'index/index/getPics' ,//获取首页banner图
     getIndexType:'index/index/getCates',//获取首页分类
@@ -19,8 +20,12 @@ const api = {
     hasApply: "index/apply/getApply",//是否成为申请
     getBrowser: "index/personal/getPersonal",//获取浏览量
     getCode: "index/register/getCode",//获取验证码
-    register:"index/register/postRegister"//注册验证码
-    
+    register:"index/register/postRegister",//注册验证码
+    getTypes:"index/cates/getCates", //获取分类信息
+    getCardIntro:"index/vip/getVip", //获取会员卡信息  
+    getAddress: "index/address/getAddress", //获取地址
+    postAddress: "index/address/postAddress", //添加和修改地址
+    uploadPic: "index/shop/postPic", //上传图片
 }
 module.exports = {
     api,
