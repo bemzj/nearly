@@ -26,6 +26,7 @@ const api = {
     getAddress: "index/address/getAddress", //获取地址
     postAddress: "index/address/postAddress", //添加和修改地址
     uploadPic: "index/shop/postPic", //上传图片
+    addBrowse: "index/index/postBrowse", //增加浏览次数
 }
 module.exports = {
     api,

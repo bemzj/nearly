@@ -317,10 +317,14 @@ Page({
     });
     //服务器地址
     var url = config.route;
+    var mydata = {
+      uid: app.globalData.code,
+    }
     //获取店家
     network.GET(url + api.getIndexShop, {
-      params: {},
+      params: mydata,
       success: function (res) {
+        console.log(res);
         _this.setData({
           shopList: res.data.shop
         });
@@ -403,5 +407,29 @@ Page({
    */
   onReady: function () {
     
+  },
+  //增加浏览次数
+  addBrowse:function(e){
+    //服务器地址
+    var url = config.route;
+    var data = {
+      uid: app.globalData.code,
+      id: e.currentTarget.dataset.shopid
+    }
+    network.GET(url + api.addBrowse, {
+      params: data,
+      success: function (res) {
+        console.log(res);
+      }
+    });
+  },
+  //点击收藏
+  collect:function(e){
+    console.log(e);
+    var url = config.route;
+    var data = {
+      uid: app.globalData.code,
+      id: e.currentTarget.dataset.shopid
+    }
   }
 })

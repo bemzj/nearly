@@ -35,10 +35,10 @@
       <text>推荐商家</text>
     </view>
     <view class='snBox'>
-      <view class='listBoxOut' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index" wx:if="{{index<shopLimit}}">
+      <view class='listBoxOut' bindtap='addBrowse' data-shopid='{{item.id}}' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index" wx:if="{{index<shopLimit}}">
         <view class='listBox' >
           <view class='listImg'>
-            <view class='myHeart'></view>
+            <view class='myHeart {{item.collect?"myHeartHas":""}}' data-shopid='{{item.id}}' data-index='{{index}}' bindtap='collect'></view>
             <image src='../../img/list.png' mode='widthFix'></image>
           </view>
           <view class='listText'>
