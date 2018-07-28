@@ -94,7 +94,6 @@ Page({
       network.GET(url + api.applyShop, {
         params: e.detail.value,
         success: function (res) {
-          console.log();
           if (res.data.status==1)
           {
             setTimeout(function(){

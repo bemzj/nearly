@@ -29,7 +29,9 @@ const api = {
     uploadPic: "index/shop/postPic", //上传图片
     addBrowse: "index/index/postBrowse", //增加浏览次数
     collect: "index/collect/postCollect" ,//点击收藏
-    applyShop: "index/apply/postApply" //申请商家
+    applyShop: "index/apply/postApply", //申请商家
+    getMile:"index/cates/getMileage",//获取公里数
+    getShopMsg:"index/shop/getShop" //获取门店信息
 }
 module.exports = {
     api,

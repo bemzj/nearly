@@ -77,7 +77,7 @@ Page({
   onShow: function () {
     var _this = this;
     //判断是否为会员
-    if (app.globalData.userInfo.status==0)
+    if (app.globalData.userInfo.status==1)
     {
       _this.setData({
         userIntro: app.globalData.userInfo,

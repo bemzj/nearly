@@ -97,7 +97,7 @@
     </view>
     <view class='func'>
       <view>被浏览次数</view>
-      <text>1200</text>
+      <text>{{browse}}</text>
     </view>
     <view class='func noBorder'>
       <navigator  url='../myNews/myNews' open-type='redirect'>我的消息</navigator>

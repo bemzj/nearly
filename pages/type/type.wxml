@@ -15,10 +15,10 @@
       </view>
       <view class='type {{down?"typeNoneShadow":""}}'>
         <view bindtap='allType' class='{{allDown?"allChoice":""}}'>
-          <text>全部</text>
+          <text>{{typeName}}</text>
         </view>
         <view  bindtap='allklio' class='{{kiloDown?"allChoice":""}}'>
-          <text>{{kliometer[kiloIndex]}}公里内</text>
+          <text>{{kliometer[kiloIndex].mileage}}</text>
         </view>
       </view>
       <view class='allList' bindtap='closeType' >
@@ -33,7 +33,7 @@
             </view>
           </view>
           <view class='rightList {{kiloDown?"leftDown":""}}'>
-            <view wx:for="{{kliometer}}" catchtap='selectKilo' data-index='{{index}}' wx:key="index"  class='{{index==kiloIndex?"rightActive":""}}'><text>{{item}}公里内</text></view>
+            <view wx:for="{{kliometer}}" catchtap='selectKilo' data-index='{{index}}' data-mid='{{item.id}}' wx:key="index"  class='{{index==kiloIndex?"rightActive":""}}'><text>{{item.mileage}}</text></view>
           </view>
       </view>
     </view>

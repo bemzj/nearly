@@ -25,7 +25,8 @@ Page({
     elseCode: '123456',//收到的验证码
     tipStatus1: false,//弹窗状态1
     tipStatus2: false,//弹窗状态2
-    popText1: ''//弹窗文本
+    popText1: '',//弹窗文本,
+    browse:0
   },
   //获取验证码
   getCode() {
@@ -213,8 +214,12 @@ Page({
   onShow: function () {
     var _this = this;
     console.log(app.globalData.userInfo);
-    //设置用户数据
-    
+    //服务器地址
+    var url = config.route;
+    //数据
+    var data = {
+      uid: app.globalData.code,
+    }
     //如果还没注册
     if (!app.globalData.userInfo.create_time)
     {
@@ -228,6 +233,22 @@ Page({
           loginType: 1,
         });
       }else{
+        //获取门店浏览量
+        network.GET(url + api.getBrowser, {
+          params: data,
+          success: function (res) {
+            if (!res.data.user.browse)
+            {
+              _this.setData({
+                browse:0
+              })
+            }else{
+              _this.setData({
+                browse: res.data.user.browse
+              })
+            }
+          }
+        });
         _this.setData({
           loginType: 2
         });
@@ -236,12 +257,8 @@ Page({
     _this.setData({
       useIntro: app.globalData.userInfo
     });
-    //服务器地址
-    var url = config.route;
-    //数据
-    var data = {
-      uid: app.globalData.code,
-    }
+    
+    
     //我的消息
     network.GET(url + api.getNews, {
       params: data,

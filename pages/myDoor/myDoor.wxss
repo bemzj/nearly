@@ -1,6 +1,8 @@
 /* pages/myDoor/myDoor.wxss */
 page{
   padding-bottom: 120rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 .door{
   margin-top: 20rpx;
@@ -12,15 +14,20 @@ page{
   position: absolute;
   left: 0;
   top: 0;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   border-top: 20rpx solid #f2f2f2;
   margin-top: 0rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 .doorBox{
   width: 100%;
   background-color: white;
   border-bottom: 1px solid #f2f2f2;
+}
+.doorImgBottom{
+  padding-bottom: 100rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 .doorIn{
   width: 100%;
@@ -171,4 +178,11 @@ page{
 }
 .subBtn view:nth-child(2){
   border-top: 1px solid #ff8933;
+}
+.subBtn view:nth-child(2) button{
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  color: white;
 }

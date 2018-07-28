@@ -137,6 +137,16 @@ page{
   line-height: 60rpx;
   margin-top: 0px;
   font-size: 28rpx;
+  position: relative;
+}
+
+.hasMain .vipTitle>text{
+  display: block;
+}
+.hasMain .vipTitle>text:nth-child(1){
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 .hasMain .vipTitle1{
   padding: 20rpx 0;

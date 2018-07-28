@@ -41,10 +41,10 @@
     </view>
     <view class='vipBoxes' wx:if="{{address.length>0}}">
       <view class='vipTitle bodyBox' wx:for='{{address}}' wx:key="index" wx:if="{{address.length>1}}">
-        <text>使用地区{{index+1}}：<text class='vipText'>{{item.province}}{{item.city}}{{item.area}}{{item.street}}{{item.addinfo}}</text></text>
+        <text>使用地区{{index+1}}：</text><text class='vipText'>{{item.province}}{{item.city}}{{item.area}}{{item.street}}{{item.addinfo}}</text>
       </view>
       <view class='vipTitle bodyBox' wx:for='{{address}}' wx:key="index" wx:if="{{address.length==1}}">
-        <text>使用地区：<text class='vipText'>{{item.province}}{{item.city}}{{item.area}}{{item.street}}{{item.addinfo}}</text></text>
+        <text>使用地区：</text><text class='vipText'>{{item.province}}{{item.city}}{{item.area}}{{item.street}}{{item.addinfo}}</text>
       </view>
     </view>
   </view>

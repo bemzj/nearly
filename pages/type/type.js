@@ -12,6 +12,7 @@ Page({
    */
   data: {
     newLength: 0,
+    typeName:"全部",
     shopList: [
       {
         src: '../../img/list.png',
@@ -70,10 +71,8 @@ Page({
       }
     ],
     firstType:[],
-    secondeType: [
-      "全部", "快餐小吃", "面包甜点", "中餐", "茶餐厅", "火锅", "西餐", "日韩料理"
-    ],
-    kliometer:[1,2,3,4,5,6,7,8],
+    secondeType: [],
+    kliometer:[],
     firstIndex:0,
     secondIndex:0,
     kiloIndex:0,
@@ -112,7 +111,9 @@ Page({
       _this.setData({
         firstIndex: e.currentTarget.dataset.index,
         secondIndex:0,
-        secondeType: _this.data.allType[e.currentTarget.dataset.index].son
+        kiloIndex:0,
+        secondeType: _this.data.allType[e.currentTarget.dataset.index].son,
+        typeName: _this.data.allType[e.currentTarget.dataset.index].name
       });
     }
     
@@ -123,10 +124,12 @@ Page({
     _this.setData({
       secondIndex: e.currentTarget.dataset.index,
       downStatus: 0,
+      kiloIndex: 0,
       down: false,
       allDown: false,
       kiloDown: false,
-      klioDown: false
+      klioDown: false,
+      typeName: _this.data.allType[_this.data.firstIndex].son[e.currentTarget.dataset.index].name
     });
   },
   //选择公路
@@ -138,7 +141,8 @@ Page({
       down: false,
       allDown: false,
       kiloDown: false,
-      klioDown: false
+      klioDown: false,
+      typeName:"全部"
     });
   },
   //全部
@@ -230,6 +234,7 @@ Page({
           }); 
         } else {
           _this.setData({
+            typeName:_this.data.allType[options.id].name,
             firstIndex: options.id,
             secondIndex: 0,
             secondeType: _this.data.allType[options.id].son
@@ -237,7 +242,16 @@ Page({
         }
       }
     });
-    
+    //获取公里数
+    network.GET(url + api.getMile, {
+      params: data,
+      success: function (res) {
+        _this.setData({
+          kliometer: res.data.mileage
+        });
+        console.log(res.data.mileage);
+      }
+    });
     
   },
 

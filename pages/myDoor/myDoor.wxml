@@ -51,11 +51,10 @@
     </view>
   </view>
 </view>
-<view class='twoBtn' style='display:none;'>
+<view class='twoBtn' wx:if="{{hasShop==1}}">
   <view>返回</view>
   <view>编辑</view>
 </view>
-
 <view class='door elsedoor'>
   <view class='doorBox'>
     <view class='doorIn'>
@@ -63,7 +62,7 @@
         <text>店铺名称：</text>
       </view>
       <view class='doorRight'>
-        <input type='text' placeholder='请输入您的店铺名称'></input>
+        <input type='text' placeholder='请输入您的店铺名称' value='{{intro.name }}' bindinput='nameInput'></input>
       </view>
     </view>
   </view>
@@ -90,20 +89,21 @@
       </view>
     </view>
   </view>
+  <input type='text' hidden value='{{intro.cid}}'></input>
   <view class='doorBox'>
     <view class='doorIn'>
       <view class='doorLeft'>
         <text>手机号码：</text>
       </view>
       <view class='doorRight'>
-        <input type='text' placeholder='请输入您的电话'></input>
+        <input type='text' placeholder='请输入您的电话' value='{{intro.phone}}' bindinput='phoneInput'></input>
       </view>
     </view>
   </view>
-  <view class='doorBox'>
+  <view class='doorBox' style='display:none;'>
     <view class='doorIn clearfloat'>
       <view class='doorRight getCode'>
-        <button>获取验证码</button>
+        <button bindtap='{{disabled?"getCode":""}}'>{{timeCount}}</button>
       </view>
     </view>
   </view>
@@ -123,25 +123,29 @@
   </view>
   <view class='doorBox'>
     <view class='doorIn clearfloat'>
-      <textarea placeholder='请输入您的详细地址' placeholder-class='addressClass'></textarea>
+      <textarea placeholder='请输入您的详细地址' placeholder-class='addressClass' bindinput='detailsInput' ></textarea>
     </view>
   </view>
-  <view class='doorBox'>
+  <view class='doorBox doorImgBottom'>
     <view class='doorIn clearfloat'>
-      <view class='upImg'>
-        <view class='upBox'>
+      <view class='upImg' bindtap='selectImg'>
+        <view class='upBox' wx:if='{{intro.pic==""}}'>
           <view class='upAdd'>
             <image src='../../img/add.png' mode='widthFix'></image>
           </view>
           <view>添加您的商品图片</view>
           <view>（尺寸：250*210px）</view>
         </view>
-        
+        <view class='imgBox' wx:if='{{intro.pic!=""}}'>
+            <image src='{{intro.pic}}' mode='aspectFit' ></image>
+          </view>
       </view>
     </view>
   </view>
 </view>
-<view class='twoBtn subBtn'>
-  <view>取消</view>
-  <view>正确</view>
-</view>
+  <view class='twoBtn subBtn' wx:if="{{hasShop==0}}">
+    <view bindtap='cansel'>取消</view>
+    <view>
+      <button bindtap='submitForm'>正确</button>    
+    </view>
+  </view>
