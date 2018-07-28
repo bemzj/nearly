@@ -35,29 +35,27 @@ Page({
     })
   },
   //打开地图导航
-  getMap:function(e){
-    qqmapsdk.geocoder({
-      address: e.currentTarget.dataset.address,
+  getMap: function (e) {
+    wx.setClipboardData({
+      data: e.currentTarget.dataset.address,
       success: function (res) {
-        wx.openLocation({
-            latitude: res.result.location.lat,
-            longitude: res.result.location.lng,
-            scale:15,
-            success:function(res){
+        wx.getClipboardData({
+          success: function (res) {
+            setTimeout(function () {
+              wx.openLocation({
+                latitude: e.currentTarget.dataset.lat,
+                longitude: e.currentTarget.dataset.long,
+                scale: 15,
+                success: function (res) {
 
-            }
+                }
+              });
+            }, 1000);
           }
-        )
-      },
-      fail: function (res) {
-        wx.showToast({
-          title: '网络错误，请退出重试！',
-          icon: 'none',
-          mask: true
-        });
+        })
       }
-    });
-    
+    })
+
   },
   //授权登录
   getUser:function(e){
@@ -199,6 +197,18 @@ Page({
               var data = {
                 uid: app.globalData.code,
               }
+              //获取店家
+              network.GET(url + api.getIndexShop, {
+                params: data,
+                success: function (res) {
+                  _this.setData({
+                    shopList: res.data.shop
+                  });
+                },
+                fail: function () {
+                  //失败后的逻辑  
+                },
+              });
               //获取用户信息
               network.GET(url + api.getUserStatus, {
                 params: data,
@@ -211,7 +221,6 @@ Page({
                     });
                   } else {
                     app.globalData.userInfo = res.data.data;
-                    console.log(app.globalData.userInfo);
                     wx.hideLoading();
                   }
                 }
@@ -316,23 +325,7 @@ Page({
       }
     });
     //服务器地址
-    var url = config.route;
-    var mydata = {
-      uid: app.globalData.code,
-    }
-    //获取店家
-    network.GET(url + api.getIndexShop, {
-      params: mydata,
-      success: function (res) {
-        console.log(res);
-        _this.setData({
-          shopList: res.data.shop
-        });
-      },
-      fail: function () {
-        //失败后的逻辑  
-      },
-    });
+    var url = config.route;    
     //获取消息数
     if (app.globalData.code == null)
     {
@@ -341,6 +334,7 @@ Page({
         var data = {
           uid: app.globalData.code,
         }
+        //获取消息
         network.GET(url + api.getNews, {
           params: data,
           success: function (res) {
@@ -361,6 +355,7 @@ Page({
       var data = {
         uid: app.globalData.code,
       }
+      
       network.GET(url + api.getNews, {
         params: data,
         success: function (res) {
@@ -419,17 +414,49 @@ Page({
     network.GET(url + api.addBrowse, {
       params: data,
       success: function (res) {
-        console.log(res);
       }
     });
   },
   //点击收藏
   collect:function(e){
-    console.log(e);
+    var _this = this;
+    var shopList = _this.data.shopList;
+    var msg;
+    if (shopList[e.currentTarget.dataset.index].collect==0)
+    {
+      shopList[e.currentTarget.dataset.index].collect = 1;
+      msg = "收藏成功";
+    }else{
+      shopList[e.currentTarget.dataset.index].collect = 0;
+      msg = "取消收藏";
+    }
     var url = config.route;
     var data = {
       uid: app.globalData.code,
       id: e.currentTarget.dataset.shopid
     }
+    network.GET(url + api.collect, {
+      params: data,
+      success: function (res) {
+        if(res.data.status==1)
+        {
+          _this.setData({
+            shopList:shopList
+          });
+          wx.showToast({
+            title: msg,
+            icon: 'none',
+            duration: 2000
+          });
+        }else{
+          wx.showToast({
+            title: "收藏失败",
+            icon: 'none',
+            duration: 2000
+          });
+        }
+        
+      }
+    });
   }
 })

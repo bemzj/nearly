@@ -11,7 +11,7 @@
         <view class='addressText'>{{item.province}}{{item.city}}{{item.area}}{{item.street}}{{item.addinfo}}</view>
         <view class='addressRight clearfloat'>         
           <view class='edit' bindtap='edit' data-index='{{index}}'  data-addId='{{item.id}}'></view>
-          <view class='delect' bindtap='delect' data-index='{{index}}' ></view>
+          <view class='delect' bindtap='delect' data-index='{{index}}'  data-addId='{{item.id}}'></view>
         </view>
       </view>
     </view>

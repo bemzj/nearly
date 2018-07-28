@@ -31,13 +31,16 @@ Page({
     addDetails:'',//添加的详细地址
     editId:'',//修改的id
     editData:{}, //编辑数据
-    edItIndex:-1//修改的数据
+    edItIndex:-1,//修改的数据
+    delId:-1 //删除地址
   },
   //删除地址
   delect:function(e){
+    console.log();
     var _this = this;
     _this.setData({
       delOrEdie:1,
+      delId:e.currentTarget.dataset.addid,
       addrIndex: e.target.dataset.index,
       tipStatus2:true,
       popText2:'确认删除该地址？'
@@ -56,18 +59,61 @@ Page({
     var _this = this;
     if (_this.data.delOrEdie==1)
     {
-      var addr = _this.data.addresses;
-      addr.splice(_this.data.addrIndex, 1);
-      _this.setData({
-        addresses: addr,
-        tipStatus2: false,
-        popText2: ''
+      //服务器地址
+      var url = config.route;
+      //数据
+      var mydata = {
+        id: _this.data.delId
+      }
+      console.log(mydata);
+      //修改地址
+      network.GET(url + api.delAddress, {
+        params: mydata,
+        success: function (res) {
+          console.log(res);
+          var msg = res.data.msg;
+          if (res.data.status == 1) {
+            var addData = {
+              uid: app.globalData.code,
+            }
+            //获取地址
+            network.GET(url + api.getAddress, {
+              params: addData,
+              success: function (res) {
+                _this.setData({
+                  addresses: res.data.address,
+                  tipStatus2: false,
+                  popText2: '',
+                  popStatus: false
+                });
+                wx.showToast({
+                  title: msg,
+                  icon: 'none',
+                  mask: true
+                })
+              }
+            });
+          } else {
+            _this.setData({
+              tipStatus2: false,
+              popText2: '',
+              popStatus: false
+            });
+            wx.showToast({
+              title: msg,
+              icon: 'none',
+              mask: true
+            })
+          }
+
+        }
       });
     } else if (_this.data.delOrEdie == 2)
     {
       var mydataAfter = _this.data.editData;
       var mydataBefore = _this.data.addresses[_this.data.edItIndex];
       var addStatus = false;
+      //检测地址没有变化
       if (mydataAfter.addinfo != mydataBefore.addinfo){
         addStatus = true;
       } else if (mydataAfter.area != mydataBefore.area) {
@@ -84,25 +130,52 @@ Page({
         //服务器地址
         var url = config.route;
         //数据
-        var data = {
+        var mydata = {
           uid: app.globalData.code,
-          id: _this.data.edItId,
+          id: _this.data.editId,
           data:mydataAfter
         }
-        //获取分类
+        //修改地址
         network.GET(url + api.postAddress, {
-          params: data,
+          params: mydata,
           success: function (res) {
             console.log(res);
-            _this.setData({
-              tipStatus2: false,
-              popText2: ''
-            });
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none',
-              mask: true
-            })
+            var msg = res.data.msg;
+            if(res.data.status==1)
+            {
+              var addData = {
+                uid: app.globalData.code,
+              }
+              //获取地址
+              network.GET(url + api.getAddress, {
+                params: addData,
+                success: function (res) {
+                  _this.setData({
+                    addresses: res.data.address,
+                    tipStatus2: false,
+                    popText2: '',
+                    popStatus: false
+                  });
+                  wx.showToast({
+                    title: msg,
+                    icon: 'none',
+                    mask: true
+                  })
+                }
+              });
+            }else{
+              _this.setData({
+                tipStatus2: false,
+                popText2: '',
+                popStatus: false
+              });
+              wx.showToast({
+                title: msg,
+                icon: 'none',
+                mask: true
+              })
+            }
+            
           }
         });
       }else{
@@ -127,7 +200,6 @@ Page({
   },
   // 编辑
   edit:function(e){
-    console.log(e);
     var _this = this;   
     var regions = _this.data.addresses[e.target.dataset.index];
     var reg = [];
@@ -136,6 +208,7 @@ Page({
     reg.push(regions.area);
     _this.setData({
       delOrEdie:2,
+      editId:e.currentTarget.dataset.addid,
       edItIndex:e.target.dataset.index,
       popStatus:true,
       region: reg,
@@ -199,6 +272,7 @@ Page({
       
     } else if (_this.data.delOrEdie == 3)
     {
+      //新增地址
       if (e.detail.value.province == '') {
         wx.showToast({
           title: '省市区不能为空',
@@ -211,15 +285,15 @@ Page({
           icon: 'none',
           mask: true
         })
-      } else if (e.detail.value.street == '') {
+      } else if (e.detail.value.area == '') {
         wx.showToast({
           title: '省市区不能为空',
           icon: 'none',
           mask: true
         })
-      } else if (e.detail.value.area == '') {
+      } else if (e.detail.value.street== '') {
         wx.showToast({
-          title: '省市区不能为空',
+          title: '街道不能为空',
           icon: 'none',
           mask: true
         })
@@ -238,6 +312,8 @@ Page({
             data.lat = res.result.location.lat;
             data.long = res.result.location.lng;
             
+            // data = JSON.parse(data);
+            console.log(data);
             //服务器地址
             var url = config.route;
             //数据
@@ -245,22 +321,41 @@ Page({
               uid: app.globalData.code,
               data: data
             }
-            //获取分类
+            //添加地址
             network.GET(url + api.postAddress, {
               params: mydata,
               success: function (res) {
-                console.log(res);
-                _this.setData({
-                  popStatus: false
-                });
-                wx.showToast({
-                  title: res.data.msg,
-                  icon: 'none',
-                  mask: true
-                })
+                var msg = res.data.msg;
+                if (res.data.status == 1)
+                {
+                  //数据
+                  var data = {
+                    uid: app.globalData.code,
+                  }
+                  network.GET(url + api.getAddress, {
+                    params: data,
+                    success: function (res) {
+                      console.log(res.data.address);
+                      _this.setData({
+                        addresses: res.data.address,
+                        popStatus: false
+                      });
+                      wx.showToast({
+                        title: msg,
+                        icon: 'none',
+                        mask: true
+                      })
+                    }
+                  });
+                }else{
+                  wx.showToast({
+                    title: msg,
+                    icon: 'none',
+                    mask: true
+                  })
+                }
               }
             });
-            
           },
           fail: function (res) {
             wx.showToast({
@@ -269,12 +364,9 @@ Page({
               mask: true
             });
           }
-        });
-        
-        
+        }); 
       }
     }
-    
   },
   //详细地址
   detailsInput:function(e){
@@ -385,15 +477,13 @@ Page({
     var data = {
       uid: app.globalData.code,
     }
-    //获取分类
+    //获取地址
     network.GET(url + api.getAddress, {
       params: data,
       success: function (res) {
-        console.log(res.data.address);
         _this.setData({
           addresses:res.data.address
         })
-        
       }
     });
     qqmapsdk = new QQMapWX({
@@ -413,7 +503,6 @@ Page({
             longitude: longitude
           },
           success: function (res) {
-            console.log(res);
             var addr = [];
             addr[0] = res.result.address_component.province;
             addr[1] = res.result.address_component.city;

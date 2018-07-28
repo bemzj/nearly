@@ -4,8 +4,8 @@
     <view class='searchBoxOut {{down?"searchBoxHeight":""}}'>
       <view class='searchBox'>
         <form>
-          <view class='searchInput'>
-            <input type='search' placeholder='请输入商家名称或者相关关键词'></input>
+          <view class='searchInput' bindtap='toSearch'>
+            <input type='search' disabled placeholder='请输入商家名称或者相关关键词'></input>
             <view class='searchBtn'></view>
           </view>
           <view class='typeChoice'>
@@ -79,13 +79,15 @@
     </view>
   </view>
 </view>
-<nav>
-  <view class='tipNews' slot="tips" wx:if="{{newLength>0}}">
-    <text>{{newLength}}</text>
-  </view>
-  <text slot="index">首页</text>
-  <text slot="type"  class='navActive'>分类</text>
-  <text slot="myNews">我的消息</text>
-  <text slot="person">个人中心</text>
-</nav>
+<view class='bottomNav'>
+  <nav>
+    <view class='tipNews' slot="tips" wx:if="{{newLength>0}}">
+      <text>{{newLength}}</text>
+    </view>
+    <text slot="index">首页</text>
+    <text slot="type"  class='navActive'>分类</text>
+    <text slot="myNews">我的消息</text>
+    <text slot="person">个人中心</text>
+  </nav>
+</view>
 <view class='noTouch noTouch2'></view>

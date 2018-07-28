@@ -311,5 +311,11 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  //跳转到搜索页面
+  toSearch:function(){
+    wx.navigateTo({
+      url: '../search/search',
+    })
   }
 })

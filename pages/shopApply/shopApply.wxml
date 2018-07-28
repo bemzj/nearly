@@ -6,7 +6,7 @@
           <text class='name' >姓名</text><text>：</text>
         </view>
         <view class='doorRight'>
-          <input type='text' placeholder='请输入您的姓名' value='{{intro.name}}' name="name"></input>
+          <input type='text' placeholder='请输入您的姓名' value='' name="name"></input>
         </view>
       </view>
     </view>
@@ -16,7 +16,7 @@
           <text class='phone'>手机号码</text><text>：</text>
         </view>
         <view class='doorRight'>
-          <input type='number' placeholder='请输入您的电话' name="phone"  value='{{intro.phone}}'></input>
+          <input type='number' placeholder='请输入您的电话' name="phone" value='{{intro.phone}}' bindinput='phoneInput'></input>
         </view>
       </view>
     </view> 
@@ -26,7 +26,7 @@
           <text class='code'>验证码</text><text>：</text>
         </view>
         <view class='doorRight'>
-          <input type='number' placeholder='请输入验证码' maxlength='8' name="code"  value='{{intro.code}}'></input>
+          <input type='number' placeholder='请输入验证码' maxlength='8' name="code"  value=''></input>
         </view>
       </view>
     </view> 
@@ -43,10 +43,12 @@
           <text>法人身份证</text><text>：</text>
         </view>
         <view class='doorRight'>
-          <input type='idcard' placeholder='请输入您的法人身份证' name="idcard" value='{{intro.idcard}}'></input>
+          <input type='idcard' placeholder='请输入您的法人身份证' name="idcard" value=''></input>
         </view>
       </view>
     </view>
+    <input class='hidden' name="pic" value='{{intro.url}}'></input>
+    <input class='hidden' name="uid" value='{{uid}}'></input>
     <view class='doorBox doorPhone'>
       <view class='doorIn clearfloat'>
         <view class='upImg' bindtap='selectImg'>

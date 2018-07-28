@@ -15,18 +15,18 @@ Page({
     myAddress:'',
     index:0,
     autoHeight:false,
-    address:[
-      '广东省广州市天河区车陂街道1',
-      '广东省广州市天河区车陂街道2',
-      '广东省广州市天河区车陂街道3'
-    ],
+    address:[],
+    addLength:0,
     hasVip:-1,
-    userIntro:{}
+    userIntro:{},
+    vip:{},
+    web:''
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var _this = this;
     //服务器地址
     var url = config.route;
     //数据
@@ -37,12 +37,30 @@ Page({
       params: data,
       success: function (res) {
         console.log(res);
+        var vip = res.data.vip;
+        // vip.desc = app.convertHtmlToText(vip.desc);
+        _this.setData({
+          web: config.route,
+          vip: vip
+        });
+        console.log(_this.data.vip);
       }
     });
   },
   setHeight:function(){
     var _this = this;
+    var addLength = 0;
+    if (_this.data.addLength==0)
+    {
+      if (_this.data.address.length >= 2) {
+        addLength = 60 * _this.data.address.length;
+      }
+    }else{
+      addLength = 0;
+    }
+    
     _this.setData({
+      addLength: addLength,
       autoHeight:!_this.data.autoHeight
     });
   },
@@ -71,7 +89,22 @@ Page({
         hasVip: 1
       });
     }
-    
+    //服务器地址
+    var url = config.route;
+    //数据
+    var data = {
+      uid: app.globalData.code,
+    }
+    //获取地址
+    network.GET(url + api.getAddress, {
+      params: data,
+      success: function (res) {
+        console.log(res.data.address);
+        _this.setData({
+          address: res.data.address
+        })
+      }
+    });
   },
 
   /**

@@ -1,9 +1,7 @@
 //app.js
 App({
   onLaunch: function () {
-    var _this = this;
-
-    
+    var _this = this;  
   },
   globalData: {
     code:null,

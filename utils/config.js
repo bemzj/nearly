@@ -24,9 +24,12 @@ const api = {
     getTypes:"index/cates/getCates", //获取分类信息
     getCardIntro:"index/vip/getVip", //获取会员卡信息  
     getAddress: "index/address/getAddress", //获取地址
+    delAddress: "index/address/delAddress", //删除地址
     postAddress: "index/address/postAddress", //添加和修改地址
     uploadPic: "index/shop/postPic", //上传图片
     addBrowse: "index/index/postBrowse", //增加浏览次数
+    collect: "index/collect/postCollect" ,//点击收藏
+    applyShop: "index/apply/postApply" //申请商家
 }
 module.exports = {
     api,

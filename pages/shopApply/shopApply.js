@@ -18,6 +18,7 @@ Page({
       idcard:"",
       url:""
     },
+    uid:'',
     disabled:true,
     timeCount: "获取验证码"
   },
@@ -26,7 +27,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var _this = this;
+    _this.setData({
+      uid: app.globalData.code
+    })
   },
 
   /**
@@ -36,6 +40,7 @@ Page({
   
   },
   formSubmit:function(e){
+    console.log(e.detail.value);
     var _this  = this;
     var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
     var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
@@ -82,33 +87,100 @@ Page({
         icon: 'none',
         mask: true
       })
+    }else{
+      //服务器地址
+      var url = config.route;
+      //注册商家
+      network.GET(url + api.applyShop, {
+        params: e.detail.value,
+        success: function (res) {
+          console.log();
+          if (res.data.status==1)
+          {
+            setTimeout(function(){
+              wx.navigateBack({});
+            },2000);
+          }else{
+            wx.showToast({
+              title: res.data.msg,
+              icon: 'none',
+              mask: true,
+              duration:2000
+            })
+          }
+          
+        }
+      });
     }
   },
-  getCode:function(e){
-    console.log(e);
+  //监听输入框输入
+  phoneInput:function(e){
     var _this = this;
+    var intro = _this.data.intro;
+    intro.phone = e.detail.value;
+    _this.setData({
+      intro: intro
+    });
+  },
+  getCode:function(e){
+    
+    var _this = this;
+    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
     if (_this.data.disabled == true)
     {
-      var timeCount = 60;
-      _this.setData({
-        timeCount:'60s秒后重发',
-        disabled:false
-      })
-      var time = setInterval(function(){
-        timeCount--;
-        if (timeCount==-1)
-        {
-          clearInterval(time);
-          _this.setData({
-            timeCount: '重新获取',
-            disabled: true
-          })
-        }else{
-          _this.setData({
-            timeCount: timeCount + 's秒后重发',
-          })
+      if (_this.data.intro.phone == "") {
+        wx.showToast({
+          title: '手机号码不能为空！',
+          icon: 'none',
+          mask: true
+        })
+      } else if (!myreg.test(_this.data.intro.phone)) {
+        wx.showToast({
+          title: '手机格式不正确！',
+          icon: 'none',
+          mask: true
+        })
+      } else{
+        var url = config.route;
+        var data = {
+          phone: _this.data.intro.phone
         }
-      },1000);
+        //请求获取验证码
+        network.GET(url + api.getCode, {
+          params: data,
+          success: function (res) {
+            console.log();
+            if (res.data.status==1)
+            {
+              var timeCount = 60;
+              _this.setData({
+                timeCount: '60s秒后重发',
+                disabled: false
+              })
+              var time = setInterval(function () {
+                timeCount--;
+                if (timeCount == -1) {
+                  clearInterval(time);
+                  _this.setData({
+                    timeCount: '重新获取',
+                    disabled: true
+                  })
+                } else {
+                  _this.setData({
+                    timeCount: timeCount + 's秒后重发',
+                  })
+                }
+              }, 1000);
+            }
+            wx.showToast({
+              title: res.data.msg,
+              icon: 'none',
+              mask: true
+            });
+          }
+        });
+        
+      }
     }
   },
   //选择图片
@@ -164,9 +236,7 @@ Page({
   
   },
   cancel:function(){
-    wx.navigateBack({
-      
-    })
+    wx.navigateBack({});
   },
   /**
    * 生命周期函数--监听页面隐藏

@@ -1,44 +1,47 @@
 <!--pages/search/search.wxml-->
 <view class="container">
-  <form>
+  <form bindsubmit="submitBtn">
     <view class='searchBox'>
       <view class='searchInput'>
-        <input type='search' placeholder='请输入商家名称或者相关关键词'></input>
-        <view class='searchBtn'></view>
+        <input type='search' name="keyword" confirm-type="search" placeholder='请输入商家名称或者相关关键词' bindconfirm="phoneSearch"></input>
+        <view class='searchBtn'>
+          <button form-type="submit"></button>
+        </view>
       </view>
     </view>
   </form>
   <view class='noShopList' wx:if='{{shopList.length==0}}'>
-    <text>暂无搜索结果</text>
+    <text>暂无结果</text>
   </view>
   <view class='shopLists' wx:if='{{shopList.length>0}}'>
     <view class='snBox'>
-      <view class='listBoxOut' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index"  bindtouchmove="handletouchmove" bindtouchstart="handletouchstart" bindtouchend="handletouchend">
-        <view class='listBox'>
+      <view class='listBoxOut' bindtap='addBrowse' data-shopid='{{item.id}}' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index">
+        <view class='listBox' >
           <view class='listImg'>
-            <image src='{{item.src}}' mode='widthFix'></image>
+            <view class='myHeart {{item.collect?"myHeartHas":""}}' data-shopid='{{item.id}}' data-index='{{index}}' bindtap='collect'> <view class='heartIn'></view></view>
+            <image src='../../img/list.png' mode='widthFix'></image>
           </view>
           <view class='listText'>
-            <view class='ltIn'>
-              <view class='phone' bindtap='callPhone' data-phone='15999911956'>
+            <view class='ltIn' bindtap='getMap' data-lat='{{item.lat}}' data-address='{{item.address}}' data-long='{{item.long}}'>
+              <view class='phone' catchtap='callPhone' data-phone='{{item.phone}}'>
                 <image src='../../img/phone.png' mode='widthFix'></image>
               </view>
               <view class='shop'>
                 <view class='shopText'>
-                  <text class='shopType'>{{item.type}}</text><text class='shopName'>{{item.name}}</text>
+                  <text class='shopType'>{{item.cname}}</text><text class='shopName'>{{item.name}}</text>
                 </view>
                 <view class='shopNumber'>
-                  <text>被浏览次数{{item.number}}</text>
+                  <text>被浏览次数{{item.browse}}</text>
                   <view class='fire'>
                     <text wx:for="{{item.fire}}" wx:key="unique" wx:for-item="its" class='{{its<item.fire?"block":""}}'></text>
                   </view>
                 </view>
                 <view class='shopAddress'>
-                  <text>广州市天河区新港东路中洲中心北塔负1楼</text>
+                  <text>{{item.address}}</text>
                 </view>
                 <view class='shopMoney'>
                   <view class='shopIn'>
-                    99元<text>110元</text>世界杯99元超值套餐
+                    {{item.price}}<text>{{item.o_price}}</text>{{item.title}}
                   </view>
                 </view>
               </view>
@@ -49,6 +52,6 @@
     </view>
   </view>
 </view>
-<view class='exchange' wx:if='{{shopList.length>3}}'>
-  <button>换一批</button>
+<view class='exchange' wx:if='{{allList.length>3&&allList.length>startIndex}}'>
+  <button bindtap='exchangeshop'>换一批</button>
 </view>

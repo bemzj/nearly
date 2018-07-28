@@ -1,3 +1,18 @@
 /* pages/search/search.wxss */
 @import '../../wxss/sch.wxss';
 @import '../../wxss/list.wxss';
+.searchBtn button{
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.searchBox{
+  z-index: 1000;
+}
+.exchange{
+  z-index: 1000;
+}
+.searchInput input{
+  padding-right: 20rpx;
+}

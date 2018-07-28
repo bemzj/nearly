@@ -1,6 +1,6 @@
 /* pages/myCard/myCard.wxss */
 page{
-  padding: 20rpx 0 110rpx;
+  padding: 20rpx 0 120rpx;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
@@ -11,6 +11,7 @@ page{
 }
 .mainTop{
   font-size: 26rpx;
+  line-height: 40rpx;
   color: white;
   padding-top: 15rpx;
   height: 65rpx;
@@ -31,18 +32,30 @@ page{
 .mainTop .canUse{
   color: #aaaaaa;
   padding-right: 10rpx;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
+.mainTop .picker>view{
+  position: relative;
+} 
+.mainTop .picker>view>text:nth-child(2){
+  position: relative;
+  display: block;
+  padding:0rpx 20rpx 0 128rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing:border-box;
+} 
 .mainTop .picker:nth-child(1) text:nth-child(2){
   position: relative;
 }
-.mainTop .picker:nth-child(1) text:nth-child(2).more::before{
+.mainTop .picker:nth-child(1)>view>text:nth-child(2).more::before{
   content: "";
   position: absolute;
   width: 16rpx;
   height: 14rpx;
-  right: -26rpx;
-  top: 50%;
-  margin-top: -7rpx;
+  right: 0rpx;
+  top: 13rpx;
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAOCAYAAAAmL5yKAAAAp0lEQVQokZ2SwQ3CMBAEN1IoAGgir9SRYiAfGgFqiVIICKoIFRhpeOBIh7HBzr4se2f8uBMwsDxDBTSSLpJWKouT1AoQcFzw+wnQLFgDUwE8ARsrELArEOxnzgpq4JYB3333SyCgyxB0lgkFAsYf8Bj2Y4IGcBHY+be/AvEeUZhzrJsSbPkc68PfZQsE9EbQp3oVkFrVWtLVn1u/utFSKk9JB7P30bwAnuZ5oaY2iyEAAAAASUVORK5CYII=') no-repeat left top;
   background-size: 16rpx 14rpx;
   transition: transform 0.5s;
