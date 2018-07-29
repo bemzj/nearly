@@ -1,60 +1,4 @@
 <!--pages/myDoor/myDoor.wxml-->
-<view class='door' style='display:none;'>
-  <view class='doorBox'>
-    <view class='doorIn'>
-      <view class='doorLeft'>
-        <text>店铺名称：</text>
-      </view>
-      <view class='doorRight'>
-        <text>点都德</text>
-      </view>
-    </view>
-  </view>
-  <view class='doorBox'>
-    <view class='doorIn'>
-      <view class='doorLeft'>
-        <text>店铺类型：</text>
-      </view>
-      <view class='doorRight'>
-        <text>餐饮</text>
-      </view>
-    </view>
-  </view>
-  <view class='doorBox'>
-    <view class='doorIn'>
-      <view class='doorLeft'>
-        <text>手机号码：</text>
-      </view>
-      <view class='doorRight'>
-        <text>13033233233</text>
-      </view>
-    </view>
-  </view>
-  <view class='doorBox'>
-    <view class='doorIn'>
-      <view class='doorLeft'>
-        <text>店铺地址：</text>
-      </view>
-      <view class='doorRight drLeft'>
-        <text>广东省广州市天河区车陂街道车陂大街302</text>
-      </view>
-    </view>
-  </view>
-  <view class='doorBox'>
-    <view class='doorIn clearfloat'>
-      <view class='doorLeft'>
-        <text>店铺地址：</text>
-      </view>
-      <view class='doorRight imgRight'>
-        <image src='../../img/list.png' mode='widthFix'></image>
-      </view>
-    </view>
-  </view>
-</view>
-<view class='twoBtn' wx:if="{{hasShop==1}}">
-  <view>返回</view>
-  <view>编辑</view>
-</view>
 <view class='door elsedoor'>
   <view class='doorBox'>
     <view class='doorIn'>
@@ -123,7 +67,7 @@
   </view>
   <view class='doorBox'>
     <view class='doorIn clearfloat'>
-      <textarea placeholder='请输入您的详细地址' placeholder-class='addressClass' bindinput='detailsInput' ></textarea>
+      <textarea placeholder='请输入您的详细地址' placeholder-class='addressClass' value='{{intro.addinfo}}' bindinput='detailsInput' ></textarea>
     </view>
   </view>
   <view class='doorBox doorImgBottom'>
@@ -149,3 +93,7 @@
       <button bindtap='submitForm'>正确</button>    
     </view>
   </view>
+<view class='twoBtn' wx:if="{{hasShop==1}}">
+  <view bindtap='returnBack'>返回</view>
+  <view bindtap='edit'>编辑</view>
+</view>

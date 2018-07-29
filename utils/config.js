@@ -31,7 +31,10 @@ const api = {
     collect: "index/collect/postCollect" ,//点击收藏
     applyShop: "index/apply/postApply", //申请商家
     getMile:"index/cates/getMileage",//获取公里数
-    getShopMsg:"index/shop/getShop" //获取门店信息
+    getShopMsg:"index/shop/getShop", //获取门店信息
+    setShopMsg:"index/shop/postShop",//添加+修改门店
+    getActivity: "index/activity/getActivity",//获取活动列表
+    applyActivity: "index/activity/postActivity",//添加活动
 }
 module.exports = {
     api,

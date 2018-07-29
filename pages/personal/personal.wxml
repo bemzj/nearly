@@ -96,14 +96,14 @@
       <navigator url='../myDoor/myDoor'>我的门店</navigator>
     </view>
     <view class='func'>
-      <view>被浏览次数</view>
+      <view class='noBackground'>被浏览次数</view>
       <text>{{browse}}</text>
     </view>
     <view class='func noBorder'>
       <navigator  url='../myNews/myNews' open-type='redirect'>我的消息</navigator>
     </view>
     <view class='func marginTop'>
-      <navigator url='../atyApply/atyApply'>门店活动申请</navigator>
+      <navigator url='../activity/activity'>门店活动</navigator>
     </view>
   </view>
 </view>

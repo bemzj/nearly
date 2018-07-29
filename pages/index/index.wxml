@@ -23,10 +23,10 @@
     </swiper>
   </view>
   <view class='typeList'>
-    <view class='typeBtn' bindtap='typeNav' data-id='{{index}}' wx:if="{{index<typeList.length-1}}" style='background-image:url({{web}}{{item.pic}})' wx:for="{{typeList}}" wx:key="index">
+    <view class='typeBtn' bindtap='typeNav' data-id='{{index}}' data-tid='{{item.id}}' wx:if="{{index<typeList.length-1}}" style='background-image:url({{web}}{{item.pic}})' wx:for="{{typeList}}" wx:key="index">
       <text>{{item.name}}</text>
     </view> 
-    <view class='typeBtn' bindtap='typeNav' data-id='{{item.id}}' wx:if="{{typeList.length==index+1}}" style='background-image:url({{item.pic}})' wx:for="{{typeList}}" wx:key="index">
+    <view class='typeBtn' bindtap='typeNav' data-id='{{item.id}}' data-tid='{{item.id}}' wx:if="{{typeList.length==index+1}}" style='background-image:url({{item.pic}})' wx:for="{{typeList}}" wx:key="index">
       <text>{{item.name}}</text>
     </view> 
   </view>

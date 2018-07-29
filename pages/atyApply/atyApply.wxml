@@ -1,11 +1,18 @@
 <form  bindsubmit='submit'>
   <view class='main'>
     <view class='mainOut'>
+      <input type='text' hidden  name='sid' value='{{sid}}'></input>
       <view class='title'>
-        <input type='text' placeholder='*您的门店活动主题' placeholder-class='titleClass' name='title'></input>
+        <input type='text' placeholder='*您的门店活动主题（字数限制为15个）' placeholder-class='titleClass' name='title'></input>
+      </view>
+      <view class='title'>
+        <input type='number' placeholder='*原价' placeholder-class='titleClass' name='o_price'></input>
+      </view>
+      <view class='title'>
+        <input type='number' placeholder='*现价' placeholder-class='titleClass' name='price'></input>
       </view>
       <view class='textarea'>
-        <textarea placeholder-class='titleClass' placeholder='*活动主题审核内容' name='content'></textarea>
+        <textarea placeholder-class='titleClass' placeholder='*活动主题审核内容（字数限制为120个）' name='content'></textarea>
       </view>
     </view>
   </view>

@@ -213,7 +213,6 @@ Page({
    */
   onShow: function () {
     var _this = this;
-    console.log(app.globalData.userInfo);
     //服务器地址
     var url = config.route;
     //数据

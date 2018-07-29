@@ -108,7 +108,6 @@
 .shopText{
   display: flex;
   display: -webkit-flex;
-  margin-top: 18rpx;
 }
 .shopType{
   font-size: 20rpx;
@@ -129,7 +128,7 @@
   font-weight: bold;
 }
 .shopNumber{
-  margin-top: 24rpx;
+  margin-top: 18rpx;
   font-size: 20rpx;
   line-height: 20rpx;
   display: flex;
@@ -151,17 +150,17 @@
 .shopAddress{
   padding: 0 25rpx;
   font-size: 20rpx;
-  margin-top: 26rpx;
+  margin-top: 18rpx;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAVCAYAAABPPm7SAAABVUlEQVQ4jZXTsUpcURDG8d9eF4QIFjbCivERUtwQRFbCvoCCEgxWASOR2EiwSMqQN7CQFIFgIYKgCAYfQIkivoCFXRJwLQSLKNFALHYvORzOVfer7sx882cOd6aS57lIz/AKdQyigh/4jhUchOZKBPiMNzEx0hfMFkEWFHYf0AyvwykKwFeMPqC50DBWC8ATrTendIZmSW0aTzMsJIp/24bHGMIUrhO+d1U8TxRmsBbE6+1p1yLfSCXP8xtUg+QVHpWMfYHeIL7OcBmZsggYqiuK/2TYj5Ld+JRo/oieKHfUVavVfuNlVKijD+eoYRHvE9APxSb+xEDJ2GU6Q3+xSHMdNsNb/m/iN+x10HyIjRAALzoATBYfIaApuLI7NI9fKQCtU926o3kHy2EiBsCE1l+JdYrxOJkC/EMjkW9oHdm9ADjBWBBP4jhlLNt52MZS27NZZroF0wQ36v5UFZoAAAAASUVORK5CYII=') no-repeat left center;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAVCAYAAABPPm7SAAABVUlEQVQ4jZXTsUpcURDG8d9eF4QIFjbCivERUtwQRFbCvoCCEgxWASOR2EiwSMqQN7CQFIFgIYKgCAYfQIkivoCFXRJwLQSLKNFALHYvORzOVfer7sx882cOd6aS57lIz/AKdQyigh/4jhUchOZKBPiMNzEx0hfMFkEWFHYf0AyvwykKwFeMPqC50DBWC8ATrTendIZmSW0aTzMsJIp/24bHGMIUrhO+d1U8TxRmsBbE6+1p1yLfSCXP8xtUg+QVHpWMfYHeIL7OcBmZsggYqiuK/2TYj5Ld+JRo/oieKHfUVavVfuNlVKijD+eoYRHvE9APxSb+xEDJ2GU6Q3+xSHMdNsNb/m/iN+x10HyIjRAALzoATBYfIaApuLI7NI9fKQCtU926o3kHy2EiBsCE1l+JdYrxOJkC/EMjkW9oHdm9ADjBWBBP4jhlLNt52MZS27NZZroF0wQ36v5UFZoAAAAASUVORK5CYII=') no-repeat left 6rpx;
   background-size: 16rpx;
 }
 .shopMoney{
   font-size: 20rpx;
   color: #d81e06;
   line-height: 36rpx;
-  margin-top: 24rpx;
+  margin-top: 18rpx;
   display: flex;
   display: -webkit-flex;
 }

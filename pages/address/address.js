@@ -185,8 +185,6 @@ Page({
           mask: true
         })
       }
-      console.log(_this.data.editData);
-      console.log(_this.data.edItIndex);
     }
     
   },

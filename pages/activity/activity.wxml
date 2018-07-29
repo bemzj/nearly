@@ -6,12 +6,15 @@
     <view class='shopChild' wx:for="{{activity}}" wx:key="index">
       <view class='shopTitle'>    
         <view>{{item.title==""?"暂无主题":item.title}}</view>
-        <text class='shopStatus {{item.status==1?"shopStatus1":""}}' wx:if="{{item.status==1}}">未通过</text>
-        <text class='shopStatus {{item.status==2?"shopStatus2":""}}' wx:elif="{{item.status==2}}">已通过</text>
+        <text class='shopStatus {{item.type==0?"shopStatus1":""}}' wx:if="{{item.type==0}}">未通过</text>
+        <text class='shopStatus {{item.type==1?"shopStatus2":""}}' wx:elif="{{item.type==1}}">已通过</text>
         <text class='shopStatus' wx:else>审核中</text>
       </view>
+      <view class='priceBox'>
+        （<text class='nowPrice' >原价:{{item.o_price}}</text><text class='afterPrice'>现价:{{item.price}}</text>）
+      </view>
       <view class='shopText'>
-        <text>活动主题审核内容活动主题审核内容活动主题审核内容活动主题审核内容</text>
+        <text>{{item.content}}</text>
       </view>
     </view>
   </view>

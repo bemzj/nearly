@@ -5,6 +5,8 @@ const {
   config
 } = require('../../utils/config.js')
 const network = require("../../utils/network.js")
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 Page({
 
   /**
@@ -13,63 +15,7 @@ Page({
   data: {
     newLength: 0,
     typeName:"全部",
-    shopList: [
-      {
-        src: '../../img/list.png',
-        type: '美食',
-        name: '点都德1',
-        number: 3200,
-        fire: 4,
-        address: '广州市天河区新港东路中洲中心北塔负1楼',
-        nowPay: 99,
-        prePay: 100,
-        payName: '世界杯99元超值套餐'
-      },
-      {
-        src: '../../img/list.png',
-        type: '美食',
-        name: '点都德2',
-        number: 3200,
-        fire: 4,
-        address: '广州市天河区新港东路中洲中心北塔负1楼',
-        nowPay: 99,
-        prePay: 100,
-        payName: '世界杯99元超值套餐'
-      },
-      {
-        src: '../../img/list.png',
-        type: '美食',
-        name: '点都德2',
-        number: 3200,
-        fire: 4,
-        address: '广州市天河区新港东路中洲中心北塔负1楼',
-        nowPay: 99,
-        prePay: 100,
-        payName: '世界杯99元超值套餐'
-      },
-      {
-        src: '../../img/list.png',
-        type: '美食',
-        name: '点都德2',
-        number: 3200,
-        fire: 4,
-        address: '广州市天河区新港东路中洲中心北塔负1楼',
-        nowPay: 99,
-        prePay: 100,
-        payName: '世界杯99元超值套餐'
-      },
-      {
-        src: '../../img/list.png',
-        type: '美食',
-        name: '点都德2',
-        number: 3200,
-        fire: 4,
-        address: '广州市天河区新港东路中洲中心北塔负1楼',
-        nowPay: 99,
-        prePay: 100,
-        payName: '世界杯99元超值套餐'
-      }
-    ],
+    shopList: [],
     firstType:[],
     secondeType: [],
     kliometer:[],
@@ -82,7 +28,12 @@ Page({
     downStatus:0,
     allType:[],
     fid:-1,
-    sid:-1
+    sid:-1,
+    page:1,
+    page_size:5,
+    lat:'',
+    lng:'',
+    cid:''
   },
   closeType:function(){
     var _this = this;
@@ -105,13 +56,35 @@ Page({
   //第一类点击
   firstClick:function(e){
     var _this = this;
+    //服务器地址
+    var url = config.route;
     //点击其他第一类
     if (e.currentTarget.dataset.index != _this.data.firstIndex)
     {
+      var topid = e.currentTarget.dataset.topid;
+      var mydata = {
+        uid: app.globalData.code,
+        distance: _this.data.kliometer[_this.data.kiloIndex],
+        cid: topid,
+        // page: _this.data.page,
+        // page_size: _this.data.page_size,
+        location: _this.data.lat + ',' + _this.data.lng,
+      }
+      network.GET(url + api.getIndexShop, {
+        params: mydata,
+        success: function (res) {
+          _this.setData({
+            shopList: res.data.shop
+          });
+        },
+        fail: function () {
+          //失败后的逻辑  
+        },
+      });
       _this.setData({
         firstIndex: e.currentTarget.dataset.index,
         secondIndex:0,
-        kiloIndex:0,
+        cid: topid,
         secondeType: _this.data.allType[e.currentTarget.dataset.index].son,
         typeName: _this.data.allType[e.currentTarget.dataset.index].name
       });
@@ -121,11 +94,33 @@ Page({
   //第二类点击
   secondClick:function(e){
     var _this = this;
+    var topid = e.currentTarget.dataset.topid;
+    //服务器地址
+    var url = config.route;
+    var mydata = {
+      uid: app.globalData.code,
+      distance: _this.data.kliometer[_this.data.kiloIndex],
+      cid: topid,
+      // page: _this.data.page,
+      // page_size: _this.data.page_size,
+      location: _this.data.lat + ',' + _this.data.lng,
+    }
+    network.GET(url + api.getIndexShop, {
+      params: mydata,
+      success: function (res) {
+        _this.setData({
+          shopList: res.data.shop
+        });
+      },
+      fail: function () {
+        //失败后的逻辑  
+      },
+    });
     _this.setData({
       secondIndex: e.currentTarget.dataset.index,
       downStatus: 0,
-      kiloIndex: 0,
       down: false,
+      cid: topid,
       allDown: false,
       kiloDown: false,
       klioDown: false,
@@ -135,14 +130,47 @@ Page({
   //选择公路
   selectKilo:function(e){
     var _this = this;
+    var topid = _this.data.cid;
+    var mydata;
+    if (_this.data.cid==-1)
+    {
+      mydata = {
+        uid: app.globalData.code,
+        distance: _this.data.kliometer[e.currentTarget.dataset.index],
+        // page: _this.data.page,
+        // page_size: _this.data.page_size,
+        location: _this.data.lat + ',' + _this.data.lng,
+      }
+    }else{
+      mydata = {
+        uid: app.globalData.code,
+        distance: _this.data.kliometer[e.currentTarget.dataset.index],
+        cid: topid,
+        // page: _this.data.page,
+        // page_size: _this.data.page_size,
+        location: _this.data.lat + ',' + _this.data.lng,
+      }
+    }
+    //服务器地址
+    var url = config.route;
+    network.GET(url + api.getIndexShop, {
+      params: mydata,
+      success: function (res) {
+        _this.setData({
+          shopList: res.data.shop
+        });
+      },
+      fail: function () {
+        //失败后的逻辑  
+      },
+    });
     _this.setData({
       kiloIndex: e.currentTarget.dataset.index,
       downStatus: 0,
       down: false,
       allDown: false,
       kiloDown: false,
-      klioDown: false,
-      typeName:"全部"
+      klioDown: false
     });
   },
   //全部
@@ -197,6 +225,10 @@ Page({
   onLoad: function (options) {
     console.log(options);
     var _this = this;
+    // 实例化API核心类
+    qqmapsdk = new QQMapWX({
+      key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
+    });
     //服务器地址
     var url = config.route;
     //数据
@@ -225,33 +257,101 @@ Page({
           allType: alltype,
           firstType: res.data.cates,
         });
-        console.log(alltype);
-        if (JSON.stringify(options) == "{}" | options.id==-1) {          
-          _this.setData({
-            firstIndex:0,
-            secondIndex:0,
-            secondeType: _this.data.allType[0].son
-          }); 
-        } else {
-          _this.setData({
-            typeName:_this.data.allType[options.id].name,
-            firstIndex: options.id,
-            secondIndex: 0,
-            secondeType: _this.data.allType[options.id].son
-          }); 
-        }
-      }
-    });
-    //获取公里数
-    network.GET(url + api.getMile, {
-      params: data,
-      success: function (res) {
-        _this.setData({
-          kliometer: res.data.mileage
+        //获取公里数
+        network.GET(url + api.getMile, {
+          params: data,
+          success: function (res) {
+            _this.setData({
+              kliometer: res.data.mileage
+            });
+            var kilo = res.data.mileage[0].mileage * 2000
+            console.log(res.data.mileage);
+            wx.getLocation({
+              type: 'wgs84',
+              //用户
+              success: function (res) {
+                var latitude = res.latitude
+                var longitude = res.longitude
+                var speed = res.speed
+                var accuracy = res.accuracy
+                _this.setData({
+                  lat:latitude,
+                  lng:longitude
+                });
+                if (JSON.stringify(options) == "{}" | options.id == -1) {
+                  var mydata = {
+                    uid: app.globalData.code,
+                    distance: kilo,
+                    // page: _this.data.page,
+                    // page_size: _this.data.page_size,
+                    location: latitude + ',' + longitude,
+                  }
+                  console.log(mydata);
+                  network.GET(url + api.getIndexShop, {
+                    params: mydata,
+                    success: function (res) {
+                      _this.setData({
+                        shopList: res.data.shop,
+                        
+                      });
+                    },
+                    fail: function () {
+                      //失败后的逻辑  
+                    },
+                  });
+                  _this.setData({
+                    firstIndex: 0,
+                    secondIndex: 0,
+                    secondeType: _this.data.allType[0].son,
+                    cid:-1,
+                  });
+                } else {
+                  var mydata = {
+                    uid: app.globalData.code,
+                    distance: kilo,
+                    // page: _this.data.page,
+                    // page_size: _this.data.page_size,
+                    location: latitude + ',' + longitude,
+                    cid: options.tid
+                  }
+                  network.GET(url + api.getIndexShop, {
+                    params: mydata,
+                    success: function (res) {
+                      _this.setData({
+                        shopList: res.data.shop
+                      });
+                    },
+                    fail: function () {
+                      //失败后的逻辑  
+                    },
+                  });
+                  _this.setData({
+                    typeName: _this.data.allType[options.id].name,
+                    firstIndex: options.id,
+                    secondIndex: 0,
+                    secondeType: _this.data.allType[options.id].son,
+                    cid: options.tid
+                  });
+                }
+              },
+              //授权失败
+              fail: function (res) {
+                wx.showToast({
+                  title: '没有授权地址位置，会影响服务质量',
+                  icon: 'none',
+                  duration: 4000
+                })
+                _this.setData({
+                  street: ""
+                })
+              }
+            });  
+          } 
         });
-        console.log(res.data.mileage);
+        
       }
     });
+    
     
   },
 
@@ -330,6 +430,81 @@ Page({
   toSearch:function(){
     wx.navigateTo({
       url: '../search/search',
+    })
+  },
+  //增加浏览次数
+  addBrowse: function (e) {
+    //服务器地址
+    var url = config.route;
+    var data = {
+      uid: app.globalData.code,
+      id: e.currentTarget.dataset.shopid
+    }
+    network.GET(url + api.addBrowse, {
+      params: data,
+      success: function (res) {
+      }
+    });
+  },
+  //点击收藏
+  collect: function (e) {
+    var _this = this;
+    var shopList = _this.data.shopList;
+    var msg;
+    if (shopList[e.currentTarget.dataset.index].collect == 0) {
+      shopList[e.currentTarget.dataset.index].collect = 1;
+      msg = "收藏成功";
+    } else {
+      shopList[e.currentTarget.dataset.index].collect = 0;
+      msg = "取消收藏";
+    }
+    var url = config.route;
+    var data = {
+      uid: app.globalData.code,
+      id: e.currentTarget.dataset.shopid
+    }
+    network.GET(url + api.collect, {
+      params: data,
+      success: function (res) {
+        if (res.data.status == 1) {
+          _this.setData({
+            shopList: shopList
+          });
+          wx.showToast({
+            title: msg,
+            icon: 'none',
+            duration: 2000
+          });
+        } else {
+          wx.showToast({
+            title: "收藏失败",
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      }
+    });
+  },
+  //打开地图导航
+  getMap: function (e) {
+    wx.setClipboardData({
+      data: e.currentTarget.dataset.address,
+      success: function (res) {
+        wx.getClipboardData({
+          success: function (res) {
+            setTimeout(function () {
+              wx.openLocation({
+                latitude: e.currentTarget.dataset.lat,
+                longitude: e.currentTarget.dataset.long,
+                scale: 15,
+                success: function (res) {
+
+                }
+              });
+            }, 1000);
+          }
+        })
+      }
     })
   }
 })

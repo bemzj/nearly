@@ -18,57 +18,57 @@
           <text>{{typeName}}</text>
         </view>
         <view  bindtap='allklio' class='{{kiloDown?"allChoice":""}}'>
-          <text>{{kliometer[kiloIndex].mileage}}</text>
+          <text>{{kliometer[kiloIndex].mileage}}公里内</text>
         </view>
       </view>
       <view class='allList' bindtap='closeType' >
           <view class='leftList {{allDown?"leftDown":""}}'>
             <view class='firstList'>
               <view catchtap="allClick"><text>全部分类</text></view>
-              <view  catchtap="firstClick" data-index='{{index}}' wx:for="{{firstType}}" wx:key="index" class='{{firstIndex==index?"fristActive":""}}'><text>{{item.name}}</text></view>
+              <view  catchtap="firstClick" data-index='{{index}}' data-topid='{{item.id}}' wx:for="{{firstType}}" wx:key="index" class='{{firstIndex==index?"fristActive":""}}'><text>{{item.name}}</text></view>
             </view>
             <view class='secondList'>
-              <view catchtap="secondClick" data-index='{{index}}' wx:for="{{secondeType}}" wx:key="index" class='{{secondIndex==index?"secondActive":""}}'><text>{{item.name}}</text></view>
+              <view catchtap="secondClick" data-index='{{index}}' data-topid='{{item.id}}' wx:for="{{secondeType}}" wx:key="index" class='{{secondIndex==index?"secondActive":""}}'><text>{{item.name}}</text></view>
               <!--{{index==0?firstType[firstIndex].name:""}}  -->
             </view>
           </view>
           <view class='rightList {{kiloDown?"leftDown":""}}'>
-            <view wx:for="{{kliometer}}" catchtap='selectKilo' data-index='{{index}}' data-mid='{{item.id}}' wx:key="index"  class='{{index==kiloIndex?"rightActive":""}}'><text>{{item.mileage}}</text></view>
+            <view wx:for="{{kliometer}}" catchtap='selectKilo' data-index='{{index}}' data-mid='{{item.id}}' wx:key="index"  class='{{index==kiloIndex?"rightActive":""}}'><text>{{item.mileage}}公里内</text></view>
           </view>
       </view>
     </view>
   <view class='noShopList' wx:if='{{shopList.length==0}}'>
-    <text>暂无搜索结果</text>
+    <text>暂无结果</text>
   </view>
   <view class='shopLists' wx:if='{{shopList.length>0}}'>
     <view class='snBox'>
-      <view class='listBoxOut' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index">
-        <view class='listBox'>
+      <view class='listBoxOut' bindtap='addBrowse' data-shopid='{{item.id}}' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index">
+        <view class='listBox' >
           <view class='listImg'>
-            <view class='myHeart'></view>
-            <image src='{{item.src}}' mode='widthFix'></image>
+            <view class='myHeart {{item.collect?"myHeartHas":""}}' data-shopid='{{item.id}}' data-index='{{index}}' bindtap='collect'><view class='heartIn'></view></view>
+            <image src='../../img/list.png' mode='widthFix'></image>
           </view>
           <view class='listText'>
-            <view class='ltIn'>
-              <view class='phone' bindtap='callPhone' data-phone='15999911956'>
+            <view class='ltIn' bindtap='getMap' data-lat='{{item.lat}}' data-address='{{item.address}}' data-long='{{item.long}}'>
+              <view class='phone' catchtap='callPhone' data-phone='{{item.phone}}'>
                 <image src='../../img/phone.png' mode='widthFix'></image>
               </view>
               <view class='shop'>
                 <view class='shopText'>
-                  <text class='shopType'>{{item.type}}</text><text class='shopName'>{{item.name}}</text>
+                  <text class='shopType'>{{item.cname}}</text><text class='shopName'>{{item.name}}</text>
                 </view>
                 <view class='shopNumber'>
-                  <text>被浏览次数{{item.number}}</text>
+                  <text>被浏览次数{{item.browse}}</text>
                   <view class='fire'>
                     <text wx:for="{{item.fire}}" wx:key="unique" wx:for-item="its" class='{{its<item.fire?"block":""}}'></text>
                   </view>
                 </view>
                 <view class='shopAddress'>
-                  <text>广州市天河区新港东路中洲中心北塔负1楼</text>
+                  <text>{{item.address}}</text>
                 </view>
                 <view class='shopMoney'>
                   <view class='shopIn'>
-                    99元<text>110元</text>世界杯99元超值套餐
+                    {{item.price}}<text>{{item.o_price}}</text>{{item.title}}
                   </view>
                 </view>
               </view>

@@ -269,6 +269,7 @@ Page({
     network.GET(url + api.getIndexType, {
       params: {},
       success: function (res) {
+        console.log(res);
         var typelist = res.data.cates;
         typelist.push(all);
         _this.setData({
@@ -319,6 +320,11 @@ Page({
       },
       //授权失败
       fail:function(res){
+        wx.showToast({
+          title: '没有授权地址位置，会影响服务质量，可点击右上角进行授权操作',
+          icon: 'none',
+          duration: 4000
+        })
         _this.setData({
           street: ""
         })
@@ -378,8 +384,9 @@ Page({
   },
   //分类
   typeNav:function(e){
+    console.log(e);
     wx.redirectTo({
-      url: '../type/type?id=' + e.currentTarget.dataset.id
+      url: '../type/type?id=' + e.currentTarget.dataset.id + '&&tid=' + e.currentTarget.dataset.tid
     })
   },
   //查看更多

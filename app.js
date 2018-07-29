@@ -5,6 +5,7 @@ App({
   },
   globalData: {
     code:null,
-    userInfo: null
+    userInfo: null,
+    location:null
   }
 })

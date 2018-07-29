@@ -73,6 +73,9 @@ page{
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAATCAYAAABGKffQAAAA2ElEQVQokYXSPUoDQRQA4G+THMcj2CwGxF5BEAQFLyEIYiELFmItGBEEwVRpAgnaeQAF/403ESx2FsKy+3aageF7P/NmsqIo+pjgEM+C1cMfRphiJcKDtI+RYY4hXiMM9+hjlgLeIwx3KWCONXxGGG6XAob4ijDc1Cr8RJhyQhkekWMRYbhKFR6Q9zowXOIJ112Z4QCryLvwPo6UPf9GbezhWDmNBe3T2MVJgt/VYRPewanagzThbZwl+FHPsoy3cJ7gW1Nv1QU3cYF1Ld+zwgPliDbw0gbhHzLbKVXsbHqbAAAAAElFTkSuQmCC') no-repeat right center;
   background-size:11rpx; 
 }
+.func>view.noBackground{
+  background: none;
+}
 .func view{
   display: block;
   width: 100%;

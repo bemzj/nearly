@@ -20,10 +20,15 @@ Page({
     region: ['', '', ''],
     currentRegion:[],
     intro:{
+      uid:"",
       name:"",
       pic:"",
       cid:"",
-      phone:""
+      province:"",
+      city:"",
+      area:"",
+      phone:"",
+      addinfo:"",
     },
     hasShop:-1,
     firstType:[],
@@ -46,20 +51,28 @@ Page({
     var _this = this;
     var intro = _this.data.intro;
     intro.phone = e.detail.value;
-    console.log(intro);
-
     _this.setData({
       intro: intro
     })
   },
+  //详细地址输入
+  detailsInput: function (e) {
+    var _this = this;
+    var intro = _this.data.intro;
+    intro.addinfo = e.detail.value;
+    _this.setData({
+      intro: intro
+    })
+  },
+  //店铺类型第一类选择
   changeOne:function(e){
     var _this = this;
-    
     _this.setData({
       toIndex:e.detail.value,
       typeTwo: _this.data.secondType[e.detail.value]
     })
   },
+   //店铺类型第二类选择
   changeTwo: function (e) {
     var _this = this;
     var intro = _this.data.intro;
@@ -69,17 +82,32 @@ Page({
       intro: intro
     })
   },
+  //省市区切换
   bindRegionChange: function (e) {
     var _this = this;
+    var intro = _this.data.intro;
+    intro.province = e.detail.value[0];
+    intro.city = e.detail.value[1],
+    intro.area = e.detail.value[2]
     _this.setData({
-      region: e.detail.value
+      region: e.detail.value,
+      intro: intro
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var _this = this;
+    var intro = _this.data.intro;
+    intro.uid = app.globalData.code;
+    _this.setData({
+      intro: intro
+    });
+    // 实例化API核心类
+    qqmapsdk = new QQMapWX({
+      key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
+    });
   },
 
   /**
@@ -100,84 +128,146 @@ Page({
     var data = {
       uid: app.globalData.code,
     }
-    //获取分类
-    network.GET(url + api.getTypes, {
-      params: data,
-      success: function (res) {
-        var all = res.data.cates;
-        var firstType = [];
-        var secondType = [];
-        var secondId = [];
-        for (var i = 0; i < all.length;i++)
-        {
-          firstType.push(all[i].name);
-          var arr = [];
-          var arrId = [];
-          for (var j = 0; j < all[i].son.length;j++)
-          {
-            arr.push(all[i].son[j].name);
-            arrId.push(all[i].son[j].id);
-          }
-          secondType.push(arr);
-          secondId.push(arrId);
-        }
-        var intro = _this.data.intro;
-        intro.cid = secondId[0][0];
-        console.log(secondType, secondId);
-        _this.setData({
-          intro: intro,
-          typeOne: firstType,
-          firstType: firstType,
-          secondType: secondType,
-          secondId: secondId,
-          typeTwo: secondType[0]
-        });
-      }
-    });
+    wx.showLoading({
+      title: '加载中',
+    })
     //判断是否有门店
     network.GET(url + api.getShopMsg, {
       params: data,
       success: function (res) {
-        if (res.data.status==0)
-        {
-          // 实例化API核心类
-          qqmapsdk = new QQMapWX({
-            key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
-          });
-          wx.getLocation({
-            type: 'wgs84',
-            success: function (res) {
-              var latitude = res.latitude
-              var longitude = res.longitude
-              var speed = res.speed
-              var accuracy = res.accuracy
-              qqmapsdk.reverseGeocoder({
-                location: {
-                  latitude: latitude,
-                  longitude: longitude
-                },
+        var myRes = res;
+        //获取分类
+        network.GET(url + api.getTypes, {
+          params: data,
+          success: function (res) {
+            wx.hideLoading();
+            //处理分类
+            var all = res.data.cates;
+            var firstType = [];
+            var secondType = [];
+            var secondId = [];
+            for (var i = 0; i < all.length; i++) {
+              firstType.push(all[i].name);
+              var arr = [];
+              var arrId = [];
+              for (var j = 0; j < all[i].son.length; j++) {
+                arr.push(all[i].son[j].name);
+                arrId.push(all[i].son[j].id);
+              }
+              secondType.push(arr);
+              secondId.push(arrId);
+            }
+            if (myRes.data.status == 0) { 
+              wx.getLocation({
+                type: 'wgs84',
                 success: function (res) {
-                  var obj = _this.data.region;
-                  obj[0] = res.result.address_component.province;
-                  obj[1] = res.result.address_component.city;
-                  obj[2] = res.result.address_component.district;
-                  _this.setData({
-                    region: obj,
-                    currentRegion: obj
-                  })
-                },
-                fail: function (res) { }
+                  var latitude = res.latitude
+                  var longitude = res.longitude
+                  var speed = res.speed
+                  var accuracy = res.accuracy
+                  qqmapsdk.reverseGeocoder({
+                    location: {
+                      latitude: latitude,
+                      longitude: longitude
+                    },
+                    success: function (res) {
+                      var obj = _this.data.region;
+                      obj[0] = res.result.address_component.province;
+                      obj[1] = res.result.address_component.city;
+                      obj[2] = res.result.address_component.district;
+                      var intro = _this.data.intro;
+                      intro.province = obj[0];
+                      intro.city = obj[1];
+                      intro.area = obj[2];
+                      _this.setData({
+                        region: obj,
+                        currentRegion: obj,
+                        intro: intro
+                      })
+                    },
+                    fail: function (res) { }
+                  });
+                }
+              });
+              var intro = _this.data.intro;
+              intro.cid = secondId[0][0];
+              _this.setData({
+                intro: intro,
+                typeOne: firstType,
+                firstType: firstType,
+                secondType: secondType,
+                secondId: secondId,
+                typeTwo: secondType[0],
+                hasShop: 0
+              });
+            } else {
+              var intro = myRes.data.shop;
+              var x = -1;
+              var y = -1;
+              var xys = true;
+              for (var i = 0; i < secondId.length;i++)
+              {
+                if (xys)
+                {
+                  for (var j = 0; j < secondId[i].length; j++) {
+                    if (intro.cid == secondId[i][j]) {
+                      x = i;
+                      y = j;
+                      break;
+                    }
+                  }
+                }else{
+                  break;
+                }        
+              }
+              var region = [];
+              region.push(intro.province);
+              region.push(intro.city);
+              region.push(intro.area);
+              _this.setData({
+                intro: myRes.data.shop,
+                hasShop: 1,
+                region: region,
+                typeOne: firstType,
+                toIndex:x,
+                ttIndex:y,
+                firstType: firstType,
+                secondType: secondType,
+                secondId: secondId,
+                typeTwo: secondType[x]
               });
             }
-          });
-          _this.setData({
-            hasShop:0
-          });
-        }else{
-          _this.setData({
-            hasShop: 1
-          });
-        }
+          },
+          fail:function(){
+            wx.hideLoading();
+            wx.showToast({
+              title: '网络错误，获取分类失败！',
+              icon: 'none',
+              mask: true,
+              duration: 2000
+            });
+            setTimeout(function(){
+              wx.navigateBack({
+                
+              })
+            },2000);
+          }
+        });
+        
+      },
+      fail: function () {
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络错误，获取分类失败！',
+          icon: 'none',
+          mask: true,
+          duration: 2000
+        });
+        setTimeout(function () {
+          wx.navigateBack({
+
+          })
+        }, 2000);
       }
     });
     
@@ -222,7 +312,6 @@ Page({
     var _this = this;
     //手机格式
     var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
-    console.log(_this.data.intro.phone);
     //手机规则验证
     if (_this.data.intro.phone == '') {
       wx.showToast({
@@ -251,7 +340,6 @@ Page({
       network.GET(url + api.getCode, {
         params: data,
         success: function (res) {
-          console.log(res);
           wx.showToast({
             title: res.data.msg,
             icon: 'none',
@@ -289,7 +377,6 @@ Page({
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: function (res){
-            console.log(res.width);
             if (res.width / res.height==25/21)
             {
               var intro = _this.data.intro;
@@ -304,8 +391,7 @@ Page({
                 name: 'pic',
                 formData: {},
                 success: function (res) {
-                  var data = JSON.parse(res.data)
-                  console.log(data);
+                  var data = JSON.parse(res.data);
                   if (data.status == 1) {
                     intro.pic = data.msg;
                     _this.setData({
@@ -345,7 +431,160 @@ Page({
   cansel:function(){
     wx.navigateBack({});
   },
+  //编辑
+  edit:function(){
+    var _this = this;
+    var data = _this.data.intro;
+    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    
+    if (data.name == "") {
+      wx.showToast({
+        title: '姓名不能为空！',
+        icon: 'none',
+        mask: true
+      });
+    } else if (data.phone == "") {
+      wx.showToast({
+        title: '手机号码不能为空！',
+        icon: 'none',
+        mask: true
+      })
+    } else if (!myreg.test(data.phone)) {
+      wx.showToast({
+        title: '手机格式不正确！',
+        icon: 'none',
+        mask: true
+      })
+    } else if (data.province == "") {
+      wx.showToast({
+        title: '省市区不能为空！',
+        icon: 'none',
+        mask: true
+      })
+    } else if (data.addinfo == "") {
+      wx.showToast({
+        title: '详细地址不能为空！',
+        icon: 'none',
+        mask: true
+      })
+    } else if (data.pic == "") {
+      wx.showToast({
+        title: '店面图片不能为空！',
+        icon: 'none',
+        mask: true
+      })
+    } else {
+      //服务器地址
+      let mydata = data;
+      var addresses = mydata.province+mydata.city + mydata.area + mydata.addinfo;
+      qqmapsdk.geocoder({
+        address: addresses,
+        success: function (res) {
+          mydata.lat = res.result.location.lat;
+          mydata.long = res.result.location.lng;
+          var url = config.route;
+          network.GET(url + api.setShopMsg, {
+            params: mydata,
+            success: function (res) {
+              wx.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                mask: true
+              });
+            }
+          });
+        },
+        fail: function (res) {
+          wx.showToast({
+            title: '地址解析错误！',
+            icon: 'none',
+            mask: true
+          })
+        }
+      });
+      
+    }
+  },
+  //提交
   submitForm:function(e){
-    console.log(e);
+    var _this = this;
+    var data = _this.data.intro;
+    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    if (data.name=="")
+    {
+      wx.showToast({
+        title: '姓名不能为空！',
+        icon: 'none',
+        mask: true
+      });
+    } else if (data.phone==""){
+      wx.showToast({
+        title: '手机号码不能为空！',
+        icon: 'none',
+        mask: true
+      })
+    } else if (!myreg.test(data.phone)) {
+      wx.showToast({
+        title: '手机格式不正确！',
+        icon: 'none',
+        mask: true
+      })
+    } else if (data.province == ""){
+      wx.showToast({
+        title: '省市区不能为空！',
+        icon: 'none',
+        mask: true
+      })
+    } else if (data.addinfo == "") {
+      wx.showToast({
+        title: '详细地址不能为空！',
+        icon: 'none',
+        mask: true
+      })
+    } else if (data.pic == "") {
+      wx.showToast({
+        title: '店面图片不能为空！',
+        icon: 'none',
+        mask: true
+      })
+    }else{
+      //服务器地址
+      var url = config.route;
+      let mydata = data;
+      var addresses = mydata.province + mydata.city + mydata.area + mydata.addinfo;
+      qqmapsdk.geocoder({
+        address: addresses,
+        success: function (res) {
+          mydata.lat = res.result.location.lat;
+          mydata.long = res.result.location.lng;
+          var url = config.route;
+          network.GET(url + api.setShopMsg, {
+            params: mydata,
+            success: function (res) {
+              setTimeout(function(){
+                if (res.data.status == 1) {
+                  wx.navigateBack({});
+                }
+              },1500);
+              wx.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                mask: true
+              });
+            }
+          });
+        },
+        fail: function (res) {
+          wx.showToast({
+            title: '地址解析错误！',
+            icon: 'none',
+            mask: true
+          })
+        }
+      });
+    }
+  },
+  returnBack:function(){
+    wx.navigateBack({})
   }
 })

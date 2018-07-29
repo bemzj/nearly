@@ -173,10 +173,10 @@ page{
 .doorBox:nth-last-child(1){
   border: 0
 }
-.subBtn view{
+.twoBtn view{
   border-top: 1px solid #f2f2f2;
 }
-.subBtn view:nth-child(2){
+.twoBtn view:nth-child(2){
   border-top: 1px solid #ff8933;
 }
 .subBtn view:nth-child(2) button{
