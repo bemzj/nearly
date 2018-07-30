@@ -144,7 +144,7 @@ page{
   display: block;
 }
 .hasMain .vipTitle>text:nth-child(1){
-  position: absolute;
+  /* position: absolute; */
   left: 0;
   top: 0;
 }
