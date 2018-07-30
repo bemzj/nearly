@@ -140,5 +140,49 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+  //立刻申请
+  apply:function(){
+    var _this = this;
+    //服务器地址
+    var url = config.route;
+    //数据
+    var row = {
+      uid: app.globalData.code,
+      id: _this.data.vip.id,
+    }
+    //获取地址
+    network.GET(url + api.buyVip, {
+      params: row,
+      success: function (res) {
+        console.log(res);
+        var data = JSON.parse(res.data.payconfig.jsApiParameters);
+        wx.requestPayment({
+          'timeStamp': data.timeStamp,
+          "nonceStr": data.nonceStr,
+          "package": data.package,
+          "signType":'MD5',
+          "paySign": data.paySign,
+          success:function(d){
+            if(d.errMsg =="requestPayment:ok"){
+              //获取地址
+              network.GET(url + api.paySuccess, {
+                params: row,
+                success: function (res) {
+                  console.log(res);
+                  _this.setData({
+                    msg: res.data.msg
+                  })
+                }
+              });
+            };
+          },
+          fail:function(d){
+            console.log(d);
+          },
+          
+        });
+      }
+    }); 
   }
 })
