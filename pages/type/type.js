@@ -224,6 +224,10 @@ Page({
    */
   onLoad: function (options) {
     console.log(options);
+    wx.showLoading({
+      title: '加载中',
+      mask:true
+    })
     var _this = this;
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
@@ -290,9 +294,9 @@ Page({
                   network.GET(url + api.getIndexShop, {
                     params: mydata,
                     success: function (res) {
+                      wx.hideLoading();
                       _this.setData({
                         shopList: res.data.shop,
-                        
                       });
                     },
                     fail: function () {
@@ -317,6 +321,7 @@ Page({
                   network.GET(url + api.getIndexShop, {
                     params: mydata,
                     success: function (res) {
+                      wx.hideLoading();
                       _this.setData({
                         shopList: res.data.shop
                       });

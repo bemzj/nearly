@@ -189,6 +189,10 @@ Page({
    */
   onShow: function () {
     var _this = this;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     var url = config.route;
     var data = {
       uid: app.globalData.code,
@@ -196,7 +200,7 @@ Page({
     network.GET(url + api.getCollect, {
       params: data,
       success: function (res) {
-        console.log(res.data.row);
+        wx.hideLoading();
         _this.setData({
           shopList:res.data.row
         })

@@ -469,6 +469,10 @@ Page({
    */
   onShow: function () {
     var _this = this;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     //服务器地址
     var url = config.route;
     //数据
@@ -479,6 +483,7 @@ Page({
     network.GET(url + api.getAddress, {
       params: data,
       success: function (res) {
+        wx.hideLoading();
         _this.setData({
           addresses:res.data.address
         })

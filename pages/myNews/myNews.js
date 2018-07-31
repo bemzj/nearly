@@ -83,6 +83,10 @@ Page({
   onShow: function () {
     var _this = this;
     //设置没有消息的高度
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     var winH = wx.getSystemInfoSync().windowHeight;
     wx.createSelectorQuery().select('#getH').boundingClientRect(function (rect) {
       _this.setData({
@@ -106,6 +110,7 @@ Page({
             len++;
           }
         }
+        wx.hideLoading();
         _this.setData({
           newBox: res.data.message,
           newLength: len
