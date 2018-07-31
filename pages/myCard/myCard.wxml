@@ -32,7 +32,7 @@
     <rich-text nodes="{{vip.desc}}"></rich-text>
   </view>
 </view>
-<button class='rightPay' wx:if="{{hasVip==0}}" >立即申请</button>
+<button class='rightPay' wx:if="{{hasVip==0}}" bindtap='apply'>立即申请</button>
 <view class='hasMain' wx:if="{{hasVip==1}}">
   <view class='mpBox'>
     <view class='mpImg'>
