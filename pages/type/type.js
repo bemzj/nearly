@@ -22,6 +22,7 @@ Page({
     firstIndex:0,
     secondIndex:0,
     kiloIndex:0,
+    nextStatus:true,
     down:false,
     allDown:false,
     kiloDown:false,
@@ -29,7 +30,7 @@ Page({
     allType:[],
     fid:-1,
     sid:-1,
-    page:1,
+    page:0,
     page_size:5,
     lat:'',
     lng:'',
@@ -46,7 +47,45 @@ Page({
     })
   },
   //全部分类点击
-  allClick:function(e){},
+  allClick:function(e){
+    var _this = this;
+    if (_this.data.firstIndex!=-1)
+    {
+      var mydata;
+      mydata = {
+        uid: app.globalData.code,
+        distance: _this.data.kliometer[_this.data.kiloIndex].mileage * 2000,
+        page:0,
+        page_size: _this.data.page_size,
+        location: _this.data.lat + ',' + _this.data.lng,
+      }
+      console.log(mydata)
+      //服务器地址
+      var url = config.route;
+      network.GET(url + api.getIndexShop, {
+        params: mydata,
+        success: function (res) {
+          _this.setData({
+            shopList: res.data.shop
+          });
+        },
+        fail: function () {
+          //失败后的逻辑  
+        },
+      });
+      
+    }
+    _this.setData({
+      downStatus: 0,
+      down: false,
+      allDown: false,
+      kiloDown: false,
+      klioDown: false,
+      firstIndex: -1,
+      secondeType: [],
+      typeName:"全部"
+    });
+  },
   //打电话
   callPhone: function (e) {
     wx.makePhoneCall({
@@ -66,8 +105,8 @@ Page({
         uid: app.globalData.code,
         distance: _this.data.kliometer[_this.data.kiloIndex],
         cid: topid,
-        // page: _this.data.page,
-        // page_size: _this.data.page_size,
+        page: 0,
+        page_size: _this.data.page_size,
         location: _this.data.lat + ',' + _this.data.lng,
       }
       network.GET(url + api.getIndexShop, {
@@ -85,6 +124,7 @@ Page({
         firstIndex: e.currentTarget.dataset.index,
         secondIndex:0,
         cid: topid,
+        fid: topid,
         secondeType: _this.data.allType[e.currentTarget.dataset.index].son,
         typeName: _this.data.allType[e.currentTarget.dataset.index].name
       });
@@ -94,15 +134,22 @@ Page({
   //第二类点击
   secondClick:function(e){
     var _this = this;
+    
     var topid = e.currentTarget.dataset.topid;
+
+    if(topid ==-1)
+    {
+      topid = _this.data.fid;
+    }
+    console.log(topid);
     //服务器地址
     var url = config.route;
     var mydata = {
       uid: app.globalData.code,
       distance: _this.data.kliometer[_this.data.kiloIndex],
       cid: topid,
-      // page: _this.data.page,
-      // page_size: _this.data.page_size,
+      page:0,
+      page_size: _this.data.page_size,
       location: _this.data.lat + ',' + _this.data.lng,
     }
     network.GET(url + api.getIndexShop, {
@@ -136,18 +183,18 @@ Page({
     {
       mydata = {
         uid: app.globalData.code,
-        distance: _this.data.kliometer[e.currentTarget.dataset.index],
-        // page: _this.data.page,
-        // page_size: _this.data.page_size,
+        distance: _this.data.kliometer[e.currentTarget.dataset.index].mileage*2000,
+        page: 0,
+        page_size: _this.data.page_size,
         location: _this.data.lat + ',' + _this.data.lng,
       }
     }else{
       mydata = {
         uid: app.globalData.code,
-        distance: _this.data.kliometer[e.currentTarget.dataset.index],
+        distance: _this.data.kliometer[e.currentTarget.dataset.index].mileage * 2000,
         cid: topid,
-        // page: _this.data.page,
-        // page_size: _this.data.page_size,
+        page: 0,
+        page_size: _this.data.page_size,
         location: _this.data.lat + ',' + _this.data.lng,
       }
     }
@@ -286,8 +333,8 @@ Page({
                   var mydata = {
                     uid: app.globalData.code,
                     distance: kilo,
-                    // page: _this.data.page,
-                    // page_size: _this.data.page_size,
+                    page:0,
+                    page_size: _this.data.page_size,
                     location: latitude + ',' + longitude,
                   }
                   console.log(mydata);
@@ -304,19 +351,20 @@ Page({
                     },
                   });
                   _this.setData({
-                    firstIndex: 0,
+                    firstIndex: -1,
                     secondIndex: 0,
-                    secondeType: _this.data.allType[0].son,
+                    secondeType: [],
                     cid:-1,
                   });
                 } else {
                   var mydata = {
                     uid: app.globalData.code,
                     distance: kilo,
-                    // page: _this.data.page,
-                    // page_size: _this.data.page_size,
+                    page: 0,
+                    page_size: _this.data.page_size,
                     location: latitude + ',' + longitude,
-                    cid: options.tid
+                    cid: options.tid,
+                    fid: options.tid,
                   }
                   network.GET(url + api.getIndexShop, {
                     params: mydata,

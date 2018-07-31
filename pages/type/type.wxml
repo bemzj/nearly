@@ -24,7 +24,7 @@
       <view class='allList' bindtap='closeType' >
           <view class='leftList {{allDown?"leftDown":""}}'>
             <view class='firstList'>
-              <view catchtap="allClick"><text>全部分类</text></view>
+              <view catchtap="allClick" class='{{firstIndex==-1?"fristActive":""}}'><text>全部分类</text></view>
               <view  catchtap="firstClick" data-index='{{index}}' data-topid='{{item.id}}' wx:for="{{firstType}}" wx:key="index" class='{{firstIndex==index?"fristActive":""}}'><text>{{item.name}}</text></view>
             </view>
             <view class='secondList'>
@@ -96,3 +96,6 @@
   </nav>
 </view>
 <view class='noTouch noTouch2'></view>
+<!-- <view class='exchange' wx:if='{{nextStatus}}'>
+  <button bindtap='exchangeshop'>换一批</button>
+</view> -->
