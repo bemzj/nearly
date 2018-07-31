@@ -38,7 +38,7 @@
     <view class='mpImg'>
       <image src='{{web}}{{vip.pic}}' mode='widthFix'></image>
       <view class='pmHead'>
-        <image src='../../img/head.png' mode='widthFix'></image>
+        <image src='{{headImg}}' mode='widthFix'></image>
       </view>
     </view>
     <view class='vipTitle vipTitle1 bodyBox'>

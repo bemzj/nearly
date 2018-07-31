@@ -37,6 +37,7 @@ const api = {
     applyActivity: "index/activity/postActivity",//添加活动
     buyVip: "index/vip/buyVip",//购买会员
     paySuccess: "index/vip/paySuccess",//购买成功
+    getLogo:"index/register/getLogo" //获取logo
 }
 module.exports = {
     api,

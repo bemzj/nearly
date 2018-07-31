@@ -187,6 +187,7 @@
   border-right: 1px solid #d81e06;
   
 }
+
 .shopMoney>view text::before{
   content: "";
   position: absolute;
@@ -195,3 +196,12 @@
   left: 10%;
   border-bottom: 1px solid #888888;
 } 
+.shopMoney>view text.noActivity{
+  padding: 0;
+}
+.shopMoney>view text.noActivity::before{
+  display: none;
+}
+.shopMoney>view text.noActivity::after{
+  display: none;
+}

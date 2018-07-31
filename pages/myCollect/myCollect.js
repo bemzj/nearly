@@ -245,30 +245,26 @@ Page({
   onShareAppMessage: function () {
   
   },
-  //导航
+  //打开地图导航
   getMap: function (e) {
-    qqmapsdk.geocoder({
-      address: e.currentTarget.dataset.address,
+    wx.setClipboardData({
+      data: e.currentTarget.dataset.address,
       success: function (res) {
-        console.log(res);
-        wx.openLocation({
-          latitude: res.result.location.lat,
-          longitude: res.result.location.lng,
-          scale: 15,
+        wx.getClipboardData({
           success: function (res) {
+            setTimeout(function () {
+              wx.openLocation({
+                latitude: e.currentTarget.dataset.lat,
+                longitude: e.currentTarget.dataset.long,
+                scale: 15,
+                success: function (res) {
 
+                }
+              });
+            }, 1000);
           }
-        }
-        )
-      },
-      fail: function (res) {
-        wx.showToast({
-          title: '网络错误，请退出重试！',
-          icon: 'none',
-          mask: true
-        });
+        })
       }
-    });
-
-  },
+    })
+  }
 })

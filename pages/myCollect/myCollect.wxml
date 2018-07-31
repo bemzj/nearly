@@ -15,7 +15,7 @@
           <image src='../../img/list.png' mode='widthFix'></image>
         </view>
         <view class='listText'>
-          <view class='ltIn' bindtap='getMap' data-address='{{item.address}}'>
+          <view class='ltIn' bindtap='getMap' data-lat='{{item.lat}}' data-address='{{item.address}}' data-long='{{item.long}}'>
             <view class='phone' catchtap='callPhone' data-phone='{{item.phone}}'>
               <image src='../../img/phone.png' mode='widthFix'></image>
             </view>

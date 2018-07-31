@@ -91,14 +91,24 @@ Page({
       //服务器地址
       var url = config.route;
       //注册商家
+      wx.showLoading({
+        title: '资料提交中',
+      })
       network.GET(url + api.applyShop, {
         params: e.detail.value,
         success: function (res) {
           if (res.data.status==1)
           {
+            wx.hideLoading();
+            wx.showToast({
+              title: res.data.msg,
+              icon: 'success',
+              mask: true,
+              duration: 2000
+            })
             setTimeout(function(){
               wx.navigateBack({});
-            },2000);
+            },2500);
           }else{
             wx.showToast({
               title: res.data.msg,

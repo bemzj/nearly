@@ -135,6 +135,10 @@ Page({
           id: _this.data.editId,
           data:mydataAfter
         }
+        wx.showLoading({
+          title: '数据提交中',
+          mask:true
+        })
         //修改地址
         network.GET(url + api.postAddress, {
           params: mydata,
@@ -156,6 +160,7 @@ Page({
                     popText2: '',
                     popStatus: false
                   });
+                  wx.hideLoading();
                   wx.showToast({
                     title: msg,
                     icon: 'none',
@@ -320,6 +325,10 @@ Page({
               data: data
             }
             //添加地址
+            wx.showLoading({
+              title: '数据提交中',
+              mask: true
+            });
             network.GET(url + api.postAddress, {
               params: mydata,
               success: function (res) {
@@ -338,6 +347,7 @@ Page({
                         addresses: res.data.address,
                         popStatus: false
                       });
+                      wx.hideLoading();
                       wx.showToast({
                         title: msg,
                         icon: 'none',

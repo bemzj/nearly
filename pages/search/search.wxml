@@ -39,9 +39,14 @@
                 <view class='shopAddress'>
                   <text>{{item.address}}</text>
                 </view>
-                <view class='shopMoney'>
+                <view class='shopMoney' wx:if="{{item.title}}">
                   <view class='shopIn'>
                     {{item.price}}<text>{{item.o_price}}</text>{{item.title}}
+                  </view>
+                </view>
+                <view class='shopMoney' wx:else>
+                  <view class='shopIn '>
+                    <text class='noActivity'>暂无门店活动</text>
                   </view>
                 </view>
               </view>
@@ -52,6 +57,6 @@
     </view>
   </view>
 </view>
-<view class='exchange' wx:if='{{allList.length>3&&allList.length>startIndex}}'>
+<view class='exchange' wx:if='{{exchangeStatus}}'>
   <button bindtap='exchangeshop'>换一批</button>
 </view>

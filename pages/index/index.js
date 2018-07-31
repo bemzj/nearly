@@ -14,7 +14,7 @@ Page({
     web:"",
     street:"",
     banners:[],
-    shopLimit:5,
+    shopLimit:false,
     increment:5,
     shopList: [],
     typeList:[],
@@ -27,6 +27,8 @@ Page({
     },
     tipStatus2: false,//弹窗
     popText1: '',
+    page:0,
+    page_size:5
   },
   //打电话
   callPhone: function (e) {
@@ -152,7 +154,6 @@ Page({
                       _this.setData({
                         street: res.result.address_component.street
                       })
-                      console.log(res.result.address_component.street);
                     },
                     fail: function (res) { }
                   });
@@ -181,6 +182,17 @@ Page({
     _this.setData({
       web: config.route,
     });
+    //获取小程序logo
+    network.GET(url + api.getLogo, {
+      params: {},
+      success: function (res) {
+        console.log(res);
+        app.globalData.logo = config.route + res.data.logo.pic;
+      },
+      fail: function () {
+        //失败后的逻辑  
+      },
+    });
     // 登录
     wx.login({
       success: function (res) {
@@ -196,13 +208,21 @@ Page({
               //数据
               var data = {
                 uid: app.globalData.code,
+                page: _this.data.page,
+                page_size: _this.data.page_size
               }
               //获取店家
               network.GET(url + api.getIndexShop, {
                 params: data,
                 success: function (res) {
+                  var shopStatus = true;
+                  if (res.data.shop.length<5)
+                  {
+                    shopStatus = false;
+                  }
                   _this.setData({
-                    shopList: res.data.shop
+                    shopList: res.data.shop,
+                    shopLimit: shopStatus
                   });
                 },
                 fail: function () {
@@ -392,17 +412,39 @@ Page({
   //查看更多
   lookMore:function(e){
     var _this = this;
+    //服务器地址
+    var url = config.route;
     wx.showLoading({
       title: '加载中',
       mask:true
     });
-    
-    setTimeout(function () {
-      wx.hideLoading(); 
-      _this.setData({
-        shopLimit: _this.data.shopLimit + _this.data.increment
-      });
-    }, 2000)
+    var data = {
+      uid: app.globalData.code,
+      page: _this.data.page+1,
+      page_size: _this.data.page_size
+    }
+    //获取店家
+    network.GET(url + api.getIndexShop, {
+      params: data,
+      success: function (res) {
+        console.log(res.data.shop);
+        var shopStatus = true;
+        if (res.data.shop.length<5)
+        {
+          shopStatus = false;
+        }
+        wx.hideLoading(); 
+        var list = _this.data.shopList.concat(res.data.shop)
+        _this.setData({
+          page: _this.data.page + 1,
+          shopList: list,
+          shopLimit: shopStatus
+        });
+      },
+      fail: function () {
+        //失败后的逻辑  
+      },
+    });
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

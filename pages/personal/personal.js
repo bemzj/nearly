@@ -26,7 +26,8 @@ Page({
     tipStatus1: false,//弹窗状态1
     tipStatus2: false,//弹窗状态2
     popText1: '',//弹窗文本,
-    browse:0
+    browse:0,
+    logo:""
   },
   //获取验证码
   getCode() {
@@ -197,7 +198,9 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
-    
+    _this.setData({
+      logo: app.globalData.logo
+    });
 
   },
 
@@ -256,6 +259,7 @@ Page({
     _this.setData({
       useIntro: app.globalData.userInfo
     });
+    console.log(app.globalData.userInfo);
     
     
     //我的消息
@@ -320,6 +324,7 @@ Page({
     network.GET(url + api.hasApply, {
       params: data,
       success: function (res) {
+        console.log(res);
         if (res.data.status==1)
         {
           wx.showToast({
@@ -327,6 +332,31 @@ Page({
             icon: 'none',
             mask: true
           });
+        } else if (res.data.status == 2){
+          app.globalData.userInfo = res.data.user;
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            mask: true
+          });
+          setTimeout(function(){
+            _this.setData({
+              useIntro: res.data.user,
+              loginType: 2
+            });
+          },2000);
+        } else if (res.data.status == 3){
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            mask: true
+          });
+          setTimeout(function(){
+            wx.navigateTo({
+              url: '../shopApply/shopApply',
+            })
+          },2000);
+          
         }else{
           wx.navigateTo({
             url: '../shopApply/shopApply',

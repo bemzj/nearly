@@ -13,8 +13,11 @@ Page({
   data: {
     allList:[],
     shopList: [],
-    startIndex:0,
-    increment:3
+    page:0,
+    page_size:3,
+    exchangeStatus:false,
+    keyBefore:"",
+    keyword:""
   },
   
   /**
@@ -72,27 +75,36 @@ Page({
   onShareAppMessage: function () {
   
   },
+  searchInput:function(e){
+    var _this = this;
+    _this.setData({
+      keyword: e.detail.value
+    });
+  },
   //按钮搜索
   submitBtn:function(e){
-    console.log(e);
     var _this = this;
+    console.log(e);
     wx.showLoading({
       title: '搜索中',
-    })
-    _this.setData({
-      startIndex: 0
     });
+    _this.setData({
+      keyBefore: e.detail.value.keyword
+    })
     var url = config.route;
     //数据
     var data = {
       uid: app.globalData.code,
-      keyword: e.detail.value.keyword
+      keyword: e.detail.value.keyword,
+      page: 0,
+      page_size: 3
     }
     //获取店家
     network.GET(url + api.getIndexShop, {
       params: data,
       success: function (res) {
         wx.hideLoading();
+        console.log(res);
         if (res.data.shop.length == 0) {
           wx.showToast({
             title: "暂无结果",
@@ -106,11 +118,15 @@ Page({
             duration: 2000
           });
         }
-        var shop = res.data.shop.slice(_this.data.startIndex, _this.data.startIndex + _this.data.increment);
+        var shop = res.data.shop;
+        var shopStatus = true;
+        if (shop.length < 3) {
+          shopStatus = false;
+        }
         _this.setData({
-          allList: res.data.shop,
-          startIndex: _this.data.startIndex + _this.data.increment,
-          shopList: shop
+          shopList: shop,
+          exchangeStatus: shopStatus,
+          page: 0
         });
       },
       fail: function () {
@@ -123,40 +139,46 @@ Page({
     var _this = this;
     wx.showLoading({
       title: '搜索中',
-    })
-    _this.setData({
-      startIndex: 0
     });
+    _this.setData({
+      keyBefore: e.detail.value
+    })
     var url = config.route;
     //数据
     var data = {
       uid: app.globalData.code,
-      keyword: e.detail.value
+      keyword: e.detail.value,
+      page: 0,
+      page_size: 3
     }
     //获取店家
     network.GET(url + api.getIndexShop, {
       params: data,
       success: function (res) {
         wx.hideLoading();
-        if (res.data.shop.length==0)
-        {
+        console.log(res);
+        if (res.data.shop.length == 0) {
           wx.showToast({
             title: "暂无结果",
             icon: 'none',
             duration: 2000
           });
-        }else{
+        } else {
           wx.showToast({
             title: "搜索成功",
             icon: 'none',
             duration: 2000
           });
         }
-        var shop = res.data.shop.slice(_this.data.startIndex, _this.data.startIndex +_this.data.increment);
+        var shop = res.data.shop;
+        var shopStatus = true;
+        if (shop.length < 3) {
+          shopStatus = false;
+        }
         _this.setData({
-          allList: res.data.shop,
-          startIndex: _this.data.startIndex + _this.data.increment,
-          shopList: shop
+          shopList: shop,
+          exchangeStatus: shopStatus,
+          page: 0
         });
       },
       fail: function () {
@@ -250,15 +272,47 @@ Page({
   //换一批
   exchangeshop:function(){
     var _this = this;
-    wx.showToast({
-      title: "搜索成功",
-      icon: 'none',
-      duration: 2000
-    });
-    var shop = _this.data.allList.slice(_this.data.startIndex, _this.data.startIndex+_this.data.increment);
-    _this.setData({
-      startIndex: _this.data.startIndex + _this.data.increment,
-      shopList: shop
+    var url = config.route;
+    //数据
+    var data = {
+      uid: app.globalData.code,
+      keyword: _this.data.keyBefore,
+      page: _this.data.page+1,
+      page_size: 3
+    }
+    //获取店家
+    network.GET(url + api.getIndexShop, {
+      params: data,
+      success: function (res) {
+        wx.hideLoading();
+        console.log(res);
+        if (res.data.shop.length == 0) {
+          wx.showToast({
+            title: "暂无结果",
+            icon: 'none',
+            duration: 2000
+          });
+        } else {
+          wx.showToast({
+            title: "搜索成功",
+            icon: 'none',
+            duration: 2000
+          });
+        }
+        var shop = res.data.shop;
+        var shopStatus = true;
+        if (shop.length < 3) {
+          shopStatus = false;
+        }
+        _this.setData({
+          shopList: shop,
+          exchangeStatus: shopStatus,
+          page: _this.data.page + 1
+        });
+      },
+      fail: function () {
+        //失败后的逻辑  
+      },
     });
   }
 })

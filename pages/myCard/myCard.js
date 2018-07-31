@@ -33,17 +33,36 @@ Page({
     var data = {
       uid: app.globalData.code,
     }
+    wx.showLoading({
+      title: '加载中',
+      mask:true
+    })
+    console.log(app.globalData.userInfo);
+    _this.setData({
+      headImg: app.globalData.userInfo.avatarurl
+    })
     network.GET(url + api.getCardIntro, {
       params: data,
       success: function (res) {
         console.log(res);
         var vip = res.data.vip;
         // vip.desc = app.convertHtmlToText(vip.desc);
+        if (res.data.status == 1) {
+          _this.setData({
+            userIntro: app.globalData.userInfo,
+            hasVip: 1
+          });
+        } else {
+          _this.setData({
+            userIntro: app.globalData.userInfo,
+            hasVip: 0
+          });
+        }
+        wx.hideLoading();
         _this.setData({
           web: config.route,
           vip: vip
         });
-        console.log(_this.data.vip);
       }
     });
   },
@@ -76,19 +95,7 @@ Page({
    */
   onShow: function () {
     var _this = this;
-    //判断是否为会员
-    if (app.globalData.userInfo.status==0)
-    {
-      _this.setData({
-        userIntro: app.globalData.userInfo,
-        hasVip: 0
-      });
-    }else{
-      _this.setData({
-        userIntro: app.globalData.userInfo,
-        hasVip: 1
-      });
-    }
+    
     //服务器地址
     var url = config.route;
     //数据
@@ -169,16 +176,35 @@ Page({
               network.GET(url + api.paySuccess, {
                 params: row,
                 success: function (res) {
-                  console.log(res);
-                  _this.setData({
-                    msg: res.data.msg
-                  })
+                  if(res.data.status==1)
+                  {
+                    wx.showToast({
+                      title: res.data.msg,
+                    });
+                    _this.setData({
+                      hasVip:1
+                    })
+                  }else{
+                    wx.showToast({
+                      title: '支付失败',
+                      icon: "none"
+                    });
+                  }
                 }
               });
-            };
+            }else{
+              wx.showToast({
+                title: '支付失败',
+                icon:"none"
+              });
+            }
           },
           fail:function(d){
             console.log(d);
+            wx.showToast({
+              title: '支付失败',
+              icon: "none"
+            });
           },
           
         });

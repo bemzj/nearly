@@ -35,12 +35,16 @@ Page({
   onShow: function () {
     var _this = this;
     var url = config.route;
+    wx.showLoading({
+      title: '加载中',
+    });
     var data = {
       uid: app.globalData.code
     }
     network.GET(url + api.getActivity, {
       params: data,
       success: function (res) {
+        wx.hideLoading();
         if(res.data.status==0)
         {
           wx.showToast({

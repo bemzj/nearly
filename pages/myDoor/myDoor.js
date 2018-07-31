@@ -67,9 +67,12 @@ Page({
   //店铺类型第一类选择
   changeOne:function(e){
     var _this = this;
+    var intro = _this.data.intro;
+    intro.cid = _this.data.secondId[e.detail.value][0];
     _this.setData({
       toIndex:e.detail.value,
-      typeTwo: _this.data.secondType[e.detail.value]
+      typeTwo: _this.data.secondType[e.detail.value],
+      intro: intro
     })
   },
    //店铺类型第二类选择
@@ -157,6 +160,8 @@ Page({
               secondType.push(arr);
               secondId.push(arrId);
             }
+            console.log(secondType);
+            console.log(secondId);
             if (myRes.data.status == 0) { 
               wx.getLocation({
                 type: 'wgs84',
@@ -476,6 +481,7 @@ Page({
     } else {
       //服务器地址
       let mydata = data;
+      mydata.cid = _this.data.secondId[_this.data.toIndex][_this.data.ttIndex];
       var addresses = mydata.province+mydata.city + mydata.area + mydata.addinfo;
       qqmapsdk.geocoder({
         address: addresses,
@@ -551,6 +557,7 @@ Page({
       //服务器地址
       var url = config.route;
       let mydata = data;
+      mydata.cid = _this.data.secondId[_this.data.toIndex][_this.data.ttIndex];
       var addresses = mydata.province + mydata.city + mydata.area + mydata.addinfo;
       qqmapsdk.geocoder({
         address: addresses,

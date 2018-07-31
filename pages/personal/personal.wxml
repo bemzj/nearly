@@ -19,7 +19,7 @@
             <button formType="submit">注册</button>
           </view>
           <view class='logo'>
-            <image src=''></image>
+            <image src='{{logo}}' mode='widthFix'></image>
           </view>
         </view>
       </form>  

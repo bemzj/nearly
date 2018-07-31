@@ -35,7 +35,7 @@
       <text>推荐商家</text>
     </view>
     <view class='snBox'>
-      <view class='listBoxOut' bindtap='addBrowse' data-shopid='{{item.id}}' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index" wx:if="{{index<shopLimit}}">
+      <view class='listBoxOut' bindtap='addBrowse' data-shopid='{{item.id}}' data-index='{{index}}' wx:for="{{shopList}}" wx:key="index">
         <view class='listBox' >
           <view class='listImg'>
             <view class='myHeart {{item.collect?"myHeartHas":""}}' data-shopid='{{item.id}}' data-index='{{index}}' bindtap='collect'><view class='heartIn'></view></view>
@@ -59,9 +59,14 @@
                 <view class='shopAddress'>
                   <text>{{item.address}}</text>
                 </view>
-                <view class='shopMoney'>
+                <view class='shopMoney' wx:if="{{item.title}}">
                   <view class='shopIn'>
                     {{item.price}}<text>{{item.o_price}}</text>{{item.title}}
+                  </view>
+                </view>
+                <view class='shopMoney' wx:else>
+                  <view class='shopIn '>
+                    <text class='noActivity'>暂无门店活动</text>
                   </view>
                 </view>
               </view>
@@ -71,7 +76,7 @@
       </view>
     </view>
   </view>
-  <view class='lookBtn boxes' wx:if="{{shopList.length>shopLimit}}">
+  <view class='lookBtn boxes' wx:if="{{shopLimit}}">
     <button bindtap='lookMore'>查看更多商家</button>
   </view>
   <view class='noShopMore' wx:else>
