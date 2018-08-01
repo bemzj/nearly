@@ -186,7 +186,6 @@ Page({
     network.GET(url + api.getLogo, {
       params: {},
       success: function (res) {
-        console.log(res);
         app.globalData.logo = config.route + res.data.logo.pic;
       },
       fail: function () {
@@ -289,7 +288,6 @@ Page({
     network.GET(url + api.getIndexType, {
       params: {},
       success: function (res) {
-        console.log(res);
         var typelist = res.data.cates;
         typelist.push(all);
         _this.setData({
@@ -404,7 +402,6 @@ Page({
   },
   //分类
   typeNav:function(e){
-    console.log(e);
     wx.redirectTo({
       url: '../type/type?id=' + e.currentTarget.dataset.id + '&&tid=' + e.currentTarget.dataset.tid
     })
@@ -427,7 +424,6 @@ Page({
     network.GET(url + api.getIndexShop, {
       params: data,
       success: function (res) {
-        console.log(res.data.shop);
         var shopStatus = true;
         if (res.data.shop.length<5)
         {

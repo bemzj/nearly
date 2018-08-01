@@ -82,6 +82,7 @@ Page({
       kiloDown: false,
       klioDown: false,
       firstIndex: -1,
+      cid:-1,
       secondeType: [],
       typeName:"全部"
     });
@@ -101,6 +102,7 @@ Page({
     if (e.currentTarget.dataset.index != _this.data.firstIndex)
     {
       var topid = e.currentTarget.dataset.topid;
+      console.log(topid);
       var mydata = {
         uid: app.globalData.code,
         distance: _this.data.kliometer[_this.data.kiloIndex],
@@ -133,13 +135,15 @@ Page({
   },
   //第二类点击
   secondClick:function(e){
-    var _this = this;
-    
+    var _this = this; 
     var topid = e.currentTarget.dataset.topid;
-
+    var tname;
     if(topid ==-1)
     {
       topid = _this.data.fid;
+      tname = _this.data.allType[_this.data.firstIndex].name;
+    }else{
+      tname = _this.data.allType[_this.data.firstIndex].son[e.currentTarget.dataset.index].name;
     }
     console.log(topid);
     //服务器地址
@@ -171,7 +175,7 @@ Page({
       allDown: false,
       kiloDown: false,
       klioDown: false,
-      typeName: _this.data.allType[_this.data.firstIndex].son[e.currentTarget.dataset.index].name
+      typeName: tname
     });
   },
   //选择公路
@@ -179,6 +183,7 @@ Page({
     var _this = this;
     var topid = _this.data.cid;
     var mydata;
+    
     if (_this.data.cid==-1)
     {
       mydata = {
@@ -198,6 +203,7 @@ Page({
         location: _this.data.lat + ',' + _this.data.lng,
       }
     }
+    console.log(mydata);
     //服务器地址
     var url = config.route;
     network.GET(url + api.getIndexShop, {
@@ -220,7 +226,7 @@ Page({
       klioDown: false
     });
   },
-  //全部
+  //全部的效果 上浮和下拉 效果
   allType:function(){
     var _this = this;
     var downStatus = _this.data.downStatus;
@@ -244,7 +250,7 @@ Page({
       kiloDown: false
     })
   },
-  //公里选择
+  //公里选择 上浮和下拉 效果
   allklio:function(){
     var _this = this;
     var downStatus = _this.data.downStatus;
@@ -271,11 +277,11 @@ Page({
    */
   onLoad: function (options) {
     console.log(options);
+    var _this = this;
     wx.showLoading({
       title: '加载中',
       mask:true
-    })
-    var _this = this;
+    });
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
       key: 'Z3BBZ-C563U-MDPVI-BSXTL-ZB2W5-ZRBHU'
@@ -291,6 +297,7 @@ Page({
       params: data,
       success: function (res) {
         var alltype = res.data.cates;
+        console.log(alltype);
         //增加二级分类的类型
         for (var i = 0; i < alltype.length;i++)
         {
@@ -304,6 +311,7 @@ Page({
           };
           alltype[i].son.splice(0, 0, all);
         }
+        //设置所有类型的参数+第一类数据
         _this.setData({
           allType: alltype,
           firstType: res.data.cates,
@@ -312,23 +320,27 @@ Page({
         network.GET(url + api.getMile, {
           params: data,
           success: function (res) {
+            //设置公里数数据
             _this.setData({
               kliometer: res.data.mileage
             });
+            //公里数数据
             var kilo = res.data.mileage[0].mileage * 2000
-            console.log(res.data.mileage);
+            console.log(kilo);
             wx.getLocation({
               type: 'wgs84',
               //用户
               success: function (res) {
-                var latitude = res.latitude
-                var longitude = res.longitude
-                var speed = res.speed
-                var accuracy = res.accuracy
+                var latitude = res.latitude;
+                var longitude = res.longitude;
+                var speed = res.speed;
+                var accuracy = res.accuracy;
+                //设置当前经纬度
                 _this.setData({
                   lat:latitude,
                   lng:longitude
                 });
+                //判断从首页的全部以及直接点击导航的情况下
                 if (JSON.stringify(options) == "{}" | options.id == -1) {
                   var mydata = {
                     uid: app.globalData.code,
@@ -342,6 +354,7 @@ Page({
                     params: mydata,
                     success: function (res) {
                       wx.hideLoading();
+                      
                       _this.setData({
                         shopList: res.data.shop,
                       });
@@ -351,10 +364,11 @@ Page({
                     },
                   });
                   _this.setData({
-                    firstIndex: -1,
-                    secondIndex: 0,
-                    secondeType: [],
-                    cid:-1,
+                    firstIndex: -1, //设置第一分类选项的情况
+                    secondIndex: -1, //设置第二分类的情况
+                    secondeType: [], //第二类数据为空
+                    cid:-1, //当前cid的情况
+                    fid:-1 //当前cid的情况
                   });
                 } else {
                   var mydata = {
@@ -364,11 +378,11 @@ Page({
                     page_size: _this.data.page_size,
                     location: latitude + ',' + longitude,
                     cid: options.tid,
-                    fid: options.tid,
-                  }
+                  } 
                   network.GET(url + api.getIndexShop, {
                     params: mydata,
                     success: function (res) {
+                      console.log(res);
                       wx.hideLoading();
                       _this.setData({
                         shopList: res.data.shop
@@ -383,7 +397,8 @@ Page({
                     firstIndex: options.id,
                     secondIndex: 0,
                     secondeType: _this.data.allType[options.id].son,
-                    cid: options.tid
+                    cid: options.tid,
+                    fid: options.tid
                   });
                 }
               },

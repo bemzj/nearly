@@ -223,12 +223,12 @@ Page({
       uid: app.globalData.code,
     }
     //如果还没注册
-    if (!app.globalData.userInfo.create_time)
-    {
-      _this.setData({
-        loginType:0
-      });
-    }else{
+    // if (!app.globalData.userInfo.create_time)
+    // {
+    //   _this.setData({
+    //     loginType:0
+    //   });
+    // }else{
       if(app.globalData.userInfo.type==0)
       {
         _this.setData({
@@ -255,7 +255,7 @@ Page({
           loginType: 2
         });
       }
-    }
+    // }
     _this.setData({
       useIntro: app.globalData.userInfo
     });
