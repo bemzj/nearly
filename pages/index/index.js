@@ -27,8 +27,11 @@ Page({
     },
     tipStatus2: false,//弹窗
     popText1: '',
-    page:0,
-    page_size:5
+    page:1,
+    page_size:5,
+    lat:null,
+    lng: null,
+    meter:10000
   },
   //打电话
   callPhone: function (e) {
@@ -145,6 +148,10 @@ Page({
                   var longitude = res.longitude
                   var speed = res.speed
                   var accuracy = res.accuracy
+                  _this.setData({
+                    lat: res.latitude,
+                    lng: res.longitude
+                  });
                   qqmapsdk.reverseGeocoder({
                     location: {
                       latitude: latitude,
@@ -205,10 +212,22 @@ Page({
             success: function (data) {
               app.globalData.code = data.data.id;
               //数据
-              var data = {
-                uid: app.globalData.code,
-                page: _this.data.page,
-                page_size: _this.data.page_size
+              var data;
+              if(_this.data.lat)
+              {
+                data = {
+                  uid: app.globalData.code,
+                  page: _this.data.page,
+                  page_size: _this.data.page_size,
+                  location: _this.data.lat + ',' + _this.data.lng,
+                  distance: _this.data.meter
+                } 
+              }else{
+                data = {
+                  uid: app.globalData.code,
+                  page: _this.data.page,
+                  page_size: _this.data.page_size
+                }
               }
               //获取店家
               network.GET(url + api.getIndexShop, {
@@ -316,6 +335,10 @@ Page({
         var longitude = res.longitude
         var speed = res.speed
         var accuracy = res.accuracy
+        _this.setData({
+          lat: res.latitude,
+          lng: res.longitude
+        });
         //根据获取经纬度解析位置
         qqmapsdk.reverseGeocoder({
           location: {
@@ -415,11 +438,24 @@ Page({
       title: '加载中',
       mask:true
     });
-    var data = {
-      uid: app.globalData.code,
-      page: _this.data.page+1,
-      page_size: _this.data.page_size
+    //数据
+    var data;
+    if (_this.data.lat) {
+      data = {
+        uid: app.globalData.code,
+        page: _this.data.page,
+        page_size: _this.data.page_size,
+        location: _this.data.lat + ',' + _this.data.lng,
+        distance: _this.data.meter
+      }
+    } else {
+      data = {
+        uid: app.globalData.code,
+        page: _this.data.page,
+        page_size: _this.data.page_size
+      }
     }
+    console.log(data);
     //获取店家
     network.GET(url + api.getIndexShop, {
       params: data,

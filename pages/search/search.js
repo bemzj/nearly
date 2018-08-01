@@ -13,7 +13,7 @@ Page({
   data: {
     allList:[],
     shopList: [],
-    page:0,
+    page:1,
     page_size:3,
     exchangeStatus:false,
     keyBefore:"",
@@ -96,7 +96,7 @@ Page({
     var data = {
       uid: app.globalData.code,
       keyword: e.detail.value.keyword,
-      page: 0,
+      page: 1,
       page_size: 3
     }
     //获取店家
@@ -126,7 +126,7 @@ Page({
         _this.setData({
           shopList: shop,
           exchangeStatus: shopStatus,
-          page: 0
+          page: 1
         });
       },
       fail: function () {
@@ -148,7 +148,7 @@ Page({
     var data = {
       uid: app.globalData.code,
       keyword: e.detail.value,
-      page: 0,
+      page: 1,
       page_size: 3
     }
     //获取店家
@@ -178,7 +178,7 @@ Page({
         _this.setData({
           shopList: shop,
           exchangeStatus: shopStatus,
-          page: 0
+          page: 1
         });
       },
       fail: function () {

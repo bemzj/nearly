@@ -2,6 +2,7 @@
 @import '../../wxss/list.wxss';
 page{
   padding-top: 205rpx;
+  padding-bottom: 160rpx!important;
 }
 .searchBoxOut{
   position: fixed;
@@ -186,7 +187,7 @@ page{
 .exchange{
   position: relative;
   width: 93.33%;
-  margin: 0 auto;
+  margin: 40rpx auto 0;
 }
 .exchange button{
   border-radius: 10rpx;

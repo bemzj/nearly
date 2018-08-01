@@ -22,7 +22,7 @@ Page({
     firstIndex:0,
     secondIndex:0,
     kiloIndex:0,
-    nextStatus:true,
+    nextStatus:false,
     down:false,
     allDown:false,
     kiloDown:false,
@@ -30,7 +30,7 @@ Page({
     allType:[],
     fid:-1,
     sid:-1,
-    page:0,
+    page:1,
     page_size:5,
     lat:'',
     lng:'',
@@ -55,7 +55,7 @@ Page({
       mydata = {
         uid: app.globalData.code,
         distance: _this.data.kliometer[_this.data.kiloIndex].mileage * 2000,
-        page:0,
+        page:1,
         page_size: _this.data.page_size,
         location: _this.data.lat + ',' + _this.data.lng,
       }
@@ -65,8 +65,13 @@ Page({
       network.GET(url + api.getIndexShop, {
         params: mydata,
         success: function (res) {
+          var shopStatus = true;
+          if (res.data.shop.length < _this.data.page_size) {
+            shopStatus = false;
+          }
           _this.setData({
-            shopList: res.data.shop
+            shopList: res.data.shop,
+            nextStatus: shopStatus
           });
         },
         fail: function () {
@@ -107,15 +112,20 @@ Page({
         uid: app.globalData.code,
         distance: _this.data.kliometer[_this.data.kiloIndex],
         cid: topid,
-        page: 0,
+        page: 1,
         page_size: _this.data.page_size,
         location: _this.data.lat + ',' + _this.data.lng,
       }
       network.GET(url + api.getIndexShop, {
         params: mydata,
         success: function (res) {
+          var shopStatus = true;
+          if (res.data.shop.length < _this.data.page_size) {
+            shopStatus = false;
+          }
           _this.setData({
-            shopList: res.data.shop
+            shopList: res.data.shop,
+            nextStatus: shopStatus
           });
         },
         fail: function () {
@@ -152,15 +162,21 @@ Page({
       uid: app.globalData.code,
       distance: _this.data.kliometer[_this.data.kiloIndex],
       cid: topid,
-      page:0,
+      page:1,
       page_size: _this.data.page_size,
       location: _this.data.lat + ',' + _this.data.lng,
     }
     network.GET(url + api.getIndexShop, {
       params: mydata,
       success: function (res) {
+        var shopStatus = true;
+        if(res.data.shop.length<_this.data.page_size)
+        {
+          shopStatus = false;
+        }
         _this.setData({
-          shopList: res.data.shop
+          shopList: res.data.shop,
+          nextStatus: shopStatus
         });
       },
       fail: function () {
@@ -189,7 +205,7 @@ Page({
       mydata = {
         uid: app.globalData.code,
         distance: _this.data.kliometer[e.currentTarget.dataset.index].mileage*2000,
-        page: 0,
+        page: 1,
         page_size: _this.data.page_size,
         location: _this.data.lat + ',' + _this.data.lng,
       }
@@ -198,7 +214,7 @@ Page({
         uid: app.globalData.code,
         distance: _this.data.kliometer[e.currentTarget.dataset.index].mileage * 2000,
         cid: topid,
-        page: 0,
+        page: 1,
         page_size: _this.data.page_size,
         location: _this.data.lat + ',' + _this.data.lng,
       }
@@ -209,8 +225,13 @@ Page({
     network.GET(url + api.getIndexShop, {
       params: mydata,
       success: function (res) {
+        var shopStatus = true;
+        if (res.data.shop.length < _this.data.page_size) {
+          shopStatus = false;
+        }
         _this.setData({
-          shopList: res.data.shop
+          shopList: res.data.shop,
+          nextStatus: shopStatus
         });
       },
       fail: function () {
@@ -345,7 +366,7 @@ Page({
                   var mydata = {
                     uid: app.globalData.code,
                     distance: kilo,
-                    page:0,
+                    page:1,
                     page_size: _this.data.page_size,
                     location: latitude + ',' + longitude,
                   }
@@ -354,9 +375,13 @@ Page({
                     params: mydata,
                     success: function (res) {
                       wx.hideLoading();
-                      
+                      var shopStatus = true;
+                      if (res.data.shop.length < _this.data.page_size) {
+                        shopStatus = false;
+                      }
                       _this.setData({
                         shopList: res.data.shop,
+                        nextStatus: shopStatus
                       });
                     },
                     fail: function () {
@@ -374,7 +399,7 @@ Page({
                   var mydata = {
                     uid: app.globalData.code,
                     distance: kilo,
-                    page: 0,
+                    page: 1,
                     page_size: _this.data.page_size,
                     location: latitude + ',' + longitude,
                     cid: options.tid,
@@ -384,8 +409,13 @@ Page({
                     success: function (res) {
                       console.log(res);
                       wx.hideLoading();
+                      var shopStatus = true;
+                      if (res.data.shop.length < _this.data.page_size) {
+                        shopStatus = false;
+                      }
                       _this.setData({
-                        shopList: res.data.shop
+                        shopList: res.data.shop,
+                        nextStatus: shopStatus
                       });
                     },
                     fail: function () {
@@ -493,6 +523,61 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  //加载更多
+  loadingMore:function(){
+    var _this = this;
+    var topid = _this.data.cid;
+    var mydata;
+
+    if (_this.data.cid == -1) {
+      mydata = {
+        uid: app.globalData.code,
+        distance: _this.data.kliometer[_this.data.kiloIndex].mileage * 2000,
+        page: _this.data.page+1,
+        page_size: _this.data.page_size,
+        location: _this.data.lat + ',' + _this.data.lng,
+      }
+    } else {
+      mydata = {
+        uid: app.globalData.code,
+        distance: _this.data.kliometer[_this.data.kiloIndex].mileage * 2000,
+        cid: topid,
+        page: _this.data.page +1,
+        page_size: _this.data.page_size,
+        location: _this.data.lat + ',' + _this.data.lng,
+      }
+    }
+    wx.showLoading({
+      title: '加载中',
+    });
+    //服务器地址
+    var url = config.route;
+    network.GET(url + api.getIndexShop, {
+      params: mydata,
+      success: function (res) {
+        console.log(res.data.shop);
+        var shopStatus = true;
+        if (res.data.shop.length < _this.data.page_size) {
+          shopStatus = false;
+        }
+        wx.hideLoading();
+        if (res.data.shop.length == 0)
+        {
+          wx.showToast({
+            title: '暂无新的数据！'
+          })
+        }
+        var shopList = _this.data.shopList.concat(res.data.shop);
+        _this.setData({
+          shopList: shopList,
+          nextStatus: shopStatus
+        });
+      },
+      fail: function () {
+        //失败后的逻辑  
+      },
+    });
   },
   //跳转到搜索页面
   toSearch:function(){

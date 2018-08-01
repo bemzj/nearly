@@ -96,6 +96,6 @@
   </nav>
 </view>
 <view class='noTouch noTouch2'></view>
-<!-- <view class='exchange' wx:if='{{nextStatus}}'>
-  <button bindtap='exchangeshop'>换一批</button>
-</view> -->
+<view class='exchange' wx:if='{{nextStatus}}'>
+  <button bindtap='loadingMore'>加载更多</button>
+</view> 
